@@ -55,8 +55,14 @@ def place(sig, start, pan=0.0, gain=1.0):
 
 
 # ------------------------------------------------------------ instruments --
-def lute(freq, dur, amp=0.5, bright=0.5):
-    """Karplus-Strong pluck: a real plucked-string algorithm, gut-string soft."""
+def lute(freq, dur, amp=0.5, bright=0.5, decay=2.2):
+    """Karplus-Strong pluck: a real plucked-string algorithm, gut-string soft.
+
+    The loop filter must lose energy on every pass or the string runs away:
+    `loss` is set from the wanted decay time, so a long note dies rather than
+    growing. Notes are normalised before `amp` is applied, so the written
+    dynamics mean what they say.
+    """
     if freq <= 0:
         return np.zeros(1)
     L = max(2, int(SR / freq))
@@ -67,21 +73,21 @@ def lute(freq, dur, amp=0.5, bright=0.5):
     if k > 1:
         buf = np.convolve(buf, np.ones(k) / k, mode='same')
     y = np.empty(n)
-    damp = 0.494 + 0.0055 * bright
+    # per-pass loss giving roughly -60 dB after `decay` seconds
+    loss = math.exp(-6.9 / max(1.0, freq * decay))
     prev = 0.0
     idx = 0
     for i in range(n):
         v = buf[idx]
         y[i] = v
-        nxt = damp * (v + prev) + 0.012 * buf[(idx + 1) % L]
+        buf[idx] = 0.5 * (v + prev) * loss
         prev = v
-        buf[idx] = nxt
         idx = (idx + 1) % L
-    env = np.exp(-np.linspace(0, 1, n) * 2.6)
-    y *= env
     # body resonance
-    y = np.convolve(y, np.array([1.0, 0.42, -0.18, 0.08]), mode='same')
-    return y * amp
+    y = np.convolve(y, np.array([1.0, 0.42, -0.18, 0.08]), mode='same')[:n]
+    y *= np.clip(np.linspace(1.0, 0.0, n) * 6, 0, 1)      # clean tail
+    peak = np.abs(y).max()
+    return y / (peak + 1e-9) * amp
 
 
 def recorder(freq, dur, amp=0.35, vib=0.5, breath=1.0):
@@ -102,7 +108,7 @@ def recorder(freq, dur, amp=0.35, vib=0.5, breath=1.0):
     env[:a] = np.linspace(0, 1, a) ** 1.4
     env[n - r:] = np.linspace(1, 0, r) ** 1.6
     y = y * env + noise * env * 0.05 * breath + noise[:n] * np.exp(-t * 60) * 0.10 * breath
-    return y * amp
+    return y / (np.abs(y).max() + 1e-9) * amp
 
 
 def viol(freq, dur, amp=0.18):
@@ -116,7 +122,8 @@ def viol(freq, dur, amp=0.18):
     bow = 1.0 + 0.03 * np.sin(2 * np.pi * 0.7 * t)
     att = min(0.9, dur * 0.3)
     env = np.clip(t / att, 0, 1) * np.clip((dur - t) / max(0.6, dur * 0.25), 0, 1)
-    return y * env * bow * amp
+    y = y * env * bow
+    return y / (np.abs(y).max() + 1e-9) * amp
 
 
 def bell(freq, dur, amp=0.4):
@@ -130,7 +137,8 @@ def bell(freq, dur, amp=0.4):
     for ratio, a, decay in parts:
         y += a * np.sin(2 * np.pi * freq * ratio * t + rng.uniform(0, 6)) * np.exp(-t / (dur * decay * 0.4))
     strike = rng.normal(0, 1, n) * np.exp(-t * 90) * 0.25
-    return (y + strike) * amp * np.exp(-t / (dur * 0.9))
+    y = (y + strike) * np.exp(-t / (dur * 0.9))
+    return y / (np.abs(y).max() + 1e-9) * amp
 
 
 # ------------------------------------------------------------- the score ---
@@ -269,8 +277,10 @@ mix = reverb(out)
 t = np.arange(N) / SR
 fade = np.clip(t / 2.0, 0, 1) * np.clip((DUR - 1.0 - t) / 6.0, 0, 1)
 mix *= fade[:, None]
+# master gain set from the loudest moment, then a soft knee so nothing clips
 peak = np.abs(mix).max()
-mix = np.tanh(mix / (peak * 0.85)) * 0.86
+mix = mix / (peak + 1e-9) * 1.15
+mix = np.tanh(mix) * 0.90
 
 pcm = (np.clip(mix, -1, 1) * 32767).astype('<i2')
 with wave.open('music/ulm-1500.wav', 'wb') as w:
