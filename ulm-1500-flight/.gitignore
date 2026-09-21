@@ -7,3 +7,5 @@ music/*.wav
 # (GitHub rejects blobs over 100 MB)
 out/*.mp4
 out/*.webm
+# ffmpeg two-pass rate-control logs
+ffmpeg2pass*
