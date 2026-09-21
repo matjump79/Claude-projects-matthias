@@ -8,7 +8,7 @@ export const CUES = [
   { t0: 12, t1: 21, text: 'A Free Imperial City <i>(Reichsstadt)</i> — subject to the Emperor alone, and to no lord in between. Ten to fifteen thousand people inside the walls.' },
   { t0: 24, t1: 32, text: 'The Danube. From Ulm the river is navigable: cloth, iron and salt go downstream towards Vienna and Hungary.' },
   { t0: 35, t1: 43, text: 'The Herdbrucke — the only bridge, and the road out to Bavaria.' },
-  { t0: 45, t1: 53, text: 'The Metzgerturm, the butchers’ tower of about 1340 — already out of plumb, and leaning still.' },
+  { t0: 45, t1: 53, text: 'Towers every seventy paces along the river front — among them the Metzgerturm, the butchers’ tower of about 1340, already out of plumb.' },
   { t0: 55, t1: 64, text: 'In 1480 the wall was driven down to the water itself. Iron rings set in the brick moored the boats.' },
   { t0: 67, t1: 76, text: 'The Blau, coming out of the Alb. Fishermen, tanners, dyers and millers crowd both its arms.' },
   { t0: 82, t1: 91, text: 'The Minster of Our Lady. Begun 1377 — built and paid for by the townspeople themselves, not by a bishop. It is a parish church.' },
