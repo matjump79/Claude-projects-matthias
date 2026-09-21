@@ -1,0 +1,15 @@
+{
+  "name": "troyes-1250",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An 8K aerial reconstruction of Troyes in July 1250, during the Hot Fair of Saint-Jean",
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 8111 --bind 127.0.0.1",
+    "preview": "node render/capture.mjs --w=1920 --h=1080 --tiles=1",
+    "render": "node render/capture.mjs --w=7680 --h=4320 --tiles=4"
+  },
+  "dependencies": {
+    "playwright": "1.49.1"
+  }
+}

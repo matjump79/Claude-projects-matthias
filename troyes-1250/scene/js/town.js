@@ -1,0 +1,362 @@
+// town.js — the houses.
+//
+// What a Troyes house looks like in 1250, and what it does NOT look like:
+//
+//  * The town burned on 23 July 1188, in the middle of the fair. Everything
+//    here has been built since about 1195, so the fabric is young, regular and
+//    mostly of one generation — not the accreted muddle of a 15th-century town.
+//  * It is timber-framed: oak posts, rails and braces with wattle-and-daub
+//    panels, limewashed. But the tall, richly carved, heavily jettied frames
+//    that tourists photograph in Troyes today belong to the rebuilding after
+//    the NEXT great fire, in 1524. These are lower — one or two storeys and an
+//    attic — with a shallow jetty of a third of a metre or so, plain straight
+//    braces, and no carving to speak of at this distance.
+//  * Roofs are steep, 45-55 deg, gable to the street on the burgage plots.
+//    Flat clay tile in the fair quarter and on the main streets; thatch and oak
+//    shingle survive on the back lanes and against the wall.
+//  * A handful of merchants build in stone, as their opposite numbers did at
+//    Provins. Those are the deep, low, two-storey blocks with undercrofts.
+
+import { Mesher, shade, mix, distToPolyline, inPolygon, shrink } from './geom.js';
+import { C } from './palette.js';
+import { STREETS, ENCEINTE, LANDMARKS, CITE, WATER, FAIR } from './survey.js';
+import { groundHeight, tree } from './land.js';
+
+// Areas no house may stand in: the monuments, their precincts, the fairground,
+// the water, and the wall's clear lane behind the rampart.
+function exclusions() {
+  const E = [];
+  const add = (x, z, r) => E.push({ x, z, r });
+  add(LANDMARKS.cathedral.at.x + 5, LANDMARKS.cathedral.at.z + 6, 88);
+  add(LANDMARKS.saintEtienne.at.x, LANDMARKS.saintEtienne.at.z, 62);
+  add(LANDMARKS.palace.at.x, LANDMARKS.palace.at.z, 46);
+  add(LANDMARKS.hotelDieu.at.x, LANDMARKS.hotelDieu.at.z, 40);
+  add(LANDMARKS.saintLoup.at.x, LANDMARKS.saintLoup.at.z, 58);
+  add(LANDMARKS.saintNizier.at.x, LANDMARKS.saintNizier.at.z, 30);
+  add(LANDMARKS.canonsClose.at.x, LANDMARKS.canonsClose.at.z, 44);
+  add(LANDMARKS.bishopsPalace.at.x, LANDMARKS.bishopsPalace.at.z, 36);
+  add(LANDMARKS.nonnains.at.x, LANDMARKS.nonnains.at.z, 78);
+  add(LANDMARKS.saintJean.at.x, LANDMARKS.saintJean.at.z, 40);
+  for (const k of ['saintRemy', 'saintFrobert', 'sainteMadeleine', 'saintPantaleon', 'saintNicolas']) {
+    add(LANDMARKS[k].at.x, LANDMARKS[k].at.z, 27);
+  }
+  // the fair's own pitches: these are open ground under stalls, not built on
+  for (const f of FAIR.fields) add(f.at.x, f.at.z, Math.max(f.w, f.d) * 0.55);
+  return E;
+}
+
+const EXCL = exclusions();
+const blocked = (x, z) => EXCL.some((e) => Math.hypot(x - e.x, z - e.z) < e.r);
+
+function nearWater(x, z, pad = 9) {
+  for (const ch of WATER.channels) {
+    const { d } = distToPolyline(x, z, ch.pts);
+    if (d < ch.w / 2 + pad) return true;
+  }
+  return false;
+}
+
+/** Nearest named street: its distance, and its local direction. */
+function nearestStreet(x, z) {
+  let best = null, bestD = Infinity;
+  for (const s of STREETS) {
+    const { d } = distToPolyline(x, z, s.pts);
+    if (d < bestD) { bestD = d; best = s; }
+  }
+  // direction of the closest segment
+  let dir = 0, bd = Infinity;
+  for (let i = 0; i < best.pts.length - 1; i++) {
+    const a = best.pts[i], b = best.pts[i + 1];
+    const mx = (a.x + b.x) / 2, mz = (a.z + b.z) / 2;
+    const d = Math.hypot(x - mx, z - mz);
+    if (d < bd) { bd = d; dir = Math.atan2(b.z - a.z, b.x - a.x); }
+  }
+  return { street: best, d: bestD, dir };
+}
+
+/**
+ * One house. `rot` is the ridge direction; the gable faces the street when
+ * gableToStreet is true, which on a burgage plot is the normal case.
+ */
+function house(m, x, z, opts, rng) {
+  const y = groundHeight(x, z);
+  const w = opts.w, d = opts.d;
+  const storeys = opts.storeys;
+  const sh = opts.storeyH;
+  const rot = opts.rot;
+
+  const wallCol = opts.wall;
+  const frameCol = opts.frame;
+
+  let y0 = y;
+  // ground floor — often a stone or cob sill wall, and in the fair quarter an
+  // open shop front with its shutter let down to make a counter
+  const sill = opts.stone ? sh : 0.7 + rng() * 0.4;
+  m.box(x, y0, z, w, d, sill, rot, opts.stone ? opts.wall : shade(C.stoneOld, 0.92 + rng() * 0.1), { top: false });
+  y0 += sill;
+
+  const upper = storeys - (opts.stone ? 1 : 0);
+  for (let s = 0; s < upper; s++) {
+    // the jetty: each storey oversails the one below by a little
+    const jet = opts.stone ? 0 : (s === 0 ? 0 : 0.28 + rng() * 0.22);
+    const ww = w + jet * 2, dd = d + jet * 2;
+    const h = sh * (s === 0 ? 1 : 0.92);
+    m.box(x, y0, z, ww, dd, h, rot, wallCol, { top: false });
+
+    if (!opts.stone) framing(m, x, y0, z, ww, dd, h, rot, frameCol, rng, opts.rich);
+    y0 += h;
+  }
+
+  // the roof
+  const rise = (opts.gableToStreet ? w : d) * (0.52 + rng() * 0.16);
+  const roofRot = opts.gableToStreet ? rot + Math.PI / 2 : rot;
+  const rw = opts.gableToStreet ? d : w;
+  const rd = opts.gableToStreet ? w : d;
+  m.gable(x, y0, z, rw, rd, rise, roofRot, opts.roof, wallCol, 0.4);
+
+  // chimney or smoke louvre
+  if (opts.chimney) {
+    const cx = x + Math.cos(rot) * (rw * 0.3) * (rng() < 0.5 ? -1 : 1);
+    const cz = z + Math.sin(rot) * (rw * 0.3) * (rng() < 0.5 ? -1 : 1);
+    m.box(cx, y0 + rise * 0.5, cz, 0.78, 0.78, rise * 0.5 + 0.9, rot,
+          mix(C.stoneOld, C.oakDark, 0.3 + rng() * 0.25), { uvScale: 2 });
+  }
+  return y0 + rise;
+}
+
+/** Posts, rails and braces on the two long faces — this is the half-timbering. */
+function framing(m, x, y0, z, w, d, h, rot, col, rng, rich) {
+  const c = Math.cos(rot), s = Math.sin(rot);
+  const T = 0.075;              // how far the timber stands proud of the daub
+  const member = (lx, lz, ly, mw, mh, md, mrot) => {
+    m.box(x + lx * c - lz * s, y0 + ly, z + lx * s + lz * c, mw, md, mh, mrot ?? rot,
+          col, { top: false, uvScale: 3 });
+  };
+
+  // the two long faces (perpendicular to local Z)
+  for (const face of [-1, 1]) {
+    const lz = (d / 2 + T) * face;
+    // sill and head rails
+    member(0, lz, 0.02, w, 0.19, 0.12);
+    member(0, lz, h - 0.21, w, 0.21, 0.12);
+    // posts
+    const bays = Math.max(2, Math.round(w / 1.25));
+    for (let i = 0; i <= bays; i++) {
+      const lx = -w / 2 + (i / bays) * w;
+      member(lx, lz, 0.15, 0.155, h - 0.36, 0.11);
+    }
+    // straight braces, corner bays only — the plain 13th-century kind
+    if (rich || rng() < 0.55) {
+      for (const sgn of [-1, 1]) {
+        const lx = sgn * (w / 2 - w / bays * 0.55);
+        const bh = h * 0.56;
+        const ang = Math.atan2(bh, w / bays) * sgn * -1;
+        const len = Math.hypot(bh, w / bays);
+        // a braced member, rotated in the plane of the wall: approximate with a
+        // thin box yawed in plan is wrong, so build it as a tilted quad instead
+        brace(m, x, y0, z, lx, lz, h, len, ang, rot, col, sgn);
+      }
+    }
+  }
+  // the short faces get posts only
+  for (const face of [-1, 1]) {
+    const lx = (w / 2 + T) * face;
+    member(lx, 0, 0.02, 0.14, h, d, rot + Math.PI / 2);
+  }
+}
+
+/** A diagonal brace, drawn as a thin tilted slab in the plane of the wall. */
+function brace(m, x, y0, z, lx, lz, h, len, ang, rot, col, sgn) {
+  const c = Math.cos(rot), s = Math.sin(rot);
+  const W = 0.15, T = 0.1;
+  const dx = Math.cos(ang) * len * sgn, dy = Math.abs(Math.sin(ang) * len);
+  const p = (ux, uy) => {
+    const wx = x + (lx + ux) * c - lz * s;
+    const wz = z + (lx + ux) * s + lz * c;
+    return [wx, y0 + uy, wz];
+  };
+  const y1 = h * 0.14, y2 = y1 + dy;
+  const A = p(0, y1), B = p(W * 1.1, y1), Cc = p(dx + W * 1.1, y2), D = p(dx, y2);
+  m.quad(A, B, Cc, D, col, 2);
+}
+
+export function buildTown(rng) {
+  const m = new Mesher();
+  const gardens = new Mesher();
+  let count = 0;
+
+  const bourgIn = shrink(ENCEINTE.bourg, 16);
+  const placed = [];
+
+  const tooClose = (x, z, r) => {
+    for (const p of placed) {
+      if (Math.hypot(p.x - x, p.z - z) < r + p.r) return true;
+    }
+    return false;
+  };
+
+  /** Decide what kind of house belongs at this spot. */
+  const spec = (x, z, dir, near) => {
+    const tag = near.street.tag;
+    const inCite = Math.abs(x - CITE.castrum.cx) < 240 && Math.abs(z - CITE.castrum.cz) < 240;
+    const rich = tag === 'fair' || tag === 'money' || tag === 'main' || (tag === 'cite' && rng() < 0.4);
+    const poor = tag === 'poor' || tag === 'alley' || tag === 'tanners';
+
+    let storeys = 2;
+    if (rich) storeys = rng() < 0.42 ? 3 : 2;
+    if (poor) storeys = rng() < 0.5 ? 1 : 2;
+    if (tag === 'close' || inCite) storeys = rng() < 0.3 ? 1 : 2;
+
+    // roofing: tile where money and the count's fire rules reach, thatch behind
+    // Roofing. Tile has the money and the count's fire rules behind it after
+    // 1188, but it has by no means driven thatch and shingle out of the back
+    // lanes yet, and a tile roof fifty years old is a long way from new-brick red.
+    let roof;
+    const tileChance = rich ? 0.88 : poor ? 0.26 : 0.60;
+    if (rng() < tileChance) {
+      const age = rng();
+      roof = age < 0.25 ? mix(C.tileNew, C.tileOld, rng() * 0.5)
+           : age < 0.70 ? mix(C.tileOld, C.tileGrey, rng() * 0.7)
+           : mix(C.tileOld, C.tileMossy, 0.35 + rng() * 0.5);
+      if (rng() < 0.18) roof = mix(roof, C.tileGrey, 0.45);
+    } else {
+      const k = rng();
+      roof = k < 0.45 ? mix(C.thatch, C.thatchOld, rng())
+           : k < 0.80 ? mix(C.shingle, C.thatchOld, rng() * 0.6)
+           : mix(C.shingle, C.slate, rng() * 0.5);
+    }
+
+    const stone = rich && rng() < 0.11;
+    const wallPick = rng();
+    const wall = stone ? mix(C.stone, C.stoneOld, rng())
+      : wallPick < 0.5 ? mix(C.daubWhite, C.daubBuff, rng())
+      : wallPick < 0.78 ? mix(C.daubBuff, C.daubOchre, rng())
+      : wallPick < 0.92 ? mix(C.daubGrey, C.daubWhite, rng())
+      : mix(C.daubPink, C.daubBuff, rng());
+
+    return {
+      w: (rich ? 5.4 : poor ? 4.0 : 4.8) + rng() * (rich ? 3.4 : 2.2),
+      d: (rich ? 11 : poor ? 7 : 9) + rng() * (rich ? 8 : 5),
+      storeys,
+      storeyH: (rich ? 2.85 : 2.5) + rng() * 0.45,
+      rot: dir + Math.PI / 2 + (rng() - 0.5) * 0.10,
+      gableToStreet: rng() < (poor ? 0.6 : 0.82),
+      wall,
+      frame: mix(C.oak, rng() < 0.5 ? C.oakPale : C.oakDark, rng()),
+      roof,
+      stone,
+      rich,
+      // A chimney stack is still a novelty in 1250 and a mark of money. Most
+      // of these houses vent through a louvre or a gable hole, not a flue.
+      chimney: rng() < (rich ? 0.30 : poor ? 0.03 : 0.11),
+    };
+  };
+
+  // ---- 1. proper rows along every named street -------------------------
+  for (const s of STREETS) {
+    if (s.tag === 'bridge') continue;
+    for (let i = 0; i < s.pts.length - 1; i++) {
+      const a = s.pts[i], b = s.pts[i + 1];
+      const L = Math.hypot(b.x - a.x, b.z - a.z);
+      const dir = Math.atan2(b.z - a.z, b.x - a.x);
+      const nx = -Math.sin(dir), nz = Math.cos(dir);
+      for (const side of [-1, 1]) {
+        let t = 1.5;
+        while (t < L - 2) {
+          const near = { street: s, dir };
+          const px = a.x + Math.cos(dir) * t;
+          const pz = a.z + Math.sin(dir) * t;
+          const sp = spec(px, pz, dir, near);
+          const off = (s.w / 2 + sp.d / 2 + 0.4) * side;
+          const hx = px + nx * off, hz = pz + nz * off;
+          t += sp.w + 0.25 + rng() * 0.6;
+          if (blocked(hx, hz) || nearWater(hx, hz) || !inPolygon(hx, hz, bourgIn) && !inCiteArea(hx, hz)) continue;
+          if (tooClose(hx, hz, sp.w * 0.45)) continue;
+          sp.rot = dir + (side < 0 ? 0 : Math.PI);
+          house(m, hx, hz, sp, rng);
+          placed.push({ x: hx, z: hz, r: sp.w * 0.45 });
+          count++;
+        }
+      }
+    }
+  }
+
+  // ---- 2. fill the blocks behind the frontages -------------------------
+  // A jittered lattice, oriented by the nearest street so back lanes run with
+  // the grain of the quarter rather than against it.
+  const fill = (poly, density, citeMode) => {
+    const xs = poly.map((p) => p.x), zs = poly.map((p) => p.z);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs);
+    const z0 = Math.min(...zs), z1 = Math.max(...zs);
+    const g = density;
+    for (let x = x0; x < x1; x += g) {
+      for (let z = z0; z < z1; z += g) {
+        const px = x + (rng() - 0.5) * g * 0.85;
+        const pz = z + (rng() - 0.5) * g * 0.85;
+        if (!inPolygon(px, pz, poly)) continue;
+        if (blocked(px, pz) || nearWater(px, pz)) continue;
+        const near = nearestStreet(px, pz);
+        if (near.d < 7) continue;                       // that's the roadway
+        // leave gardens and yards: a medieval town is not wall-to-wall
+        const openness = citeMode ? 0.30 : Math.min(0.5, 0.1 + near.d / 120);
+        if (rng() < openness) {
+          if (rng() < 0.30) {
+            tree(gardens, px, groundHeight(px, pz), pz, 4 + rng() * 4, rng);
+          } else if (rng() < 0.5) {
+            gardens.poly([
+              { x: px - 4, z: pz - 3 }, { x: px + 4, z: pz - 3 },
+              { x: px + 4, z: pz + 3 }, { x: px - 4, z: pz + 3 },
+            ], groundHeight(px, pz) + 0.05, mix(C.grass, C.fallow, rng() * 0.6));
+          }
+          continue;
+        }
+        const sp = spec(px, pz, near.dir, near);
+        if (tooClose(px, pz, sp.w * 0.5)) continue;
+        house(m, px, pz, sp, rng);
+        placed.push({ x: px, z: pz, r: sp.w * 0.5 });
+        count++;
+      }
+    }
+  };
+
+  fill(bourgIn, 11.5, false);
+  fill(citePolygon(), 10.0, true);
+
+  // ---- 3. the faubourgs: ribbon development outside the gates ----------
+  for (const g of ENCEINTE.gates) {
+    if (!g.out) continue;
+    const dir = Math.atan2(g.out.z - g.at.z, g.out.x - g.at.x);
+    const nx = -Math.sin(dir), nz = Math.cos(dir);
+    const L = Math.hypot(g.out.x - g.at.x, g.out.z - g.at.z);
+    for (const side of [-1, 1]) {
+      let t = 34;
+      while (t < L * 0.85) {
+        const px = g.at.x + Math.cos(dir) * t + nx * (6 + rng() * 4) * side;
+        const pz = g.at.z + Math.sin(dir) * t + nz * (6 + rng() * 4) * side;
+        t += 9 + rng() * 16;
+        if (nearWater(px, pz) || inPolygon(px, pz, ENCEINTE.bourg)) continue;
+        const sp = spec(px, pz, dir, { street: { tag: rng() < 0.4 ? 'poor' : 'burgess' }, dir });
+        sp.rot = dir + (side < 0 ? 0 : Math.PI);
+        sp.storeys = Math.min(2, sp.storeys);
+        house(m, px, pz, sp, rng);
+        count++;
+      }
+    }
+  }
+
+  return { town: m, gardens, count };
+}
+
+function inCiteArea(x, z) {
+  return inPolygon(x, z, citePolygon());
+}
+
+/** The walled Cite, as a polygon in world coordinates. */
+export function citePolygon() {
+  const { cx, cz, w, d, rot } = CITE.castrum;
+  const c = Math.cos(rot), s = Math.sin(rot);
+  const hw = w / 2 - 10, hd = d / 2 - 10;
+  return [[-hw, -hd], [hw, -hd], [hw, hd], [-hw, hd]].map(([lx, lz]) => ({
+    x: cx + lx * c - lz * s, z: cz + lx * s + lz * c,
+  }));
+}
