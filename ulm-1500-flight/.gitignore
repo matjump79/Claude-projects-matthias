@@ -3,3 +3,7 @@ frames/
 out/*.jpg
 out/*.png
 music/*.wav
+# rendered video: reproducible from source, and too large for git
+# (GitHub rejects blobs over 100 MB)
+out/*.mp4
+out/*.webm
