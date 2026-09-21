@@ -1,0 +1,17 @@
+{
+  "name": "ulm-1500-flight",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rendered flight over the Free Imperial City of Ulm, c. 1500",
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 8099 --bind 127.0.0.1",
+    "preview": "node render/capture.mjs --preview",
+    "render": "node render/capture.mjs",
+    "encode": "bash render/encode.sh"
+  },
+  "dependencies": {
+    "playwright": "1.49.1",
+    "three": "0.169.0"
+  }
+}
