@@ -25,16 +25,23 @@ export const C = {
   oakPale:     hex(0x93816a),
   oakDark:     hex(0x5e4f3d),
 
-  // roofs
-  tileNew:     hex(0xa8593a),
-  tileOld:     hex(0x8c4f38),
-  tileMossy:   hex(0x7a5540),
-  tileGrey:    hex(0x8a6a58),
-  thatch:      hex(0xb39a63),
-  thatchOld:   hex(0x968457),
-  shingle:     hex(0x6f6252),
-  lead:        hex(0x8e9298),
-  slate:       hex(0x5a6068),
+  // Roofs. A medieval roofscape is not a field of new terracotta: flat clay
+  // tile weathers brown and grey within a decade, takes moss on the north
+  // pitch, and sits alongside a great deal of oak shingle and thatch. The
+  // spread below is deliberately wide and centred on brown, not orange.
+  tileNew:     hex(0x9c5a3e),
+  tileOld:     hex(0x7f4f39),
+  tileBrown:   hex(0x6d4c39),
+  tileMossy:   hex(0x5f5440),
+  tileGrey:    hex(0x736358),
+  tileDark:    hex(0x54423a),
+  thatch:      hex(0xa8915f),
+  thatchOld:   hex(0x8a7a52),
+  thatchGrey:  hex(0x7d7461),
+  shingle:     hex(0x6a5d4d),
+  shingleGrey: hex(0x655f55),
+  lead:        hex(0x83888d),
+  slate:       hex(0x555b62),
 
   // stone
   stoneNew:    hex(0xe9e2cf),
@@ -47,14 +54,20 @@ export const C = {
   mud:         hex(0x8a7a5f),
   mudWet:      hex(0x6f6249),
   cobble:      hex(0x9a9483),
-  grass:       hex(0x7d8a4e),
-  grassDry:    hex(0x9a9a58),
-  meadow:      hex(0x8fa057),
+  grass:       hex(0x7b9046),
+  grassDry:    hex(0xa0a055),
+  meadow:      hex(0x86a24b),
   wheat:       hex(0xc9b169),
-  vineyard:    hex(0x6f8347),
+  vineyard:    hex(0x67853c),
   fallow:      hex(0x9c8a68),
-  tree:        hex(0x53703c),
-  treeDark:    hex(0x415a30),
+  tree:        hex(0x4d6b38),
+  treeDark:    hex(0x3a5228),
+  treeLight:   hex(0x6a8347),
+  treeOlive:   hex(0x74804a),
+  willow:      hex(0x7f8f52),
+  bank:        hex(0x648f3a),
+  gardenBed:   hex(0x6b5f42),
+  gardenRow:   hex(0x5f7a3c),
 
   // water
   water:       hex(0x4e6b6d),

@@ -20,7 +20,7 @@
 import { Mesher, shade, mix, distToPolyline, inPolygon, shrink } from './geom.js';
 import { C } from './palette.js';
 import { STREETS, ENCEINTE, LANDMARKS, CITE, WATER, FAIR } from './survey.js';
-import { groundHeight, tree } from './land.js';
+import { groundHeight, tree, HAMLETS, waterDist } from './land.js';
 
 // Areas no house may stand in: the monuments, their precincts, the fairground,
 // the water, and the wall's clear lane behind the rampart.
@@ -54,6 +54,25 @@ function nearWater(x, z, pad = 9) {
     if (d < ch.w / 2 + pad) return true;
   }
   return false;
+}
+
+/** A kitchen-garden bed: dug earth with the crop standing in drills. */
+function bed(m, x, z, dir, rng) {
+  const y = groundHeight(x, z) + 0.05;
+  const rot = dir + (rng() - 0.5) * 0.4;
+  const c = Math.cos(rot), s = Math.sin(rot);
+  const w = 4.5 + rng() * 4, d = 3.5 + rng() * 3.5;
+  const P = (lx, lz) => ({ x: x + lx * c - lz * s, z: z + lx * s + lz * c });
+  m.poly([P(-w / 2, -d / 2), P(w / 2, -d / 2), P(w / 2, d / 2), P(-w / 2, d / 2)],
+         y, mix(C.gardenBed, C.mud, rng() * 0.4));
+  // the drills — a few raised rows of green across the bed
+  const rows = Math.max(2, Math.round(d / 0.75));
+  for (let i = 0; i < rows; i++) {
+    const lz = -d / 2 + (i + 0.5) * (d / rows);
+    const p = P(0, lz);
+    m.box(p.x, y, p.z, w * 0.9, 0.34, 0.20 + rng() * 0.18, rot,
+          mix(C.gardenRow, C.treeLight, rng() * 0.6), { uvScale: 3 });
+  }
 }
 
 /** Nearest named street: its distance, and its local direction. */
@@ -108,11 +127,36 @@ function house(m, x, z, opts, rng) {
   }
 
   // the roof
-  const rise = (opts.gableToStreet ? w : d) * (0.52 + rng() * 0.16);
+  // The roof. Pitch varies a good deal — a thatched roof has to be steeper
+  // than a tiled one to throw the water off — and perhaps one in six is hipped
+  // rather than gabled, which is what stops a street reading as a row of
+  // identical cardboard tents.
   const roofRot = opts.gableToStreet ? rot + Math.PI / 2 : rot;
   const rw = opts.gableToStreet ? d : w;
   const rd = opts.gableToStreet ? w : d;
-  m.gable(x, y0, z, rw, rd, rise, roofRot, opts.roof, wallCol, 0.4);
+  const pitch = (opts.thatched ? 0.72 : 0.50) + rng() * 0.26;
+  const rise = rd * pitch;
+  if (!opts.gableToStreet && rng() < 0.28) {
+    m.hip(x, y0, z, rw, rd, rise, roofRot, opts.roof, 0.4);
+  } else {
+    m.gable(x, y0, z, rw, rd, rise, roofRot, opts.roof, wallCol, 0.4);
+  }
+
+  // Dormers and hoist lofts. The attic is working storage — grain, wool,
+  // bales — so the bigger houses break the roof for a loading door.
+  if (rd > 7 && rng() < (opts.rich ? 0.72 : 0.34)) {
+    const n = 1 + (rd > 11 && rng() < 0.5 ? 1 : 0);
+    for (let i = 0; i < n; i++) {
+      const along = (n === 1 ? (rng() - 0.5) * rw * 0.5 : (i - 0.5) * rw * 0.42);
+      const side = rng() < 0.5 ? -1 : 1;
+      const c = Math.cos(roofRot), s = Math.sin(roofRot);
+      const lz = side * rd * 0.26;
+      const dx2 = x + along * c - lz * s, dz2 = z + along * s + lz * c;
+      const dy = y0 + rise * 0.45;
+      m.box(dx2, dy, dz2, 1.5, 1.4, 1.5, roofRot, wallCol, { top: false });
+      m.gable(dx2, dy + 1.5, dz2, 1.5, 1.4, 0.9, roofRot + Math.PI / 2, opts.roof, wallCol, 0.18);
+    }
+  }
 
   // chimney or smoke louvre
   if (opts.chimney) {
@@ -120,6 +164,42 @@ function house(m, x, z, opts, rng) {
     const cz = z + Math.sin(rot) * (rw * 0.3) * (rng() < 0.5 ? -1 : 1);
     m.box(cx, y0 + rise * 0.5, cz, 0.78, 0.78, rise * 0.5 + 0.9, rot,
           mix(C.stoneOld, C.oakDark, 0.3 + rng() * 0.25), { uvScale: 2 });
+  }
+
+  // ---- the back of the plot ---------------------------------------------
+  // A burgage plot is not one building. The street range is the front of an
+  // L or a U: a rear wing runs back down the plot, and behind that stand the
+  // stable, the workshop, the store and the privy, round a yard. That mass of
+  // low outbuildings is most of what a town actually looked like from above.
+  const c0 = Math.cos(rot), s0 = Math.sin(rot);
+  const back = (along, across) => ({
+    x: x + along * c0 - across * s0,
+    z: z + along * s0 + across * c0,
+  });
+
+  if (rng() < (opts.rich ? 0.68 : 0.42)) {
+    const wl = d * (0.5 + rng() * 0.55);
+    const ww2 = w * (0.45 + rng() * 0.3);
+    const p = back((w / 2 - ww2 / 2) * (rng() < 0.5 ? 1 : -1), d / 2 + wl / 2 - 0.4);
+    const wy = groundHeight(p.x, p.z);
+    const wh = sh * (opts.storeys > 2 ? 2 : 1) + 0.6;
+    m.box(p.x, wy, p.z, ww2, wl, wh, rot, wallCol, { top: false });
+    if (!opts.stone) framing(m, p.x, wy, p.z, ww2, wl, wh, rot, frameCol, rng, false);
+    m.gable(p.x, wy + wh, p.z, wl, ww2, ww2 * (0.5 + rng() * 0.25), rot + Math.PI / 2,
+            opts.roof, wallCol, 0.35);
+  }
+
+  const sheds = rng() < 0.5 ? 1 : rng() < 0.75 ? 2 : 0;
+  for (let i = 0; i < sheds; i++) {
+    const p = back((rng() - 0.5) * w * 1.5, d / 2 + 3 + rng() * d * 0.9);
+    const sy = groundHeight(p.x, p.z);
+    const sw = 2.2 + rng() * 2.6, sd = 2.0 + rng() * 2.4, shh = 1.9 + rng() * 1.1;
+    const srot = rot + (rng() - 0.5) * 0.5;
+    m.box(p.x, sy, p.z, sw, sd, shh, srot, mix(wallCol, C.oakPale, 0.35 + rng() * 0.3), { top: false });
+    m.gable(p.x, sy + shh, p.z, Math.max(sw, sd), Math.min(sw, sd),
+            Math.min(sw, sd) * (0.45 + rng() * 0.3), srot + (sw >= sd ? 0 : Math.PI / 2),
+            rng() < 0.45 ? mix(C.thatch, C.thatchOld, rng()) : mix(C.shingle, C.tileOld, rng()),
+            wallCol, 0.3);
   }
   return y0 + rise;
 }
@@ -211,19 +291,24 @@ export function buildTown(rng) {
     // Roofing. Tile has the money and the count's fire rules behind it after
     // 1188, but it has by no means driven thatch and shingle out of the back
     // lanes yet, and a tile roof fifty years old is a long way from new-brick red.
-    let roof;
+    let roof, thatched;
     const tileChance = rich ? 0.88 : poor ? 0.26 : 0.60;
     if (rng() < tileChance) {
       const age = rng();
-      roof = age < 0.25 ? mix(C.tileNew, C.tileOld, rng() * 0.5)
-           : age < 0.70 ? mix(C.tileOld, C.tileGrey, rng() * 0.7)
-           : mix(C.tileOld, C.tileMossy, 0.35 + rng() * 0.5);
-      if (rng() < 0.18) roof = mix(roof, C.tileGrey, 0.45);
+      roof = age < 0.18 ? mix(C.tileNew, C.tileOld, rng() * 0.6)
+           : age < 0.44 ? mix(C.tileOld, C.tileBrown, rng())
+           : age < 0.70 ? mix(C.tileBrown, C.tileGrey, rng())
+           : age < 0.88 ? mix(C.tileOld, C.tileMossy, 0.4 + rng() * 0.5)
+           : mix(C.tileDark, C.tileBrown, rng());
+      if (rng() < 0.22) roof = mix(roof, C.tileGrey, 0.4);
+      thatched = false;
     } else {
       const k = rng();
-      roof = k < 0.45 ? mix(C.thatch, C.thatchOld, rng())
-           : k < 0.80 ? mix(C.shingle, C.thatchOld, rng() * 0.6)
-           : mix(C.shingle, C.slate, rng() * 0.5);
+      roof = k < 0.42 ? mix(C.thatch, C.thatchOld, rng())
+           : k < 0.58 ? mix(C.thatchOld, C.thatchGrey, rng())
+           : k < 0.84 ? mix(C.shingle, C.thatchOld, rng() * 0.6)
+           : mix(C.shingleGrey, C.slate, rng() * 0.5);
+      thatched = k < 0.58;
     }
 
     const stone = rich && rng() < 0.11;
@@ -300,13 +385,25 @@ export function buildTown(rng) {
         // leave gardens and yards: a medieval town is not wall-to-wall
         const openness = citeMode ? 0.30 : Math.min(0.5, 0.1 + near.d / 120);
         if (rng() < openness) {
-          if (rng() < 0.30) {
-            tree(gardens, px, groundHeight(px, pz), pz, 4 + rng() * 4, rng);
-          } else if (rng() < 0.5) {
+          // Not empty ground: a medieval town is full of working garden. Every
+          // plot behind the street range carries beds of pot-herbs, leeks and
+          // beans, a few fruit trees, and a vine up the south wall.
+          const k = rng();
+          if (k < 0.34) {
+            // a standard tree in the yard — apple, pear, walnut, or a great elm
+            tree(gardens, px, groundHeight(px, pz), pz, 7 + rng() * 8, rng);
+            if (rng() < 0.35) {
+              tree(gardens, px + (rng() - 0.5) * 7, groundHeight(px, pz), pz + (rng() - 0.5) * 7,
+                   5 + rng() * 5, rng);
+            }
+          } else if (k < 0.78) {
+            bed(gardens, px, pz, near.dir, rng);
+          } else {
+            const gy = groundHeight(px, pz) + 0.05;
             gardens.poly([
-              { x: px - 4, z: pz - 3 }, { x: px + 4, z: pz - 3 },
-              { x: px + 4, z: pz + 3 }, { x: px - 4, z: pz + 3 },
-            ], groundHeight(px, pz) + 0.05, mix(C.grass, C.fallow, rng() * 0.6));
+              { x: px - 4.5, z: pz - 3.5 }, { x: px + 4.5, z: pz - 3.5 },
+              { x: px + 4.5, z: pz + 3.5 }, { x: px - 4.5, z: pz + 3.5 },
+            ], gy, mix(C.grass, C.meadow, rng() * 0.7));
           }
           continue;
         }
@@ -321,6 +418,31 @@ export function buildTown(rng) {
 
   fill(bourgIn, 11.5, false);
   fill(citePolygon(), 10.0, true);
+
+  // The comital quarter, between the Bourg's east wall and the Cite's west
+  // curtain. This is the count's own ground — palace, collegiate church and
+  // hospital stand on it — and the rest of it is garden, orchard and vineyard
+  // belonging to the palace and the chapter, not open field.
+  const comital = [
+    { x: -330, z: -210 }, { x: -110, z: -210 },
+    { x: -110, z: 320 }, { x: -336, z: 320 },
+  ];
+  fill(comital, 15.0, true);
+  for (let i = 0; i < 210; i++) {
+    const px = -330 + rng() * 215, pz = -205 + rng() * 520;
+    if (blocked(px, pz) || nearWater(px, pz, 6)) continue;
+    const k = rng();
+    if (k < 0.46) {
+      tree(gardens, px, groundHeight(px, pz), pz, 6 + rng() * 8, rng);
+    } else if (k < 0.8) {
+      bed(gardens, px, pz, 0.2, rng);
+    } else {
+      gardens.poly([
+        { x: px - 5, z: pz - 4 }, { x: px + 5, z: pz - 4 },
+        { x: px + 5, z: pz + 4 }, { x: px - 5, z: pz + 4 },
+      ], groundHeight(px, pz) + 0.05, mix(C.vineyard, C.meadow, rng() * 0.5));
+    }
+  }
 
   // ---- 3. the faubourgs: ribbon development outside the gates ----------
   for (const g of ENCEINTE.gates) {
@@ -341,6 +463,48 @@ export function buildTown(rng) {
         house(m, px, pz, sp, rng);
         count++;
       }
+    }
+  }
+
+  // ---- 4. the villages of the banlieue -----------------------------------
+  // Within an hour's walk of the gates the plain carries a ring of villages,
+  // each a huddle of farms round a small church, with its own closes and
+  // orchards. They are what stops the middle distance reading as empty board.
+  for (const v of HAMLETS) {
+    const dir0 = rng() * Math.PI;
+    for (let i = 0; i < v.n; i++) {
+      const a = rng() * Math.PI * 2;
+      const e = Math.sqrt(rng()) * (26 + v.n * 1.9);
+      const px = v.x + Math.cos(a) * e, pz = v.z + Math.sin(a) * e;
+      if (waterDist(px, pz) < 8) continue;
+      const sp = spec(px, pz, dir0 + (rng() - 0.5) * 0.9,
+                      { street: { tag: rng() < 0.7 ? 'poor' : 'burgess' }, dir: dir0 });
+      sp.storeys = rng() < 0.82 ? 1 : 2;
+      sp.d *= 1.25;                      // farmsteads run deep: byre behind house
+      sp.rich = false;
+      sp.rot = dir0 + (rng() - 0.5) * 1.1;
+      house(m, px, pz, sp, rng);
+      count++;
+      if (rng() < 0.5) {
+        tree(gardens, px + (rng() - 0.5) * 22, groundHeight(px, pz), pz + (rng() - 0.5) * 22,
+             7 + rng() * 9, rng);
+      }
+    }
+    if (v.church) {
+      const cy = groundHeight(v.x, v.z);
+      const crot = dir0 * 0.2;
+      m.box(v.x, cy, v.z, 17, 8, 7.5, crot, C.stoneOld, { top: false, uvScale: 0.8 });
+      m.gable(v.x, cy + 7.5, v.z, 17, 8, 6.5, crot, C.tileOld, C.stoneOld, 0.5);
+      const c2 = Math.cos(crot), s2 = Math.sin(crot);
+      const tx = v.x - 9.5 * c2, tz = v.z - 9.5 * s2;
+      m.box(tx, cy, tz, 5, 5, 13, crot, C.stoneOld, { top: false, uvScale: 1.0 });
+      m.spire(tx, cy + 13, tz, 2.5, 8, crot, C.shingle, 4);
+    }
+    // the village's own trees
+    for (let i = 0; i < v.n * 0.9; i++) {
+      const a = rng() * Math.PI * 2, e = Math.sqrt(rng()) * (40 + v.n * 2.2);
+      const tx = v.x + Math.cos(a) * e, tz = v.z + Math.sin(a) * e;
+      tree(gardens, tx, groundHeight(tx, tz), tz, 6 + rng() * 9, rng);
     }
   }
 

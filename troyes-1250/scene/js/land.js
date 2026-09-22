@@ -41,6 +41,20 @@ export const DITCH = ENCEINTE.bourg.map((p, i, arr) => {
 });
 addSegs(DITCH.concat([DITCH[0]]), 11, 0.95);
 
+/** Distance to the nearest watercourse edge, metres (0 inside the channel). */
+export function waterDist(x, z) {
+  let best = Infinity;
+  for (const s of SEGS) {
+    const dx = s.b.x - s.a.x, dz = s.b.z - s.a.z;
+    const L2 = dx * dx + dz * dz || 1;
+    let t = ((x - s.a.x) * dx + (z - s.a.z) * dz) / L2;
+    if (t < 0) t = 0; else if (t > 1) t = 1;
+    const d = Math.hypot(x - (s.a.x + dx * t), z - (s.a.z + dz * t)) - s.hw;
+    if (d < best) best = d;
+  }
+  return Math.max(0, best);
+}
+
 function trench(x, z) {
   let cut = 0;
   for (const s of SEGS) {
@@ -118,6 +132,15 @@ export function buildLand(rng) {
   ];
 
   const cellColour = (x, z) => {
+    // The banks first: the Seine here runs in braided channels through wet
+    // meadow, and that band of rank green is the most conspicuous thing in the
+    // whole landscape after the town itself.
+    const wd = waterDist(x, z);
+    if (wd < 34) {
+      const k = wd / 34;
+      return mix(C.bank, mix(C.meadow, C.grass, 0.5), k * k);
+    }
+
     const d = Math.hypot(x + 620, z + 60);
 
     // which furlong are we in, and which way does it run?
@@ -191,18 +214,18 @@ export function buildLand(rng) {
     for (let i = 0; i < ch.pts.length - 1; i++) {
       const a = ch.pts[i], b = ch.pts[i + 1];
       const L = Math.hypot(b.x - a.x, b.z - a.z);
-      const n = Math.floor(L / 13);
+      const n = Math.floor(L / 7);
       for (let k = 0; k < n; k++) {
         const t = (k + 0.5) / n;
         const px = a.x + (b.x - a.x) * t, pz = a.z + (b.z - a.z) * t;
         const nx = -(b.z - a.z) / L, nz = (b.x - a.x) / L;
         for (const side of [-1, 1]) {
-          if (rng() > 0.62) continue;
-          const off = (ch.w / 2 + 6 + rng() * 9) * side;
-          const tx = px + nx * off + (rng() - 0.5) * 9;
-          const tz = pz + nz * off + (rng() - 0.5) * 9;
+          if (rng() > 0.86) continue;
+          const off = (ch.w / 2 + 4 + rng() * 16) * side;
+          const tx = px + nx * off + (rng() - 0.5) * 12;
+          const tz = pz + nz * off + (rng() - 0.5) * 12;
           if (inPolygon(tx, tz, ENCEINTE.bourg)) continue;
-          tree(foliage, tx, groundHeight(tx, tz), tz, 5 + rng() * 6, rng, true);
+          tree(foliage, tx, groundHeight(tx, tz), tz, 8 + rng() * 11, rng, true);
         }
       }
     }
@@ -219,7 +242,7 @@ export function buildLand(rng) {
   };
 
   // hedgerows: short lines of trees along a field boundary
-  for (let i = 0; i < 190; i++) {
+  for (let i = 0; i < 280; i++) {
     const a = rng() * Math.PI * 2;
     const d = 560 + Math.sqrt(rng()) * 2600;
     const hx = -620 + Math.cos(a) * d, hz = -60 + Math.sin(a) * d;
@@ -228,19 +251,19 @@ export function buildLand(rng) {
     const n = Math.round(len / 9);
     for (let k = 0; k < n; k++) {
       if (rng() < 0.22) continue;
-      plant(hx + Math.cos(dir) * k * 9 + (rng() - 0.5) * 4,
-            hz + Math.sin(dir) * k * 9 + (rng() - 0.5) * 4, 4 + rng() * 4);
+      plant(hx + Math.cos(dir) * k * 9 + (rng() - 0.5) * 5,
+            hz + Math.sin(dir) * k * 9 + (rng() - 0.5) * 5, 7 + rng() * 9);
     }
   }
   // copses
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < 44; i++) {
     const a = rng() * Math.PI * 2;
-    const d = 900 + Math.sqrt(rng()) * 2300;
+    const d = 700 + Math.sqrt(rng()) * 2500;
     const cx = -620 + Math.cos(a) * d, cz = -60 + Math.sin(a) * d;
     const r = 25 + rng() * 55;
     for (let k = 0; k < r * 0.9; k++) {
       const b = rng() * Math.PI * 2, e = Math.sqrt(rng()) * r;
-      plant(cx + Math.cos(b) * e, cz + Math.sin(b) * e, 6 + rng() * 6);
+      plant(cx + Math.cos(b) * e, cz + Math.sin(b) * e, 10 + rng() * 10);
     }
   }
   // the orchard and garden belt in the close ring outside the gates
@@ -253,7 +276,7 @@ export function buildLand(rng) {
     for (let r2 = 0; r2 < rows; r2++) for (let c2 = 0; c2 < per; c2++) {
       const lx = c2 * 7.5, lz = r2 * 7.5;
       plant(ox + lx * Math.cos(dir) - lz * Math.sin(dir),
-            oz + lx * Math.sin(dir) + lz * Math.cos(dir), 4 + rng() * 2.5);
+            oz + lx * Math.sin(dir) + lz * Math.cos(dir), 6 + rng() * 3.5);
     }
   }
 
@@ -278,8 +301,43 @@ export function buildLand(rng) {
     export_roads.push({ gate: g, pts });
   }
 
-  return { land: m, water, foliage };
+  // ---- trees along every road out ---------------------------------------
+  for (const road of export_roads) {
+    for (let i = 1; i < road.pts.length - 1; i++) {
+      const a = road.pts[i], b = road.pts[i + 1];
+      const L = Math.hypot(b.x - a.x, b.z - a.z) || 1;
+      const nx = -(b.z - a.z) / L, nz = (b.x - a.x) / L;
+      for (const side of [-1, 1]) {
+        if (rng() > 0.42) continue;
+        const off = (6 + rng() * 5) * side;
+        const tx = a.x + nx * off + (rng() - 0.5) * 8;
+        const tz = a.z + nz * off + (rng() - 0.5) * 8;
+        if (inPolygon(tx, tz, ENCEINTE.bourg)) continue;
+        tree(foliage, tx, groundHeight(tx, tz), tz, 7 + rng() * 8, rng);
+      }
+    }
+  }
+
+  return { land: m, water, foliage, hamlets: HAMLETS };
 }
+
+// ---------------------------------------------------------------------------
+// The outlying settlements. Troyes did not stand alone in an empty plain: the
+// villages of its banlieue ringed it within an hour's walk, each with its own
+// church, and their roofs and steeples are what give the middle distance scale.
+// Positions are indicative — these are the directions the villages lay in, not
+// surveyed sites.
+// ---------------------------------------------------------------------------
+export const HAMLETS = [
+  { name: 'Sainte-Savine',   x: -2250, z: 120,  n: 46, church: true },
+  { name: 'Saint-Martin',    x: -1150, z: -980, n: 30, church: true },
+  { name: 'Les Trevois',     x: -1050, z: 1180, n: 26, church: false },
+  { name: 'Saint-Julien',    x: 420,   z: 1320, n: 34, church: true },
+  { name: 'Pont-Sainte-Marie', x: 980, z: -1260, n: 30, church: true },
+  { name: 'Croncels',        x: -820,  z: 1020, n: 20, church: false },
+  { name: 'La Moline',       x: -1700, z: -620, n: 18, church: false },
+  { name: 'Preize',          x: -640,  z: -1420, n: 22, church: false },
+];
 
 /** Lay a road down following the ground, one short length at a time. */
 function roadOnGround(m, pts, width, col, rng) {
@@ -310,26 +368,53 @@ function roadOnGround(m, pts, width, col, rng) {
 
 /** A tree.
  *
- * Deciduous, with a rounded crown: this is oak, elm, ash and field maple on the
- * headlands, willow and alder down on the wet ground. Nothing here is conical.
- * In particular there are no Lombardy poplars, however much they say "France"
- * today — Populus nigra 'Italica' does not reach western Europe until the
- * middle of the 18th century.
+ * Deciduous, with a heavy rounded crown: oak, elm, ash and field maple on the
+ * headlands and in the town gardens, willow and alder down on the wet ground.
+ * Nothing here is conical. In particular there are no Lombardy poplars, however
+ * much they say "France" today — Populus nigra 'Italica' does not reach western
+ * Europe until the middle of the 18th century.
+ *
+ * Mature trees in an unmanaged medieval landscape are BIG — a standard oak in a
+ * hedgerow runs to 18 or 20 m, half as tall again as the houses it stands over.
+ * Drawing them at the height of a garden shrub is the single commonest way to
+ * make a reconstruction look like a model village.
  */
 export function tree(m, x, y, z, h, rng, riverside = false) {
-  const trunkH = h * (riverside ? 0.26 : 0.34);
+  const trunkH = h * (riverside ? 0.22 : 0.30);
   const a = rng() * 6.3;
-  m.prism(x, y, z, 0.26 + h * 0.026, trunkH * 1.15, a, C.oakDark, 5);
+  m.prism(x, y, z, 0.24 + h * 0.028, trunkH * 1.2, a, C.oakDark, 5);
+
+  const pick = rng();
   const col = riverside
-    ? mix(C.tree, C.grassDry, 0.16 + rng() * 0.24)
-    : mix(C.tree, C.treeDark, rng() * 0.75);
-  const r = h * (riverside ? 0.30 : 0.34);
+    ? mix(C.willow, C.treeLight, rng() * 0.6)
+    : pick < 0.30 ? mix(C.tree, C.treeDark, rng())
+    : pick < 0.62 ? mix(C.tree, C.treeLight, rng())
+    : pick < 0.85 ? mix(C.treeLight, C.treeOlive, rng())
+    : mix(C.treeDark, C.treeOlive, rng());
+
+  const r = h * (riverside ? 0.34 : 0.40);
   const crown = h - trunkH;
-  // the crown, built as three stacked drums so it reads round rather than spiky
-  m.prism(x, y + trunkH, z, r * 0.74, crown * 0.30, a, shade(col, 0.88), 7, 1.30);
-  m.prism(x, y + trunkH + crown * 0.30, z, r, crown * 0.38, a + 0.4, col, 7, 0.94);
-  m.prism(x, y + trunkH + crown * 0.68, z, r * 0.94, crown * 0.32, a + 0.8,
-          shade(col, 1.06), 7, 0.34);
+  // Three stacked drums of falling radius read as a round, heavy canopy; the
+  // slight rotation between them breaks up the silhouette.
+  m.prism(x, y + trunkH, z, r * 0.70, crown * 0.28, a, shade(col, 0.84), 8, 1.34);
+  m.prism(x, y + trunkH + crown * 0.28, z, r, crown * 0.40, a + 0.4, col, 8, 0.96);
+  m.prism(x, y + trunkH + crown * 0.68, z, r * 0.95, crown * 0.34, a + 0.8,
+          shade(col, 1.08), 8, 0.30);
+  // a second, offset lobe on the larger trees, so no two read alike
+  if (h > 9 && rng() < 0.7) {
+    const off = r * 0.5, oa = rng() * 6.3;
+    m.prism(x + Math.cos(oa) * off, y + trunkH + crown * 0.34, z + Math.sin(oa) * off,
+            r * 0.62, crown * 0.46, a + 1.2, shade(col, 0.94), 7, 0.55);
+  }
+}
+
+/** A clump of trees round a point — how they actually grow. */
+export function copse(m, x, z, radius, count, h0, h1, rng, ground, riverside = false) {
+  for (let i = 0; i < count; i++) {
+    const a = rng() * Math.PI * 2, e = Math.sqrt(rng()) * radius;
+    const tx = x + Math.cos(a) * e, tz = z + Math.sin(a) * e;
+    tree(m, tx, ground(tx, tz), tz, h0 + rng() * (h1 - h0), rng, riverside);
+  }
 }
 
 /** The street surfaces inside the walls: beaten earth, the fair quarter paved. */

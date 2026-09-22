@@ -217,22 +217,22 @@ export const WATER = {
   split:   { x: -150, z: 760 },
 
   channels: [
-    { name: 'canal des Trevois', w: 15, mills: 1,
+    { name: 'canal des Trevois', w: 26, mills: 2,
       pts: [{ x: -150, z: 760 }, { x: -420, z: 690 }, { x: -760, z: 655 }, { x: -1080, z: 630 }, { x: -1290, z: 560 }, { x: -1420, z: 420 }] },
 
-    { name: 'Ru Corde', w: 9, mills: 2,
+    { name: 'Ru Corde', w: 17, mills: 3,
       pts: [{ x: -150, z: 760 }, { x: -380, z: 610 }, { x: -560, z: 470 }, { x: -700, z: 330 }, { x: -860, z: 200 }, { x: -1010, z: 60 }, { x: -1160, z: -70 }] },
 
-    { name: 'canal de la Moline (Planche-Clement)', w: 22, mills: 3,
+    { name: 'canal de la Moline (Planche-Clement)', w: 34, mills: 4,
       pts: [{ x: -150, z: 760 }, { x: -240, z: 560 }, { x: -286, z: 330 }, { x: -292, z: 90 }, { x: -288, z: -140 }, { x: -262, z: -330 }, { x: -190, z: -470 }] },
 
-    { name: 'la Pielle', w: 13, mills: 1,
+    { name: 'la Pielle', w: 22, mills: 2,
       pts: [{ x: -150, z: 760 }, { x: 60, z: 700 }, { x: 250, z: 590 }, { x: 350, z: 380 }, { x: 372, z: 120 }, { x: 350, z: -150 }, { x: 260, z: -330 }] },
 
-    { name: 'le Meldancon', w: 11, mills: 0,
+    { name: 'le Meldancon', w: 19, mills: 1,
       pts: [{ x: -190, z: -470 }, { x: -230, z: -640 }, { x: -320, z: -830 }] },
 
-    { name: 'canal de Jaillard', w: 9, mills: 1,
+    { name: 'canal de Jaillard', w: 15, mills: 1,
       pts: [{ x: -190, z: -470 }, { x: -40, z: -520 }, { x: 140, z: -500 }, { x: 270, z: -430 }] },
   ],
 

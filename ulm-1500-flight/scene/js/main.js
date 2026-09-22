@@ -16,15 +16,19 @@ const WIDTH = +(params.get('w') || 1920);
 const HEIGHT = +(params.get('h') || 1080);
 const SHADOWS = params.get('shadows') !== '0';
 const PREVIEW = params.get('preview') === '1';
+const SHADOW_MAP = +(params.get('smap') || 4096);
+const CAPTIONS = params.get('captions') !== '0';
 
-const HAZE = 0xd9d3c2;
+const HAZE = 0xd3cdba;
 
-const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(1);
 renderer.setSize(WIDTH, HEIGHT, false);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.NeutralToneMapping ?? THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.14;
+// ACES rather than Neutral: Neutral is faithful but very flat, and over a
+// hazy landscape it leaves the whole frame sitting in the middle of the range.
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.42;
 if (SHADOWS) {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -32,27 +36,46 @@ if (SHADOWS) {
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(HAZE, 0.00028);
+// The haze was thick enough to grey out the far half of every frame. Enough
+// to give depth, not enough to eat the Alb.
+scene.fog = new THREE.FogExp2(HAZE, 0.00015);
 
-const camera = new THREE.PerspectiveCamera(47, WIDTH / HEIGHT, 1.2, 9000);
+// The far plane has to clear the sky dome as seen from the far side of the
+// camera's own travel, not just from the origin: at far = 9000 against a dome
+// of radius 7000, the dome was being clipped away in the distance and the black
+// background showed through it as a triangular hole on the horizon.
+const camera = new THREE.PerspectiveCamera(47, WIDTH / HEIGHT, 2.0, 26000);
 
 // ------------------------------------------------------------------ light ---
 const sv = sunVector();
-const sun = new THREE.DirectionalLight(0xfff2da, 3.0);
+// A low sun means a horizontal surface only catches sin(elevation) of it, so
+// the sun has to be turned up as it is brought down the sky or the whole town
+// goes dark. Lit ground ends up around three times the brightness of shaded
+// ground, which is about right for a clear morning.
+const sun = new THREE.DirectionalLight(0xffeecb, 4.2);
 sun.position.set(sv[0] * 1200, sv[1] * 1200, sv[2] * 1200);
 sun.target.position.set(0, 0, 0);
 scene.add(sun, sun.target);
 if (SHADOWS) {
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(SHADOW_MAP, SHADOW_MAP);
   const S = 480;
   sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
   sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
-  sun.shadow.camera.near = 200; sun.shadow.camera.far = 3000;
-  sun.shadow.bias = -0.0012;
-  sun.shadow.normalBias = 0.4;
+  // The depth bias is a FRACTION of the frustum's depth range, so a loose near
+  // and far quietly turn a small-looking number into metres of offset and eat
+  // every shadow in the scene. The light sits 1200 m out along its own axis;
+  // 500 to 2000 brackets the town with room to spare, and -0.00012 of that
+  // range is about 18 cm.
+  sun.shadow.camera.near = 500; sun.shadow.camera.far = 2000;
+  sun.shadow.bias = -0.00012;
+  sun.shadow.normalBias = 0.25;
 }
-scene.add(new THREE.HemisphereLight(0xbcd6f0, 0x8d8768, 1.85));
+// Sky light kept low. A clear morning is carried almost entirely by the sun,
+// and a fill bright enough to compete with it leaves the town looking like a
+// model lit from everywhere at once.
+scene.add(new THREE.HemisphereLight(0xa8c6e6, 0x9a8f70, 0.88));
+scene.add(new THREE.AmbientLight(0xffffff, 0.10));
 
 // ------------------------------------------------------------------ build ---
 const t0 = performance.now();
@@ -102,7 +125,7 @@ for (let i = 0; i < DANUBE.length - 1; i++) {
   RIVER_LEN += Math.hypot(DANUBE[i + 1][0] - DANUBE[i][0], DANUBE[i + 1][1] - DANUBE[i][1]);
 }
 
-const overlay = makeOverlay(document);
+const overlay = CAPTIONS ? makeOverlay(document) : () => {};
 const buildMs = performance.now() - t0;
 
 // ----------------------------------------------------------------- frame ----
@@ -158,11 +181,33 @@ function setFrame(t) {
 
 function render(t) {
   setFrame(t);
+  camera.clearViewOffset();
+  camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
+}
+
+/**
+ * Render one tile of a much larger frame.
+ *
+ * Chromium rasterises WebGL in software here, and a single 7680x4320 drawing
+ * buffer is an allocation that tends to fail silently and come back black. So a
+ * big still is cut into tiles, each drawn with its projection offset, and glued
+ * together afterwards. The scene, the lights and the shadow map are identical
+ * across tiles, so the seams are exact.
+ */
+function renderTile(t, tiles, tx, ty) {
+  setFrame(t);
+  const fullW = WIDTH * tiles, fullH = HEIGHT * tiles;
+  camera.aspect = fullW / fullH;
+  if (tiles > 1) camera.setViewOffset(fullW, fullH, tx * WIDTH, ty * HEIGHT, WIDTH, HEIGHT);
+  else camera.clearViewOffset();
+  camera.updateProjectionMatrix();
   renderer.render(scene, camera);
 }
 
 window.__ulm = {
-  render, DURATION, stats, buildMs,
+  render, renderTile, DURATION, stats, buildMs,
+  scene, camera,                       // exposed so a render problem can be probed
   width: WIDTH, height: HEIGHT,
   triangles: Object.values(stats).reduce((a, b) => a + b, 0),
 };

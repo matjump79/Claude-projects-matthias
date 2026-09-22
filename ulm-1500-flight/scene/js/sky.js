@@ -2,7 +2,11 @@
 // east, low enough to rake the roofs and throw the tower's bulk into relief.
 import { makeRng } from './rng.js';
 
-export const SUN_DIR = { az: 1.82, el: 0.60 };   // radians: azimuth from +x, elevation
+// Radians: azimuth from +x, elevation. The sun was at 0.60 rad — about 34
+// degrees — which is high enough that nothing casts a shadow worth seeing.
+// 0.46 rad is roughly 26 degrees: mid-morning, and every roof ridge and every
+// buttress throws a shadow about twice its own height.
+export const SUN_DIR = { az: 1.82, el: 0.46 };
 
 export function sunVector() {
   const { az, el } = SUN_DIR;
@@ -46,7 +50,9 @@ export function buildSky(THREE) {
         gl_FragColor = vec4(col, 1.0);
       }`,
   });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(7000, 32, 20), mat);
+  // Large enough to enclose the whole modelled plain, whose corners now reach
+  // about 12.7 km, so no piece of ground is ever drawn outside the sky.
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(18000, 40, 24), mat);
   mesh.renderOrder = -10;
   mesh.name = 'sky';
   return mesh;
@@ -84,9 +90,13 @@ function cloudTexture(THREE, seed) {
 
 export function buildClouds(THREE) {
   const group = new THREE.Group();
+  // A flat cloud deck seen from below foreshortens to nothing near the horizon,
+  // and at 1550 m over a camera flying at 300 m that happens across most of the
+  // frame — the deck came out as a few hard stripes. Lifting it to a realistic
+  // cumulus base and spreading the texture out keeps it reading as cloud.
   const layers = [
-    { y: 1550, size: 13000, rep: 3, op: 0.9, seed: 11, drift: 1.2 },
-    { y: 2400, size: 19000, rep: 2, op: 0.55, seed: 23, drift: 0.6 },
+    { y: 3400, size: 34000, rep: 3, op: 0.62, seed: 11, drift: 1.2 },
+    { y: 5200, size: 46000, rep: 2, op: 0.34, seed: 23, drift: 0.6 },
   ];
   for (const L of layers) {
     const tex = cloudTexture(THREE, L.seed);

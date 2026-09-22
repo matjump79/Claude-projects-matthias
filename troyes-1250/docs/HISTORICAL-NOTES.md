@@ -18,8 +18,8 @@ throughout as **[A]**, **[B]** or **[C]**:
 ## 1. The date, and why it is a good one
 
 **24 June–end of July 1250.** The Hot Fair of Saint-Jean opened on 24 June and
-ran for weeks. The render is set on a July morning about two hours after
-sunrise, with the fair in full swing.
+ran for weeks. The render is set on a July morning, mid-morning, with the fair
+in full swing.
 
 What is happening elsewhere that summer, for context:
 
@@ -253,6 +253,17 @@ what that implies.
 
 ---
 
+## 7a. The banlieue **[B]**
+
+Troyes did not stand alone in an empty plain. Its villages ringed it within an
+hour's walk, each a huddle of farms round a small church, and the render carries
+eight of them — Sainte-Savine, Saint-Martin, Les Trévois, Saint-Julien,
+Pont-Sainte-Marie, Croncels, La Moline, Preize. **Those are real names of places
+in the Troyes banlieue, and the directions are broadly right, but the positions
+are indicative, not surveyed.** They are there for scale and for the truth that
+the middle distance was inhabited, not as a statement about where each village
+stood.
+
 ## 8. Landscape **[B/C]**
 
 - **Troyes is flat.** There is no hill near it and no natural ground from which
@@ -277,11 +288,15 @@ with a solar declination of about **+19.8°** on 24 July:
 
 > sin(alt) = sin(48.3°)·sin(19.8°) + cos(48.3°)·cos(19.8°)·cos(H)
 
-gives an altitude of **20°** at an hour angle near 82° — roughly two hours after
-sunrise, about the hour the stalls open. At that altitude the azimuth works out
-at **82°**, a little north of due east, and every roof throws a shadow about 2.7
-times its own height towards the west-south-west. That is the light in the
-render.
+gives an altitude of **30°** at an hour angle near 67° — mid-morning, three or
+four hours after sunrise, with the fair in full cry. At that altitude the
+azimuth works out at **93°**, within a few degrees of due east, and every roof
+throws a shadow about 1.7 times its own height to the west.
+
+An earlier version of this render used 20°, about two hours after sunrise. It
+gave more dramatic relief but dropped the yards, gardens and the whole interior
+of the fair quarter into near-black, which is a worse failure than a slightly
+flatter light: the point of the picture is what was in those yards.
 
 ---
 

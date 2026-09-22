@@ -4,7 +4,13 @@
 // (SwiftShader), where draw-call and state-change overhead is expensive.
 import { makeRng } from './rng.js';
 
-export const TILE = 256, COLS = 8, ATLAS_PX = TILE * COLS;
+// TILE is the tile's size in DRAWING space. Every tile painter below works in
+// that space with its own hardcoded pixel sizes, so the atlas is enlarged by
+// drawing through a canvas transform rather than by rescaling those constants:
+// the strokes stay in proportion and come out genuinely sharper, not upscaled.
+export const TILE = 256, COLS = 8;
+export const ATLAS_SS = 2;                       // supersample factor
+export const ATLAS_PX = TILE * COLS * ATLAS_SS;
 
 // Tile slots. Names are used everywhere instead of raw indices.
 export const T = {
@@ -361,44 +367,53 @@ export function buildAtlas(THREE) {
   const ctx = cv.getContext('2d');
   ctx.imageSmoothingEnabled = false;
   const rng = makeRng(20250920);
-  const at = (t) => [(t % COLS) * TILE, Math.floor(t / COLS) * TILE];
+  // Each painter draws at the origin of its own tile-sized space; `tile` puts
+  // that space where it belongs in the atlas and scales it up by ATLAS_SS.
+  const x = 0, y = 0;
+  const tile = (t, draw) => {
+    ctx.save();
+    ctx.translate((t % COLS) * TILE * ATLAS_SS, Math.floor(t / COLS) * TILE * ATLAS_SS);
+    ctx.scale(ATLAS_SS, ATLAS_SS);
+    draw();
+    ctx.restore();
+  };
 
-  let [x, y] = at(T.PLASTER);         facade(ctx, x, y, rng, { plaster: '#d9cfb8', timber: '#6d5c45', style: 'plain', windows: 2 });
-  [x, y] = at(T.PLASTER_OCHRE);       facade(ctx, x, y, rng, { plaster: '#cdb98d', timber: '#6a5a44', style: 'plain', windows: 2 });
-  [x, y] = at(T.TIMBER_POST);         facade(ctx, x, y, rng, { plaster: '#ded5c0', timber: '#6f5d44', style: 'post', windows: 2 });
-  [x, y] = at(T.TIMBER_BRACE);        facade(ctx, x, y, rng, { plaster: '#d3c8ae', timber: '#63523c', style: 'brace', windows: 2 });
-  [x, y] = at(T.TIMBER_DENSE);        facade(ctx, x, y, rng, { plaster: '#cfc4a8', timber: '#5d4d39', style: 'dense', windows: 3 });
-  [x, y] = at(T.GABLE_PLASTER);       facade(ctx, x, y, rng, { plaster: '#d6ccb4', timber: '#67563f', style: 'post', windows: 1, storeys: 1 });
-  [x, y] = at(T.SHUTTER);             facade(ctx, x, y, rng, { plaster: '#c9bda0', timber: '#5a4a36', style: 'brace', windows: 1, storeys: 1 });
-  [x, y] = at(T.RUBBLE);              rubble(ctx, x, y, rng);
-  [x, y] = at(T.ASHLAR);              ashlar(ctx, x, y, rng, '#cdc4ad', 32);
-  [x, y] = at(T.TOWER_ASHLAR);        ashlar(ctx, x, y, rng, '#c6bda5', 26);
-  [x, y] = at(T.BRICK);               brick(ctx, x, y, rng);
-  [x, y] = at(T.ROOF_TILE);           roofTiles(ctx, x, y, rng, '#9d5b41', false);
-  [x, y] = at(T.ROOF_TILE_WORN);      roofTiles(ctx, x, y, rng, '#8c5740', true);
-  [x, y] = at(T.ROOF_CHURCH);         roofTiles(ctx, x, y, rng, '#7d4f3c', true);
-  [x, y] = at(T.ROOF_LEAD);           { px(ctx, x, y, TILE, TILE, '#7f8484'); planks(ctx, x, y, rng, '#7f8484'); }
-  [x, y] = at(T.SHINGLE);             shingles(ctx, x, y, rng);
-  [x, y] = at(T.PLANK);               planks(ctx, x, y, rng);
-  [x, y] = at(T.BLANK);               px(ctx, x, y, TILE, TILE, '#ffffff');
-  [x, y] = at(T.GRASS);               ground(ctx, x, y, rng, 'grass');
-  [x, y] = at(T.MEADOW);              ground(ctx, x, y, rng, 'meadow');
-  [x, y] = at(T.PLOUGH);              ground(ctx, x, y, rng, 'plough');
-  [x, y] = at(T.WHEAT);               ground(ctx, x, y, rng, 'wheat');
-  [x, y] = at(T.DIRT);                ground(ctx, x, y, rng, 'dirt');
-  [x, y] = at(T.COBBLE);              ground(ctx, x, y, rng, 'cobble');
-  [x, y] = at(T.MARKET);              ground(ctx, x, y, rng, 'market');
-  [x, y] = at(T.REED);                ground(ctx, x, y, rng, 'reed');
-  [x, y] = at(T.VINEYARD);            vineyard(ctx, x, y, rng);
-  [x, y] = at(T.ORCHARD);             { ground(ctx, x, y, rng, 'meadow'); for (let i = 0; i < 26; i++) { const bx = x + rng() * TILE, by = y + rng() * TILE; ctx.fillStyle = 'rgba(55,75,40,0.75)'; ctx.beginPath(); ctx.ellipse(bx, by, 11, 10, 0, 0, 7); ctx.fill(); } }
-  [x, y] = at(T.FOLIAGE);             foliage(ctx, x, y, rng);
-  [x, y] = at(T.LANCET);              lancet(ctx, x, y, rng, 2, false);
-  [x, y] = at(T.TRACERY);             lancet(ctx, x, y, rng, 1, true);
-  [x, y] = at(T.ARCADE);              arcade(ctx, x, y, rng);
-  [x, y] = at(T.WATER);               water(ctx, x, y, rng);
-  [x, y] = at(T.SCAFFOLD);            scaffold(ctx, x, y, rng);
-  [x, y] = at(T.THATCH);              thatch(ctx, x, y, rng);
-  [x, y] = at(T.WALKWAY);             ground(ctx, x, y, rng, 'cobble');
+  tile(T.PLASTER, () => { facade(ctx, x, y, rng, { plaster: '#d9cfb8', timber: '#6d5c45', style: 'plain', windows: 2 }); });
+  tile(T.PLASTER_OCHRE, () => { facade(ctx, x, y, rng, { plaster: '#cdb98d', timber: '#6a5a44', style: 'plain', windows: 2 }); });
+  tile(T.TIMBER_POST, () => { facade(ctx, x, y, rng, { plaster: '#ded5c0', timber: '#6f5d44', style: 'post', windows: 2 }); });
+  tile(T.TIMBER_BRACE, () => { facade(ctx, x, y, rng, { plaster: '#d3c8ae', timber: '#63523c', style: 'brace', windows: 2 }); });
+  tile(T.TIMBER_DENSE, () => { facade(ctx, x, y, rng, { plaster: '#cfc4a8', timber: '#5d4d39', style: 'dense', windows: 3 }); });
+  tile(T.GABLE_PLASTER, () => { facade(ctx, x, y, rng, { plaster: '#d6ccb4', timber: '#67563f', style: 'post', windows: 1, storeys: 1 }); });
+  tile(T.SHUTTER, () => { facade(ctx, x, y, rng, { plaster: '#c9bda0', timber: '#5a4a36', style: 'brace', windows: 1, storeys: 1 }); });
+  tile(T.RUBBLE, () => { rubble(ctx, x, y, rng); });
+  tile(T.ASHLAR, () => { ashlar(ctx, x, y, rng, '#cdc4ad', 32); });
+  tile(T.TOWER_ASHLAR, () => { ashlar(ctx, x, y, rng, '#c6bda5', 26); });
+  tile(T.BRICK, () => { brick(ctx, x, y, rng); });
+  tile(T.ROOF_TILE, () => { roofTiles(ctx, x, y, rng, '#9d5b41', false); });
+  tile(T.ROOF_TILE_WORN, () => { roofTiles(ctx, x, y, rng, '#8c5740', true); });
+  tile(T.ROOF_CHURCH, () => { roofTiles(ctx, x, y, rng, '#7d4f3c', true); });
+  tile(T.ROOF_LEAD, () => { px(ctx, x, y, TILE, TILE, '#7f8484'); planks(ctx, x, y, rng, '#7f8484'); });
+  tile(T.SHINGLE, () => { shingles(ctx, x, y, rng); });
+  tile(T.PLANK, () => { planks(ctx, x, y, rng); });
+  tile(T.BLANK, () => { px(ctx, x, y, TILE, TILE, '#ffffff'); });
+  tile(T.GRASS, () => { ground(ctx, x, y, rng, 'grass'); });
+  tile(T.MEADOW, () => { ground(ctx, x, y, rng, 'meadow'); });
+  tile(T.PLOUGH, () => { ground(ctx, x, y, rng, 'plough'); });
+  tile(T.WHEAT, () => { ground(ctx, x, y, rng, 'wheat'); });
+  tile(T.DIRT, () => { ground(ctx, x, y, rng, 'dirt'); });
+  tile(T.COBBLE, () => { ground(ctx, x, y, rng, 'cobble'); });
+  tile(T.MARKET, () => { ground(ctx, x, y, rng, 'market'); });
+  tile(T.REED, () => { ground(ctx, x, y, rng, 'reed'); });
+  tile(T.VINEYARD, () => { vineyard(ctx, x, y, rng); });
+  tile(T.ORCHARD, () => { ground(ctx, x, y, rng, 'meadow'); for (let i = 0; i < 26; i++) { const bx = x + rng() * TILE, by = y + rng() * TILE; ctx.fillStyle = 'rgba(55,75,40,0.75)'; ctx.beginPath(); ctx.ellipse(bx, by, 11, 10, 0, 0, 7); ctx.fill(); } });
+  tile(T.FOLIAGE, () => { foliage(ctx, x, y, rng); });
+  tile(T.LANCET, () => { lancet(ctx, x, y, rng, 2, false); });
+  tile(T.TRACERY, () => { lancet(ctx, x, y, rng, 1, true); });
+  tile(T.ARCADE, () => { arcade(ctx, x, y, rng); });
+  tile(T.WATER, () => { water(ctx, x, y, rng); });
+  tile(T.SCAFFOLD, () => { scaffold(ctx, x, y, rng); });
+  tile(T.THATCH, () => { thatch(ctx, x, y, rng); });
+  tile(T.WALKWAY, () => { ground(ctx, x, y, rng, 'cobble'); });
 
   const tex = new THREE.CanvasTexture(cv);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -406,6 +421,6 @@ export function buildAtlas(THREE) {
   tex.generateMipmaps = true;
   tex.minFilter = THREE.LinearMipmapLinearFilter;
   tex.magFilter = THREE.LinearFilter;
-  tex.anisotropy = 4;
+  tex.anisotropy = 16;
   return tex;
 }

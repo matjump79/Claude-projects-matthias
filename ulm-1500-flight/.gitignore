@@ -1,11 +1,13 @@
-node_modules/
-frames/
-out/*.jpg
-out/*.png
-music/*.wav
-# rendered video: reproducible from source, and too large for git
 # (GitHub rejects blobs over 100 MB)
-out/*.mp4
-out/*.webm
 # ffmpeg two-pass rate-control logs
+# rendered video: reproducible from source, and too large for git
+*.log
 ffmpeg2pass*
+frames/
+music/*.wav
+node_modules/
+out/*.jpg
+out/*.mp4
+out/*.png
+out/*.webm
+package-lock.json

@@ -53,6 +53,13 @@ export const VIEWS = {
   // the cranes and the masons' yard.
   works:  { target: { x: 6, z: 14 }, azimuth: 196, distance: 245, height: 118, fov: 33, targetY: 20 },
 
+  // The hero plate: lower and closer than `master`, pitched about 25 degrees,
+  // so the town fills the frame and individual roofs, yards and trees carry the
+  // picture rather than the outline of the walls. This is the framing of a
+  // low-level oblique taken from a light aircraft, and it is the one that shows
+  // what the place was actually like to stand in.
+  hero:   { target: { x: -420, z: 130 }, azimuth: 158, distance: 1130, height: 470, fov: 39, targetY: 26 },
+
   // High and square-on from the south, nearest to a surveyor's cavalier view.
   cavalier: { target: { x: -430, z: 90 }, azimuth: 180, distance: 2450, height: 1150, fov: 30, targetY: 20 },
 };
@@ -144,7 +151,7 @@ buildSky(scene);
 const smoke = smokeMesh(buildSmoke(rng, groundHeight), groundHeight, rng);
 scene.add(smoke);
 
-const sun = new THREE.DirectionalLight(0xffe9c4, 3.05);
+const sun = new THREE.DirectionalLight(0xfff0d4, 3.15);
 const sd = sunDirection();
 sun.position.set(sd.x * 3000, sd.y * 3000, sd.z * 3000);
 sun.target.position.set(-520, 0, 60);
@@ -168,8 +175,8 @@ scene.add(sun);
 // Sky light, and the warm bounce off chalk and stubble. Kept deliberately low:
 // on a clear July morning the sun carries almost all of it, and a shadow that
 // only costs a few per cent of brightness is no shadow at all.
-scene.add(new THREE.HemisphereLight(0x93b4da, 0xbaa478, 0.60));
-scene.add(new THREE.AmbientLight(0xffffff, 0.09));
+scene.add(new THREE.HemisphereLight(0x9cc0e8, 0xbfa77a, 0.92));
+scene.add(new THREE.AmbientLight(0xffffff, 0.13));
 
 // ---------------------------------------------------------------------------
 
@@ -184,7 +191,7 @@ renderer.shadowMap.type = SHADOW_TYPE === 'soft' ? THREE.PCFSoftShadowMap
   : SHADOW_TYPE === 'basic' ? THREE.BasicShadowMap : THREE.PCFShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.34;
+renderer.toneMappingExposure = 1.30;
 document.body.appendChild(renderer.domElement);
 
 const camera = new THREE.PerspectiveCamera(27, W / H, 5, 14000);

@@ -12,11 +12,12 @@ import { hex } from './geom.js';
 // Where the sun actually stands over Troyes (48.30 N, 4.08 E) during the Hot
 // Fair. Solar declination on 24 July is about +19.8 deg, so
 //     sin(alt) = sin(48.3)sin(19.8) + cos(48.3)cos(19.8)cos(H)
-// gives altitude 20 deg at a hour angle of about 82 deg — roughly two hours
-// after sunrise, which in this town is the hour the stalls open. At that
-// altitude the azimuth works out at 82 deg, a little north of due east, and
-// every roof throws a shadow 2.7 times its own height towards the west-south-west.
-export const SUN = { azimuthDeg: 82, altitudeDeg: 20 };
+// gives altitude 30 deg at an hour angle of about 67 deg — mid-morning, three
+// or four hours after sunrise, with the fair in full cry. The azimuth works out
+// at 93 deg, within a few degrees of due east. Shadows run about 1.7 times the
+// height of what casts them, which is enough to model every roof without
+// dropping the yards and the gardens into black.
+export const SUN = { azimuthDeg: 93, altitudeDeg: 30 };
 
 /** Unit vector pointing from the scene toward the sun. */
 export function sunDirection() {

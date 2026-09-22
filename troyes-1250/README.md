@@ -3,7 +3,7 @@
 An 8K aerial reconstruction of Troyes on a July morning in 1250, during the Hot
 Fair of Saint-Jean, built as a georeferenced 3D scene and rendered in tiles.
 
-![the master plate](out/stills/troyes-1250-master-8k.jpg)
+![the hero plate](out/stills/troyes-1250-hero-8k.jpg)
 
 ---
 
@@ -11,7 +11,8 @@ Fair of Saint-Jean, built as a georeferenced 3D scene and rendered in tiles.
 
 | File | Size | View |
 |---|---|---|
-| `out/stills/troyes-1250-master-8k.jpg` | 7680 × 4320 | The whole town from the south-south-east. Bourg left, Cité right, the water between them |
+| `out/stills/troyes-1250-hero-8k.jpg` | 7680 × 4320 | **The main plate.** A low oblique, pitched about 25°, close enough that individual roofs, yards, gardens and trees carry the picture |
+| `out/stills/troyes-1250-master-8k.jpg` | 7680 × 4320 | Higher and further back: the whole town in one frame, Bourg left, Cité right, the water between them |
 | `out/stills/troyes-1250-cite.jpg` | 3840 × 2160 | The Cité from the south-west: cathedral, comital palace, Saint-Étienne, Hôtel-Dieu |
 | `out/stills/troyes-1250-works.jpg` | 3840 × 2160 | Close on the cathedral works: finished chevet, roofless transept, cranes, masons' yard |
 | `out/stills/troyes-1250-fair.jpg` | 3840 × 2160 | The fair quarter around Saint-Jean-au-Marché |
@@ -56,9 +57,29 @@ coordinate frame and how to check it against a modern map.
 ## How it was made
 
 No image-generation model was used, and none was available. The town is a real
-3D scene: about 1.6 million triangles, 3,300 houses, 300 stalls and 2,300
+3D scene: about 2.8 million triangles, 3,700 houses, 250 stalls and 2,100
 figures, generated procedurally from a fixed survey of landmark positions and
 rendered in headless Chromium with Three.js.
+
+What actually makes it read as a place rather than a model, in rough order of
+how much each one mattered:
+
+- **Trees at their real size.** A hedgerow oak runs to 18 or 20 m — half as tall
+  again as the houses it stands over. Drawing trees at shrub height is the
+  commonest way to make a reconstruction look like a train set.
+- **Burgage plots, not boxes.** A town house is the front of an L or a U: a
+  street range, a rear wing down the plot, and a yard of low outbuildings behind
+  that. Most of what a town looks like from above is outbuildings.
+- **Roofs that are brown.** Flat clay tile weathers brown and grey within a
+  decade and takes moss on the north pitch. A field of new terracotta is wrong
+  for any century.
+- **Working gardens.** Every plot behind the frontage carries beds of pot-herbs
+  in drills, fruit trees and a vine — not lawn.
+- **Wide, green-banked water.** The Seine here braids across a floodplain in
+  channels the counts cut and lined with willow, with mills on them.
+- **A populated middle distance.** The villages of the banlieue ring the town
+  within an hour's walk, each with its church; without them the plain reads as
+  empty board.
 
 Everything is placed from `scene/js/survey.js`, which pins each landmark to a
 metric coordinate derived from the site it occupies today. Nothing is positioned
@@ -81,14 +102,14 @@ npm install
 npm run serve &            # static server on 127.0.0.1:8111
 
 npm run preview            # 1920x1080 single tile, for iterating
-npm run render             # the 8K master
+npm run render             # the 8K hero plate
 
 # any view, any size
 node render/capture.mjs --w=7680 --h=4320 --tiles=4 --view=cite \
   --out=out/stills/cite-8k.jpg --quality=95
 ```
 
-Views are `master`, `cite`, `works`, `fair`, `cavalier`, defined in
+Views are `hero`, `master`, `cite`, `works`, `fair`, `cavalier`, defined in
 `scene/js/main.js`. Useful flags: `--shadows=0` to render flat and fast,
 `--seed=N` for a different draw of the procedural fabric, `--tiles=1` for a
 single-pass render.

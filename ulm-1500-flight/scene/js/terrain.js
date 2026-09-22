@@ -51,20 +51,39 @@ function coverOf(x, z, h, rng) {
     return { tile: T.VINEYARD, col: [1, 1, 0.95] };
   }
 
-  // arable: pick a block direction, then stripe it. The blocks are large and
-  // their directions few, as real Gewanne are -- otherwise the pattern breaks
-  // up into noise as soon as the camera gains height.
+  // Arable, worked in the three-field system.
+  //
+  // The unit that matters here is the GEWANN: a block of long narrow strips
+  // that all run the same way and all lie in the same field of the rotation.
+  // The individual strips belong to different households and are sown and
+  // reaped a few days apart, so they differ in tone — but they carry the SAME
+  // CROP, because the rotation is agreed for the whole Gewann, not plot by
+  // plot. Alternating the rotation from one strip to the next, as this used to
+  // do, is both wrong and reads from the air as a plaid blanket.
   const blockId = Math.floor(fbm2(x / 1600, z / 1600, 2, 17) * 5);
   const ang = blockId * 0.55 + 0.25;
   const u = x * Math.cos(ang) + z * Math.sin(ang);
-  const strip = Math.floor(u / (26 + (blockId % 3) * 11));
-  const phase = ((strip % 3) + 3) % 3;
-  const wear = 0.94 + noise2(strip * 1.7, blockId * 3.1, 5) * 0.14;
-  // not everything is arable: common pasture, scrub and hedged closes break
-  // the pattern up
+  const v = -x * Math.sin(ang) + z * Math.cos(ang);
+
+  // the Gewann: some 9-16 strips across, a few hundred metres along
+  const stripW = 12 + (blockId % 3) * 4;
+  const gewannW = stripW * (9 + (blockId % 4) * 2);
+  const gw = Math.floor(u / gewannW);
+  const gl = Math.floor(v / (280 + (blockId % 3) * 120));
+  const phase = Math.floor(
+    ((noise2(gw * 5.3 + blockId * 11, gl * 2.9 - blockId * 7, 23) * 3) % 3 + 3),
+  ) % 3;
+
+  // the strip within it: same crop, its own hand
+  const strip = Math.floor(u / stripW);
+  const wear = 0.93 + noise2(strip * 1.7, gl * 3.1 + blockId, 5) * 0.15;
+  // the grass baulk between one Gewann and the next, where the plough turned
+  const edge = Math.min(u / gewannW - gw, 1 - (u / gewannW - gw)) * gewannW;
+
   const use = fbm2(x / 420, z / 420, 3, 37);
   if (use > 0.66) return { tile: T.MEADOW, col: [wear * 0.9, wear * 1.02, wear * 0.8] };
   if (use < 0.30) return { tile: T.ORCHARD, col: [wear * 0.92, wear, wear * 0.84] };
+  if (edge < 5) return { tile: T.MEADOW, col: [wear * 0.94, wear * 1.0, wear * 0.82] };
   if (phase === 0) return { tile: T.WHEAT, col: [wear, wear * 0.98, wear * 0.86] };
   if (phase === 1) return { tile: T.PLOUGH, col: [wear, wear * 0.95, wear * 0.9] };
   return { tile: T.MEADOW, col: [wear * 0.95, wear, wear * 0.86] };
@@ -84,8 +103,12 @@ function facingSouth(x, z) {
 export function buildTerrain(THREE, texture) {
   const b = new Builder();
   const rng = makeRng(4711);
-  const xs = axis(4200, 900, 13, 1.055);
-  const zs = axis(4200, 900, 13, 1.055);
+  // Out to 9 km rather than 4.2. The old limit put the edge of the modelled
+  // ground where the haze had only half swallowed it, so every high shot ended
+  // on a hard line of terrain against flat sky. The cells grow geometrically,
+  // so more than doubling the reach costs about 30,000 triangles.
+  const xs = axis(9000, 900, 13, 1.055);
+  const zs = axis(9000, 900, 13, 1.055);
   const H = new Map();
   const h = (x, z) => {
     const k = x + ':' + z;

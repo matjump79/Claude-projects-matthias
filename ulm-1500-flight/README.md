@@ -94,3 +94,61 @@ scene/js/sky.js        sky shader, sun, cloud layers
 scene/js/flight.js     the camera move
 scene/js/titles.js     the captions
 ```
+
+## Render quality — what was wrong, and what changed
+
+The first cut of these stills was poor, and for reasons worth writing down
+because every one of them is a trap you can fall into twice.
+
+**The shadows were not there at all.** `sun.shadow.bias` was `-0.0012` against a
+shadow-camera depth range of 200 to 3000. A depth bias is a *fraction of the
+frustum's range*, so that innocuous-looking number was an offset of about
+**3.4 metres** — more than the height of a storey, and enough to lift every
+shadow clean off the ground. The frustum is now 500 to 2000 and the bias
+`-0.00012`, which is about 18 cm.
+
+**The fill light drowned what was left.** The hemisphere light was at 1.85
+against a sun of 3.0. Even with shadows working, a shaded surface kept more than
+a third of its brightness and the town read as flat. The fill is now 0.88, and
+the sun was raised to 4.2 to compensate for being brought down the sky.
+
+**The sun was too high.** At 0.60 rad (34°) very little casts a shadow worth
+seeing. It now sits at 0.46 rad (26°), mid-morning, and shadows run about twice
+the height of what throws them.
+
+**The three-field rotation was applied per strip.** Each individual strip
+alternated winter corn / spring corn / fallow, which is both wrong and reads
+from the air as a plaid blanket. A *Gewann* is a block of strips that all lie in
+the same field of the rotation and carry the same crop; the strips within it
+differ only in tone, because they belong to different households. Rotation is
+now assigned per Gewann, with a grass baulk between one and the next.
+
+**The sky dome was being clipped.** The dome sat at radius 7000 while
+`camera.far` was 9000 — so in the far direction, measured from the camera rather
+than the origin, the dome fell outside the far plane and the black background
+showed through it as a triangular hole on the horizon. The dome is now 18000 and
+far is 26000.
+
+**The cloud deck was a few hard stripes.** Flat planes at 1550 m over a camera
+flying at 300 m foreshorten to nothing across most of the frame. They are now at
+3400 and 5200 m and much larger.
+
+**The ground stopped too soon.** The terrain ran to 4.2 km, where the haze had
+only half swallowed it, so every high shot ended on a hard line of ground against
+flat sky. It now runs to 9 km, which costs about 30,000 triangles because the
+cells grow geometrically.
+
+Also: antialiasing was off; the atlas is now drawn at 2× through a canvas
+transform, so its strokes stay in proportion and come out genuinely sharper;
+tone mapping moved from Neutral to ACES, which is less faithful but stops a hazy
+landscape sitting in the middle of the range; and the stills are rendered at
+7680 × 4320 in tiles rather than 1280 × 720 in one pass.
+
+```bash
+npm run serve &
+node render/still.mjs --w=7680 --h=4320 --tiles=4 --t=110 \
+  --name=minster --out=out/stills/minster-from-the-north.jpg
+```
+
+`--captions=1` burns the film's subtitle in; the stills above are rendered
+clean.
