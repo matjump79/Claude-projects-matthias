@@ -19,8 +19,8 @@ import { groundHeight } from './land.js';
 import { citePolygon } from './town.js';
 
 export function buildWalls(rng) {
-  const m = new Mesher();
-  const water = new Mesher();
+  const m = new Mesher('stone');
+  const water = new Mesher('water');
 
   // the curtain foot is buried a little so it never floats over the swell
   const baseY = () => -0.6;
@@ -154,6 +154,7 @@ function gatehouse(m, x, z, dir, y, small) {
 }
 
 function mill(m, x, z, dir, chW, rng) {
+  m.channel('main');
   const nx = -Math.sin(dir), nz = Math.cos(dir);
   const off = chW / 2 + 4.5;
   const px = x + nx * off, pz = z + nz * off;
@@ -163,6 +164,7 @@ function mill(m, x, z, dir, chW, rng) {
   // the wheel, standing in the race
   const wx = x + nx * (chW / 2 - 0.5), wz = z + nz * (chW / 2 - 0.5);
   m.prism(wx, y + 0.4, wz, 2.2, 0.5, dir + Math.PI / 2, C.oakDark, 12);
+  m.channel('stone');
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * Math.PI * 2;
     m.box(wx + Math.cos(a) * 1.9 * nx, y + 0.4 + Math.sin(a) * 1.9, wz + Math.cos(a) * 1.9 * nz,

@@ -34,8 +34,8 @@ const DRESS = [
 ];
 
 export function buildFair(rng) {
-  const m = new Mesher();       // solid things: trestles, bales, carts, people
-  const cloth = new Mesher();   // the awnings and tents, double-sided
+  const m = new Mesher('main');    // solid things: trestles, bales, carts, people
+  const cloth = new Mesher('cloth'); // the awnings and tents, double-sided
 
   let stalls = 0, people = 0;
 

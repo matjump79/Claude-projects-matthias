@@ -58,6 +58,7 @@ function nearWater(x, z, pad = 9) {
 
 /** A kitchen-garden bed: dug earth with the crop standing in drills. */
 function bed(m, x, z, dir, rng) {
+  m.channel('ground');
   const y = groundHeight(x, z) + 0.05;
   const rot = dir + (rng() - 0.5) * 0.4;
   const c = Math.cos(rot), s = Math.sin(rot);
@@ -98,6 +99,10 @@ function nearestStreet(x, z) {
  * gableToStreet is true, which on a burgage plot is the normal case.
  */
 function house(m, x, z, opts, rng) {
+  // route this house's roof to the material that matches its covering, and a
+  // stone house's walls to the stone material
+  m.roof(opts.roofCh || 'roofTile');
+  m.channel(opts.stone ? 'stone' : 'main');
   const y = groundHeight(x, z);
   const w = opts.w, d = opts.d;
   const storeys = opts.storeys;
@@ -201,6 +206,7 @@ function house(m, x, z, opts, rng) {
             rng() < 0.45 ? mix(C.thatch, C.thatchOld, rng()) : mix(C.shingle, C.tileOld, rng()),
             wallCol, 0.3);
   }
+  m.channel('main');
   return y0 + rise;
 }
 
@@ -261,8 +267,8 @@ function brace(m, x, y0, z, lx, lz, h, len, ang, rot, col, sgn) {
 }
 
 export function buildTown(rng) {
-  const m = new Mesher();
-  const gardens = new Mesher();
+  const m = new Mesher('main');
+  const gardens = new Mesher('ground');
   let count = 0;
 
   const bourgIn = shrink(ENCEINTE.bourg, 16);
@@ -291,7 +297,7 @@ export function buildTown(rng) {
     // Roofing. Tile has the money and the count's fire rules behind it after
     // 1188, but it has by no means driven thatch and shingle out of the back
     // lanes yet, and a tile roof fifty years old is a long way from new-brick red.
-    let roof, thatched;
+    let roof, thatched, roofCh;
     const tileChance = rich ? 0.88 : poor ? 0.26 : 0.60;
     if (rng() < tileChance) {
       const age = rng();
@@ -302,6 +308,7 @@ export function buildTown(rng) {
            : mix(C.tileDark, C.tileBrown, rng());
       if (rng() < 0.22) roof = mix(roof, C.tileGrey, 0.4);
       thatched = false;
+      roofCh = 'roofTile';
     } else {
       const k = rng();
       roof = k < 0.42 ? mix(C.thatch, C.thatchOld, rng())
@@ -309,6 +316,7 @@ export function buildTown(rng) {
            : k < 0.84 ? mix(C.shingle, C.thatchOld, rng() * 0.6)
            : mix(C.shingleGrey, C.slate, rng() * 0.5);
       thatched = k < 0.58;
+      roofCh = thatched ? 'roofThatch' : 'roofShingle';
     }
 
     const stone = rich && rng() < 0.11;
@@ -491,6 +499,7 @@ export function buildTown(rng) {
       }
     }
     if (v.church) {
+      m.channel('stone');
       const cy = groundHeight(v.x, v.z);
       const crot = dir0 * 0.2;
       m.box(v.x, cy, v.z, 17, 8, 7.5, crot, C.stoneOld, { top: false, uvScale: 0.8 });
@@ -499,6 +508,7 @@ export function buildTown(rng) {
       const tx = v.x - 9.5 * c2, tz = v.z - 9.5 * s2;
       m.box(tx, cy, tz, 5, 5, 13, crot, C.stoneOld, { top: false, uvScale: 1.0 });
       m.spire(tx, cy + 13, tz, 2.5, 8, crot, C.shingle, 4);
+      m.channel('main');
     }
     // the village's own trees
     for (let i = 0; i < v.n * 0.9; i++) {

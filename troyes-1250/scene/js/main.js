@@ -1,15 +1,17 @@
-// main.js — assemble the town and hold the camera.
+// main.js — assemble the town, and render one photograph of it.
 //
-// The view is rendered in tiles: the camera's projection is offset so that each
-// pass draws one rectangle of a much larger frame, and the tiles are stitched
-// afterwards. That is the only dependable way to get a true 8K frame out of a
-// software rasteriser, and it has the side benefit that the shadow map, which
-// is scene-wide, stays identical across every tile.
+// The frame is built in tiles: the camera's projection is offset so each pass
+// draws one rectangle of a much larger image, and the tiles are stitched
+// afterwards. Within each tile the image is ACCUMULATED over many passes — see
+// render.js for why — which is what produces the soft shadows, the ambient
+// occlusion and the antialiasing, all of them by sampling rather than by
+// approximation.
 
 import * as THREE from '../vendor/three.module.js';
 import { makeRng } from './rng.js';
-import { materials, C } from './palette.js';
-import { buildLand, buildStreets, groundHeight, EXT } from './land.js';
+import { buildMaterials } from './textures.js';
+import { Accumulator, cosineHemisphere, jitterCone, skyColour } from './render.js';
+import { buildLand, buildStreets, groundHeight } from './land.js';
 import { buildTown } from './town.js';
 import { buildWalls } from './walls.js';
 import { buildCathedral, buildMonuments } from './monuments.js';
@@ -23,59 +25,39 @@ const H = +(q.get('h') || 1080);
 const SHADOWS = q.get('shadows') !== '0';
 const SEED = +(q.get('seed') || 20250724);
 const SHADOW_MAP = +(q.get('smap') || 4096);
-const SHADOW_SPAN = +(q.get('sspan') || 1200);
-const SHADOW_BIAS = +(q.get('sbias') || -0.00012);
-const SHADOW_TYPE = q.get('stype') || 'pcf';
+const SKY_MAP = +(q.get('skymap') || 2048);
+const SAMPLES = +(q.get('samples') || 1);
+const EXPOSURE = +(q.get('exposure') || 1.72);
+const SKY_STRENGTH = +(q.get('sky') || 0.62);
+const SUN_STRENGTH = +(q.get('sunI') || 6.4);
 
 // ---------------------------------------------------------------------------
 // Camera presets. Azimuth is the compass bearing FROM the subject TO the
-// camera, so "150" means the camera stands south-south-east and looks
+// camera, so "158" means the camera stands south-south-east and looks
 // north-north-west across the town.
 // ---------------------------------------------------------------------------
 export const VIEWS = {
-  // The main plate: the whole cork, the Cite on the right with the cathedral
-  // building site, the fair quarter centre, the Bourg running away to the left.
-  // Framing note: with the plain now modelled out to 7.2 km, sky only appears
-  // if the camera's downward pitch is less than half the vertical field of
-  // view. atan((height - targetY) / distance) = 15.6 deg against a half-FOV of
-  // 17 deg leaves about a degree and a half of sky above the horizon — a real
-  // horizon band rather than a cut-off edge of terrain.
-  master: { target: { x: -430, z: 30 }, azimuth: 156, distance: 1500, height: 475, fov: 34, targetY: 55 },
-
-  // Lower and closer, over the fairground, with the cathedral behind it.
-  fair:   { target: { x: -478, z: 145 }, azimuth: 163, distance: 470, height: 178, fov: 33, targetY: 14 },
-
-  // The Cite from the south-west: cathedral, palace, collegiate, Hotel-Dieu,
-  // and the channel that divides the two halves of the town.
-  cite:   { target: { x: -90, z: 20 }, azimuth: 208, distance: 620, height: 245, fov: 31, targetY: 20 },
-
-  // Close on the cathedral works: the finished chevet, the roofless transept,
-  // the cranes and the masons' yard.
-  works:  { target: { x: 6, z: 14 }, azimuth: 196, distance: 245, height: 118, fov: 33, targetY: 20 },
-
-  // The hero plate: lower and closer than `master`, pitched about 25 degrees,
-  // so the town fills the frame and individual roofs, yards and trees carry the
-  // picture rather than the outline of the walls. This is the framing of a
-  // low-level oblique taken from a light aircraft, and it is the one that shows
-  // what the place was actually like to stand in.
-  hero:   { target: { x: -420, z: 130 }, azimuth: 158, distance: 1130, height: 470, fov: 39, targetY: 26 },
-
-  // High and square-on from the south, nearest to a surveyor's cavalier view.
-  cavalier: { target: { x: -430, z: 90 }, azimuth: 180, distance: 2450, height: 1150, fov: 30, targetY: 20 },
+  hero:     { target: { x: -420, z: 130 }, azimuth: 158, distance: 1130, height: 470,  fov: 39, targetY: 26 },
+  master:   { target: { x: -430, z: 30 },  azimuth: 156, distance: 1500, height: 475,  fov: 34, targetY: 55 },
+  fair:     { target: { x: -478, z: 145 }, azimuth: 163, distance: 470,  height: 178,  fov: 33, targetY: 14 },
+  cite:     { target: { x: -90,  z: 20 },  azimuth: 208, distance: 620,  height: 245,  fov: 31, targetY: 20 },
+  works:    { target: { x: 6,    z: 14 },  azimuth: 196, distance: 245,  height: 118,  fov: 33, targetY: 20 },
+  cavalier: { target: { x: -430, z: 90 },  azimuth: 180, distance: 2450, height: 1150, fov: 30, targetY: 20 },
 };
 
-function placeCamera(cam, v, aspect) {
+function placeCamera(cam, v, aspect, jx, jy, tiles, tx, ty) {
   const a = v.azimuth * Math.PI / 180;
-  // bearing measured from north (-Z), clockwise toward east (+X)
   const ox = Math.sin(a) * v.distance;
   const oz = -Math.cos(a) * v.distance;
   cam.position.set(v.target.x + ox, v.height, v.target.z + oz);
   cam.fov = v.fov;
   cam.aspect = aspect;
   cam.near = 5;
-  cam.far = 14000;
-  cam.updateProjectionMatrix();
+  cam.far = 16000;
   cam.lookAt(v.target.x, v.targetY, v.target.z);
+  // the sub-pixel jitter rides on the same offset the tiling already uses
+  cam.setViewOffset(W * tiles, H * tiles, tx * W + jx, ty * H + jy, W, H);
+  cam.updateProjectionMatrix();
 }
 
 // ---------------------------------------------------------------------------
@@ -84,164 +66,249 @@ const t0 = performance.now();
 const rng = makeRng(SEED);
 
 const scene = new THREE.Scene();
-const mats = materials();
+const M = buildMaterials();
 const stats = {};
 
-// --- ground, water, planting ------------------------------------------------
+// Texture repeats are set per material rather than per call site: the UVs in
+// the geometry are world metres, so one number here fixes the physical size of
+// every tile, stone and plaster panel in the town.
+const repeat = (mat, k) => {
+  for (const t of [mat.map, mat.normalMap, mat.roughnessMap]) if (t) t.repeat.set(k, k);
+};
+repeat(M.wall, 0.26);
+repeat(M.stone, 0.20);
+repeat(M.roofTile, 0.34);
+repeat(M.roofThatch, 0.22);
+repeat(M.roofShingle, 0.30);
+repeat(M.ground, 0.10);
+
+const MATS = {
+  main: M.wall,
+  stone: M.stone,
+  roofTile: M.roofTile,
+  roofThatch: M.roofThatch,
+  roofShingle: M.roofShingle,
+  ground: M.ground,
+  foliage: M.foliage,
+  cloth: M.cloth,
+  water: M.water,
+};
+
+// --- build ------------------------------------------------------------------
 const L = buildLand(rng);
-const landMesh = new THREE.Mesh(L.land.geometry(), mats.ground);
-landMesh.receiveShadow = true;
-scene.add(landMesh);
-stats.land = L.land.tris;
-
 const streets = buildStreets(rng);
-
-// --- the built town ---------------------------------------------------------
 const T = buildTown(rng);
-stats.houses = T.count;
-stats.town = T.town.tris;
-
 const walls = buildWalls(rng);
-stats.walls = walls.walls.tris;
-
-// monuments and the cathedral share one buffer
-const mon = new Mesher();
+const mon = new Mesher('stone');
 buildCathedral(mon, rng);
 buildMonuments(mon, rng);
-stats.monuments = mon.tris;
-
 const F = buildFair(rng);
+
+stats.houses = T.count;
 stats.stalls = F.stalls;
 stats.people = F.people;
-stats.fair = F.fair.tris;
 
-// merge the big opaque buffers into as few meshes as the materials allow
-function add(mesher, material, cast = true, receive = true) {
-  if (!mesher.tris) return null;
-  const mesh = new THREE.Mesh(mesher.geometry(), material);
-  mesh.castShadow = cast;
-  mesh.receiveShadow = receive;
-  scene.add(mesh);
-  return mesh;
+/** Turn every channel of a mesher into a mesh on the right material. */
+function addMesher(mesher, { cast = true, receive = true } = {}) {
+  for (const [name, geo] of Object.entries(mesher.geometries())) {
+    const mat = MATS[name];
+    if (!mat) { console.warn('no material for channel', name); continue; }
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = cast && name !== 'water';
+    mesh.receiveShadow = receive;
+    scene.add(mesh);
+    stats['t_' + name] = (stats['t_' + name] || 0) + geo.attributes.position.count / 3;
+  }
 }
 
-add(streets, mats.ground, false, true);
-add(T.town, mats.solid);
-add(T.gardens, mats.foliage);
-add(L.foliage, mats.foliage);
-add(walls.walls, mats.solid);
-add(mon, mats.solid);
-add(F.fair, mats.solid);
-add(F.cloth, mats.cloth);
+addMesher(L.land, { cast: false });
+addMesher(streets, { cast: false });
+addMesher(L.foliage);
+addMesher(T.town);
+addMesher(T.gardens);
+addMesher(walls.walls);
+addMesher(mon);
+addMesher(F.fair);
+addMesher(F.cloth);
+addMesher(L.water, { cast: false });
+addMesher(walls.water, { cast: false });
 
-// water last, and it neither casts nor receives
-const waterM = new Mesher();
-for (const src of [L.water, walls.water]) {
-  waterM.pos.push(...src.pos); waterM.nrm.push(...src.nrm);
-  waterM.col.push(...src.col); waterM.uv.push(...src.uv);
-  waterM.tris += src.tris;
-}
-const water = new THREE.Mesh(waterM.geometry(), mats.water);
-water.receiveShadow = true;
-scene.add(water);
-stats.water = waterM.tris;
-
-// --- sky, sun, smoke --------------------------------------------------------
-buildSky(scene);
-const smoke = smokeMesh(buildSmoke(rng, groundHeight), groundHeight, rng);
-scene.add(smoke);
-
-const sun = new THREE.DirectionalLight(0xfff0d4, 3.15);
-const sd = sunDirection();
-sun.position.set(sd.x * 3000, sd.y * 3000, sd.z * 3000);
-sun.target.position.set(-520, 0, 60);
-scene.add(sun.target);
-if (SHADOWS) {
-  sun.castShadow = true;
-  sun.shadow.mapSize.set(SHADOW_MAP, SHADOW_MAP);
-  // The shadow frustum is kept as tight as the town allows: at 4096 across
-  // 2400 m that is 0.6 m per texel, about the width of a roof ridge. The depth
-  // range matters just as much — a bias is a fraction of it, so a loose near
-  // and far turns a small bias into several metres and eats every shadow.
-  const S = SHADOW_SPAN;   // half-width of the shadow frustum, metres
-  sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
-  sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
-  sun.shadow.camera.near = 2250; sun.shadow.camera.far = 4750;
-  sun.shadow.bias = SHADOW_BIAS;
-  sun.shadow.normalBias = 0.35;
-}
-scene.add(sun);
-
-// Sky light, and the warm bounce off chalk and stubble. Kept deliberately low:
-// on a clear July morning the sun carries almost all of it, and a shadow that
-// only costs a few per cent of brightness is no shadow at all.
-scene.add(new THREE.HemisphereLight(0x9cc0e8, 0xbfa77a, 0.92));
-scene.add(new THREE.AmbientLight(0xffffff, 0.13));
-
-// ---------------------------------------------------------------------------
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+// --- renderer ---------------------------------------------------------------
+const renderer = new THREE.WebGLRenderer({
+  antialias: false,                 // the accumulation does the antialiasing
+  preserveDrawingBuffer: true,
+  powerPreference: 'high-performance',
+});
 renderer.setSize(W, H, false);
 renderer.setPixelRatio(1);
 renderer.shadowMap.enabled = SHADOWS;
-// PCFSoft blurs by a fixed number of texels. At roughly half a metre per texel
-// over a town this size that smears a house's shadow across several metres and
-// washes it out completely, so plain PCF is the right choice here.
-renderer.shadowMap.type = SHADOW_TYPE === 'soft' ? THREE.PCFSoftShadowMap
-  : SHADOW_TYPE === 'basic' ? THREE.BasicShadowMap : THREE.PCFShadowMap;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.30;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;   // graded in render.js
+renderer.toneMapping = THREE.NoToneMapping;               // accumulate in HDR
 document.body.appendChild(renderer.domElement);
 
-const camera = new THREE.PerspectiveCamera(27, W / H, 5, 14000);
+// --- sky, environment, smoke ------------------------------------------------
+const dome = buildSky(scene);
+scene.add(smokeMesh(buildSmoke(rng, groundHeight), groundHeight, rng));
 
-let triangles = 0;
-scene.traverse((o) => { if (o.isMesh && o.geometry.attributes.position) triangles += o.geometry.attributes.position.count / 3; });
-
-/**
- * Render one tile of a larger frame.
- *   view   name of a preset in VIEWS
- *   tiles  how many tiles per axis (1 = ordinary single-pass render)
- *   tx,ty  which tile, 0-based, ty counted from the top
- */
-function renderTile(view, tiles, tx, ty) {
-  const v = VIEWS[view] || VIEWS.master;
-  const fullW = W * tiles, fullH = H * tiles;
-  placeCamera(camera, v, fullW / fullH);
-  if (tiles > 1) camera.setViewOffset(fullW, fullH, tx * W, ty * H, W, H);
-  else camera.clearViewOffset();
-  renderer.render(scene, camera);
+// Image-based lighting. The sky dome is prefiltered into an environment map so
+// every surface gets a plausible specular response; without it the water is a
+// flat colour and the lead roofs look like paper.
+if (dome?.material?.map) {
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const env = pmrem.fromEquirectangular(dome.material.map);
+  scene.environment = env.texture;
+  scene.environmentIntensity = 0.28;
+  pmrem.dispose();
 }
 
-// diagnostic: the tallest point in each buffer, so a runaway mesh is obvious
-const tallest = {};
-for (const [name, mesher] of [['land', L.land], ['town', T.town], ['gardens', T.gardens],
-     ['foliage', L.foliage], ['walls', walls.walls], ['monuments', mon], ['fair', F.fair], ['cloth', F.cloth]]) {
-  let maxY = -1e9, at = null;
-  for (let i = 1; i < mesher.pos.length; i += 3) {
-    if (mesher.pos[i] > maxY) { maxY = mesher.pos[i]; at = [mesher.pos[i - 1], mesher.pos[i + 1]]; }
+// --- light ------------------------------------------------------------------
+const sunDir = sunDirection();
+const TARGET = new THREE.Vector3(-430, 0, 60);
+
+const sun = new THREE.DirectionalLight(0xfff0d6, SUN_STRENGTH);
+sun.target.position.copy(TARGET);
+scene.add(sun, sun.target);
+if (SHADOWS) {
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(SHADOW_MAP, SHADOW_MAP);
+  const S = 1250;
+  sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
+  sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
+  sun.shadow.camera.near = 2100; sun.shadow.camera.far = 4900;
+  sun.shadow.bias = -0.00010;
+  sun.shadow.normalBias = 0.28;
+}
+
+// The sky, sampled one direction at a time. Over many passes this becomes true
+// occluded ambient light; on a single pass it is just one odd-angled lamp, so a
+// preview at samples=1 looks harsher than the finished frame.
+const skyLight = new THREE.DirectionalLight(0xbfd4ee, SKY_STRENGTH);
+skyLight.target.position.copy(TARGET);
+scene.add(skyLight, skyLight.target);
+if (SHADOWS) {
+  skyLight.castShadow = true;
+  skyLight.shadow.mapSize.set(SKY_MAP, SKY_MAP);
+  const S = 1250;
+  skyLight.shadow.camera.left = -S; skyLight.shadow.camera.right = S;
+  skyLight.shadow.camera.top = S; skyLight.shadow.camera.bottom = -S;
+  skyLight.shadow.camera.near = 500; skyLight.shadow.camera.far = 5400;
+  skyLight.shadow.bias = -0.00018;
+  skyLight.shadow.normalBias = 0.55;
+}
+
+// a floor of bounce, so the deepest occlusion is not pure black
+scene.add(new THREE.AmbientLight(0xb9ad92, 0.06));
+
+// ---------------------------------------------------------------------------
+
+const camera = new THREE.PerspectiveCamera(34, W / H, 5, 16000);
+const accum = new Accumulator(renderer, W, H);
+accum.grade.uExposure.value = EXPOSURE;
+
+let triangles = 0;
+scene.traverse((o) => {
+  if (o.isMesh && o.geometry?.attributes?.position) triangles += o.geometry.attributes.position.count / 3;
+});
+
+const _v = new THREE.Vector3();
+const _c = new THREE.Color();
+const SUN_HALF_ANGLE = 0.011;        // rad — a shade wider than the real disc
+
+// A long accumulation has to be driven in chunks. One pass over 2.5 M
+// triangles with two shadow maps takes a couple of seconds in a software
+// rasteriser, so a 48-sample tile in a single call would block the page for two
+// minutes and the driving script's next command would time out waiting for it.
+let tile = null;
+
+/** Set a tile up and clear its accumulation buffer. */
+function beginTile(view, tiles, tx, ty) {
+  tile = {
+    v: VIEWS[view] || VIEWS.hero,
+    tiles, tx, ty,
+    fullW: W * tiles, fullH: H * tiles,
+    // Every tile must walk the SAME sequence of sun and sky directions. Seed it
+    // per tile and each tile averages a slightly different set of lights, which
+    // shows up as faint brightness steps along the seams.
+    srand: makeRng(0xA17E5),
+    done: 0,
+  };
+  accum.clear();
+}
+
+/** Fold `n` more passes into the current tile. */
+function accumulate(n) {
+  const { v, tiles, tx, ty, fullW, fullH, srand } = tile;
+  for (let s = 0; s < n; s++) {
+    const single = tile.done === 0 && n === 1 && SAMPLES === 1;
+    const jx = single ? 0 : srand() - 0.5;
+    const jy = single ? 0 : srand() - 0.5;
+    placeCamera(camera, v, fullW / fullH, jx, jy, tiles, tx, ty);
+
+    const d = single ? _v.copy(sunDir) : jitterCone(sunDir, SUN_HALF_ANGLE, srand, _v);
+    sun.position.set(TARGET.x + d.x * 3000, d.y * 3000, TARGET.z + d.z * 3000);
+
+    const sd = cosineHemisphere(srand);
+    skyLight.position.set(
+      TARGET.x + sd.x * 2600,
+      Math.max(200, sd.y * 2600),
+      TARGET.z + sd.z * 2600,
+    );
+    skyColour(sd, sunDir, _c);
+    skyLight.color.copy(_c);
+
+    accum.add(scene, camera);
+    tile.done++;
   }
-  tallest[name] = { y: Math.round(maxY), at: at && at.map((v) => Math.round(v)) };
+  return tile.done;
+}
+
+/** Average, grade and present the tile that has been accumulating. */
+function finishTile() {
+  const { tiles, tx, ty, fullW, fullH, done } = tile;
+  accum.resolve(done, [tx * W, ty * H], [W, H], [fullW, fullH]);
+  return done;
+}
+
+/** Render one tile in a single call — convenient for small previews. */
+function renderTile(view, tiles, tx, ty, samples = SAMPLES) {
+  const v = VIEWS[view] || VIEWS.hero;
+  const fullW = W * tiles, fullH = H * tiles;
+  const srand = makeRng(0xA17E5);
+
+  accum.clear();
+  for (let s = 0; s < samples; s++) {
+    const jx = samples === 1 ? 0 : srand() - 0.5;
+    const jy = samples === 1 ? 0 : srand() - 0.5;
+    placeCamera(camera, v, fullW / fullH, jx, jy, tiles, tx, ty);
+
+    const d = samples === 1 ? _v.copy(sunDir) : jitterCone(sunDir, SUN_HALF_ANGLE, srand, _v);
+    sun.position.set(TARGET.x + d.x * 3000, d.y * 3000, TARGET.z + d.z * 3000);
+
+    const sd = cosineHemisphere(srand);
+    skyLight.position.set(
+      TARGET.x + sd.x * 2600,
+      Math.max(200, sd.y * 2600),
+      TARGET.z + sd.z * 2600,
+    );
+    skyColour(sd, sunDir, _c);
+    skyLight.color.copy(_c);
+
+    accum.add(scene, camera);
+  }
+  accum.resolve(samples, [tx * W, ty * H], [W, H], [fullW, fullH]);
 }
 
 window.__troyes = {
-  renderTile,
-  tallest,
-  shadow: SHADOWS ? {
-    enabled: renderer.shadowMap.enabled,
-    map: SHADOW_MAP, span: SHADOW_SPAN, bias: SHADOW_BIAS,
-    near: sun.shadow.camera.near, far: sun.shadow.camera.far,
-    lightPos: sun.position.toArray().map((v) => Math.round(v)),
-    distToTarget: Math.round(sun.position.distanceTo(sun.target.position)),
-  } : null,
+  renderTile, beginTile, accumulate, finishTile,
   views: Object.keys(VIEWS),
+  grade: accum.grade,
   stats,
   triangles,
   buildMs: performance.now() - t0,
   W, H,
 };
 
-renderTile('master', 1, 0, 0);
+renderTile('hero', 1, 0, 0, 1);
 window.__troyesReady = true;
 console.log(`built in ${Math.round(performance.now() - t0)} ms, ${triangles.toLocaleString()} triangles`, stats);

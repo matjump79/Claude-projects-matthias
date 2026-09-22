@@ -25,6 +25,11 @@ const OUT = arg('out', `out/stills/${VIEW}.jpg`);
 const PORT = +arg('port', 8111);
 const SHADOWS = arg('shadows', '1');
 const SEED = arg('seed', '20250724');
+const SAMPLES = +arg('samples', 1);
+const SKY_MAP = arg('skymap', '2048');
+const EXPOSURE = arg('exposure', '2.35');
+const SKY = arg('sky', '1.25');
+const SUNI = arg('sunI', '3.4');
 const QUALITY = +arg('quality', 95);
 
 const TILE_W = Math.round(FULL_W / TILES);
@@ -45,12 +50,16 @@ async function main() {
   mkdirSync(TMP, { recursive: true });
   mkdirSync(OUT.split('/').slice(0, -1).join('/') || '.', { recursive: true });
 
-  console.log(`${FULL_W}x${FULL_H} as ${TILES}x${TILES} tiles of ${TILE_W}x${TILE_H} — view "${VIEW}"`);
+  console.log(`${FULL_W}x${FULL_H} as ${TILES}x${TILES} tiles of ${TILE_W}x${TILE_H}`
+    + ` — view "${VIEW}", ${SAMPLES} sample${SAMPLES === 1 ? '' : 's'} per tile`);
 
   const browser = await chromium.launch({ executablePath: CHROME, args: ARGS });
   const page = await browser.newPage({
     viewport: { width: TILE_W, height: TILE_H }, deviceScaleFactor: 1,
   });
+  // A single accumulation pass can take seconds; nothing here should time out.
+  page.setDefaultTimeout(0);
+  page.setDefaultNavigationTimeout(0);
   page.on('pageerror', (e) => console.error('[page error]', e.message));
   page.on('console', (m) => {
     if (m.type() === 'error') console.error('[console]', m.text());
@@ -58,7 +67,9 @@ async function main() {
   });
 
   const url = `http://127.0.0.1:${PORT}/scene/index.html`
-    + `?w=${TILE_W}&h=${TILE_H}&shadows=${SHADOWS}&seed=${SEED}`;
+    + `?w=${TILE_W}&h=${TILE_H}&shadows=${SHADOWS}&seed=${SEED}`
+    + `&samples=${SAMPLES}&skymap=${SKY_MAP}`
+    + `&exposure=${EXPOSURE}&sky=${SKY}&sunI=${SUNI}`;
   await page.goto(url, { waitUntil: 'load', timeout: 300000 });
   await page.waitForFunction('window.__troyesReady === true', null, { timeout: 900000 });
 
@@ -75,10 +86,16 @@ async function main() {
   let n = 0;
   for (let ty = 0; ty < TILES; ty++) {
     for (let tx = 0; tx < TILES; tx++) {
+      // accumulate in small batches so no single call blocks for minutes
       await page.evaluate(
-        ([v, t, x, y]) => window.__troyes.renderTile(v, t, x, y),
+        ([v, t, x, y]) => window.__troyes.beginTile(v, t, x, y),
         [VIEW, TILES, tx, ty],
       );
+      const BATCH = 2;
+      for (let done = 0; done < SAMPLES; done += BATCH) {
+        await page.evaluate((k) => window.__troyes.accumulate(k), Math.min(BATCH, SAMPLES - done));
+      }
+      await page.evaluate(() => window.__troyes.finishTile());
       await page.screenshot({
         path: `${TMP}/t_${String(ty).padStart(2, '0')}_${String(tx).padStart(2, '0')}.png`,
         type: 'png',

@@ -96,7 +96,7 @@ export function buildSky(scene, radius = 9000) {
   scene.add(dome);
 
   // the haze the town sits in
-  scene.fog = new THREE.FogExp2(0xd8d2ba, 0.000245);
+  scene.fog = new THREE.FogExp2(0xc4bda2, 0.000085);
   return dome;
 }
 

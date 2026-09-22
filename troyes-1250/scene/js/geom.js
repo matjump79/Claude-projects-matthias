@@ -8,39 +8,62 @@
 import * as THREE from '../vendor/three.module.js';
 
 export class Mesher {
-  constructor() {
-    this.pos = [];
-    this.nrm = [];
-    this.col = [];
-    this.uv = [];
+  // Geometry is written into named CHANNELS, one per material. A roof and the
+  // wall under it are built by the same call but have to be shaded by different
+  // textures, so they cannot share a buffer.
+  //
+  //   ch      the channel ordinary surfaces go to (walls, stone, ground, ...)
+  //   roofCh  the channel a roof SLOPE goes to; a gable END stays on `ch`,
+  //           because a gable end is wall, not roof
+  constructor(channel = 'main') {
+    this.b = {};
+    this.ch = channel;
+    this.roofCh = 'roofTile';
     this.tris = 0;
+    this.buf(channel);
   }
+
+  buf(name) {
+    let b = this.b[name];
+    if (!b) b = this.b[name] = { pos: [], nrm: [], col: [], uv: [], tris: 0 };
+    return b;
+  }
+
+  channel(name) { this.ch = name; return this; }
+  roof(name) { this.roofCh = name; return this; }
+
+  // the 'main' channel's arrays, so older code that pokes at them still works
+  get pos() { return this.buf(this.ch).pos; }
+  get nrm() { return this.buf(this.ch).nrm; }
+  get col() { return this.buf(this.ch).col; }
+  get uv() { return this.buf(this.ch).uv; }
 
   // Triangles are given in the order that reads naturally when you lay a face
   // out on paper — a, b, c going round the outside of it. In this coordinate
   // frame (+X east, +Y up, +Z south) that order winds the wrong way for
   // three.js, which would cull every roof and leave the ground invisible, so
   // the vertices are emitted a, c, b and the normal is taken to match.
-  tri(a, b, c, color, uvs) {
+  tri(a, b, c, color, uvs, channel) {
+    const t = this.buf(channel || this.ch);
     const ux = c[0] - a[0], uy = c[1] - a[1], uz = c[2] - a[2];
     const vx = b[0] - a[0], vy = b[1] - a[1], vz = b[2] - a[2];
     let nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
     const len = Math.hypot(nx, ny, nz) || 1;
     nx /= len; ny /= len; nz /= len;
-    for (const p of [a, c, b]) this.pos.push(p[0], p[1], p[2]);
-    for (let i = 0; i < 3; i++) this.nrm.push(nx, ny, nz);
-    for (let i = 0; i < 3; i++) this.col.push(color[0], color[1], color[2]);
-    if (uvs) this.uv.push(uvs[0], uvs[1], uvs[4], uvs[5], uvs[2], uvs[3]);
-    else this.uv.push(0, 0, 1, 1, 1, 0);
-    this.tris++;
+    for (const p of [a, c, b]) t.pos.push(p[0], p[1], p[2]);
+    for (let i = 0; i < 3; i++) t.nrm.push(nx, ny, nz);
+    for (let i = 0; i < 3; i++) t.col.push(color[0], color[1], color[2]);
+    if (uvs) t.uv.push(uvs[0], uvs[1], uvs[4], uvs[5], uvs[2], uvs[3]);
+    else t.uv.push(0, 0, 1, 1, 1, 0);
+    t.tris++; this.tris++;
   }
 
-  quad(a, b, c, d, color, scale = 1) {
+  quad(a, b, c, d, color, scale = 1, channel) {
     // uv scaled by world size so textures keep a constant grain
     const w = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) * scale;
     const h = Math.hypot(d[0] - a[0], d[1] - a[1], d[2] - a[2]) * scale;
-    this.tri(a, b, c, color, [0, 0, w, 0, w, h]);
-    this.tri(a, c, d, color, [0, 0, w, h, 0, h]);
+    this.tri(a, b, c, color, [0, 0, w, 0, w, h], channel);
+    this.tri(a, c, d, color, [0, 0, w, h, 0, h], channel);
   }
 
   /** Axis-aligned-in-local box, yawed by rot about its centre. */
@@ -68,9 +91,9 @@ export class Mesher {
     const y1 = y0 + rise;
     const A = P(-hw, -hd, y0), B = P(hw, -hd, y0), C = P(hw, hd, y0), D = P(-hw, hd, y0);
     const R0 = P(-hw, 0, y1), R1 = P(hw, 0, y1);
-    this.quad(A, B, R1, R0, roofCol, 1.6);
-    this.quad(C, D, R0, R1, roofCol, 1.6);
-    // gable ends (the triangles)
+    this.quad(A, B, R1, R0, roofCol, 1.6, this.roofCh);
+    this.quad(C, D, R0, R1, roofCol, 1.6, this.roofCh);
+    // gable ends (the triangles) — these are wall, not roof
     this.tri(B, C, R1, gableCol);
     this.tri(D, A, R0, gableCol);
     return { ridge: [R0, R1], y1 };
@@ -85,11 +108,27 @@ export class Mesher {
     const ridgeHalf = Math.max(0.1, hw - hd);
     const A = P(-hw, -hd, y0), B = P(hw, -hd, y0), C = P(hw, hd, y0), D = P(-hw, hd, y0);
     const R0 = P(-ridgeHalf, 0, y1), R1 = P(ridgeHalf, 0, y1);
-    this.quad(A, B, R1, R0, roofCol, 1.6);
-    this.quad(C, D, R0, R1, roofCol, 1.6);
-    this.tri(B, C, R1, roofCol);
-    this.tri(D, A, R0, roofCol);
+    this.quad(A, B, R1, R0, roofCol, 1.6, this.roofCh);
+    this.quad(C, D, R0, R1, roofCol, 1.6, this.roofCh);
+    this.tri(B, C, R1, roofCol, null, this.roofCh);
+    this.tri(D, A, R0, roofCol, null, this.roofCh);
     return { y1 };
+  }
+
+  /** A flat card with UVs running 0..1 across it — a foliage billboard. */
+  card(cx, cy, cz, w, h, yaw, tilt, color, channel) {
+    const c = Math.cos(yaw), s = Math.sin(yaw);
+    const ct = Math.cos(tilt), st = Math.sin(tilt);
+    // local axes: u across the card, v up it (tilted back by `tilt`)
+    const ux = c * w / 2, uz = s * w / 2;
+    const vx = -s * ct * h / 2, vy = st * h / 2, vz = c * ct * h / 2;
+    const A = [cx - ux - vx, cy - vy, cz - uz - vz];
+    const B = [cx + ux - vx, cy - vy, cz + uz - vz];
+    const C = [cx + ux + vx, cy + vy, cz + uz + vz];
+    const D = [cx - ux + vx, cy + vy, cz - uz + vz];
+    const ch = channel || this.ch;
+    this.tri(A, B, C, color, [0, 0, 1, 0, 1, 1], ch);
+    this.tri(A, C, D, color, [0, 0, 1, 1, 0, 1], ch);
   }
 
   /** Pyramid / broach spire on a square or polygonal base. */
@@ -172,14 +211,30 @@ export class Mesher {
     }
   }
 
-  geometry() {
+  /** One channel as a BufferGeometry, or null if nothing was written to it. */
+  geometry(channel) {
+    const b = this.b[channel || this.ch];
+    if (!b || !b.tris) return null;
     const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.Float32BufferAttribute(this.pos, 3));
-    g.setAttribute('normal', new THREE.Float32BufferAttribute(this.nrm, 3));
-    g.setAttribute('color', new THREE.Float32BufferAttribute(this.col, 3));
-    g.setAttribute('uv', new THREE.Float32BufferAttribute(this.uv, 2));
+    g.setAttribute('position', new THREE.Float32BufferAttribute(b.pos, 3));
+    g.setAttribute('normal', new THREE.Float32BufferAttribute(b.nrm, 3));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(b.col, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(b.uv, 2));
+    // No tangent attribute: the geometry is non-indexed triangle soup with
+    // per-face UVs, so three falls back to deriving the tangent frame in the
+    // fragment shader, which is what we want here anyway.
     g.computeBoundingSphere();
     return g;
+  }
+
+  /** Every non-empty channel, as { name: BufferGeometry }. */
+  geometries() {
+    const out = {};
+    for (const name of Object.keys(this.b)) {
+      const geo = this.geometry(name);
+      if (geo) out[name] = geo;
+    }
+    return out;
   }
 }
 

@@ -93,9 +93,9 @@ export function groundHeight(x, z) {
 export const export_roads = [];
 
 export function buildLand(rng) {
-  const m = new Mesher();
-  const water = new Mesher();
-  const foliage = new Mesher();
+  const m = new Mesher('ground');
+  const water = new Mesher('water');
+  const foliage = new Mesher('main');
 
   // ---- the plain -------------------------------------------------------
   // Fine near the town where the eye goes, coarse out at the edges.
@@ -382,7 +382,14 @@ function roadOnGround(m, pts, width, col, rng) {
 export function tree(m, x, y, z, h, rng, riverside = false) {
   const trunkH = h * (riverside ? 0.22 : 0.30);
   const a = rng() * 6.3;
-  m.prism(x, y, z, 0.24 + h * 0.028, trunkH * 1.2, a, C.oakDark, 5);
+  m.channel('main');
+  m.prism(x, y, z, 0.20 + h * 0.026, trunkH * 1.25, a, C.oakDark, 5);
+  // a couple of limbs, so the trunk does not end in mid-air inside the canopy
+  for (let i = 0; i < 2; i++) {
+    const la = a + i * 2.4 + rng();
+    m.prism(x + Math.cos(la) * h * 0.05, y + trunkH * 0.75, z + Math.sin(la) * h * 0.05,
+            0.12 + h * 0.012, h * 0.22, la, C.oakDark, 4, 0.6);
+  }
 
   const pick = rng();
   const col = riverside
@@ -392,19 +399,26 @@ export function tree(m, x, y, z, h, rng, riverside = false) {
     : pick < 0.85 ? mix(C.treeLight, C.treeOlive, rng())
     : mix(C.treeDark, C.treeOlive, rng());
 
-  const r = h * (riverside ? 0.34 : 0.40);
+  // The canopy: a cloud of alpha-cut leaf cards at random attitudes. A solid
+  // cone or a stack of drums reads as a green object; only a broken, see-through
+  // silhouette with light coming between the leaves reads as a tree.
+  const r = h * (riverside ? 0.36 : 0.42);
   const crown = h - trunkH;
-  // Three stacked drums of falling radius read as a round, heavy canopy; the
-  // slight rotation between them breaks up the silhouette.
-  m.prism(x, y + trunkH, z, r * 0.70, crown * 0.28, a, shade(col, 0.84), 8, 1.34);
-  m.prism(x, y + trunkH + crown * 0.28, z, r, crown * 0.40, a + 0.4, col, 8, 0.96);
-  m.prism(x, y + trunkH + crown * 0.68, z, r * 0.95, crown * 0.34, a + 0.8,
-          shade(col, 1.08), 8, 0.30);
-  // a second, offset lobe on the larger trees, so no two read alike
-  if (h > 9 && rng() < 0.7) {
-    const off = r * 0.5, oa = rng() * 6.3;
-    m.prism(x + Math.cos(oa) * off, y + trunkH + crown * 0.34, z + Math.sin(oa) * off,
-            r * 0.62, crown * 0.46, a + 1.2, shade(col, 0.94), 7, 0.55);
+  const cy = y + trunkH + crown * 0.46;
+  const n = Math.max(7, Math.round(6 + h * 0.85));
+  for (let i = 0; i < n; i++) {
+    const ang = rng() * Math.PI * 2;
+    const rad = Math.pow(rng(), 0.55) * r * 0.82;
+    const hgt = (rng() - 0.42) * crown * 0.82;
+    const px = x + Math.cos(ang) * rad;
+    const pz = z + Math.sin(ang) * rad;
+    const py = cy + hgt;
+    // cards nearer the top of the crown catch more sun
+    const lit = 0.84 + 0.30 * ((hgt / (crown * 0.5)) * 0.5 + 0.5);
+    const cw = r * (0.85 + rng() * 0.75);
+    m.card(px, py, pz, cw, cw * (0.72 + rng() * 0.4),
+           rng() * Math.PI * 2, (rng() - 0.5) * 1.5,
+           shade(col, lit * (0.9 + rng() * 0.2)), 'foliage');
   }
 }
 
@@ -419,7 +433,7 @@ export function copse(m, x, z, radius, count, h0, h1, rng, ground, riverside = f
 
 /** The street surfaces inside the walls: beaten earth, the fair quarter paved. */
 export function buildStreets(rng) {
-  const m = new Mesher();
+  const m = new Mesher('ground');
   for (const s of STREETS) {
     const paved = s.tag === 'fair' || s.tag === 'money' || s.tag === 'main' || s.tag === 'cite';
     const col = paved ? C.cobble : C.mud;
