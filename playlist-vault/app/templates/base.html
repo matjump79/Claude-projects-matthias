@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Playlist Vault{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/">Playlist Vault</a>
+    {% if user %}
+    <nav>
+      <a href="/">My vault</a>
+      <a href="/research">Build with Claude</a>
+      <a href="/family">Family</a>
+      <form method="post" action="/logout"><button class="link">Log out ({{ user.name }})</button></form>
+    </nav>
+    {% endif %}
+  </header>
+  <main>
+    {% for m in messages %}
+      <p class="flash {{ m.kind }}">{{ m.text }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ playlist.name }} · Playlist Vault{% endblock %}
+{% block content %}
+<section class="card">
+  <p class="muted"><a href="/">← My vault</a></p>
+  <h1>{{ snapshot.name if snapshot else playlist.name }}</h1>
+  {% if snapshot and snapshot.description %}<p>{{ snapshot.description }}</p>{% endif %}
+  {% if playlist.source == "claude" and snapshot and snapshot.note %}
+    <p class="muted">Your request: “{{ snapshot.note }}”</p>
+  {% endif %}
+  {% if snapshot %}
+  <p class="muted">Snapshot from {{ snapshot.taken_at[:16] }} · {{ tracks|length }} tracks
+    {% if unmatched %}· <span class="warn">{{ unmatched }} not yet matched on TIDAL</span>{% endif %}</p>
+  {% endif %}
+</section>
+
+{% if snapshot %}
+<section class="card">
+  <h2>Actions</h2>
+  <div class="row">
+    {% if tidal %}
+    <form method="post" action="/snapshots/{{ snapshot.id }}/restore" class="row">
+      <input name="name" value="{{ snapshot.name }}{% if playlist.source == 'tidal' %} (restored {{ snapshot.taken_at[:10] }}){% endif %}" size="36" aria-label="Name for the new TIDAL playlist">
+      <button>{{ "Restore to TIDAL" if playlist.source == "tidal" else "Save to TIDAL" }}</button>
+    </form>
+    {% else %}
+    <p class="muted">Connect TIDAL on the vault page to restore this playlist.</p>
+    {% endif %}
+    <a class="button secondary" href="/snapshots/{{ snapshot.id }}.csv">Download CSV</a>
+    <form method="post" action="/playlists/{{ playlist.id }}/delete" onsubmit="return confirm('Remove this playlist and all its snapshots from the vault? Nothing on TIDAL is changed.')">
+      <button class="danger">Remove from vault</button>
+    </form>
+  </div>
+  <p class="muted">Restoring always creates a <em>new</em> TIDAL playlist, so nothing you already have is overwritten.</p>
+</section>
+{% endif %}
+
+{% if playlist.source == "claude" %}
+<section class="card">
+  <h2>Refine with Claude</h2>
+  <form method="post" action="/playlists/{{ playlist.id }}/refine" class="stack">
+    <label>What should change?
+      <textarea name="prompt" rows="2" required placeholder="e.g. fewer ballads, add more 1980s tracks, end on something calm"></textarea>
+    </label>
+    <div class="row">
+      <label>Tracks <input name="count" type="number" min="5" max="60" value="{{ tracks|length or 25 }}"></label>
+      <button>Refine</button>
+    </div>
+    <p class="muted">Each refinement is kept as a new version below, so you can go back.</p>
+  </form>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Tracks</h2>
+  <table>
+    <thead><tr><th class="num">#</th><th>Title</th><th>Artist</th><th class="hide-sm">Album</th>
+      {% if playlist.source == "claude" %}<th>Why</th>{% endif %}<th>TIDAL</th></tr></thead>
+    <tbody>
+    {% for t in tracks %}
+      <tr>
+        <td class="num">{{ t.position + 1 }}</td>
+        <td>{{ t.title }}</td>
+        <td>{{ t.artist }}</td>
+        <td class="hide-sm">{{ t.album }}</td>
+        {% if playlist.source == "claude" %}<td class="muted small">{{ t.note }}</td>{% endif %}
+        <td>{% if t.tidal_id %}<a href="https://tidal.com/browse/track/{{ t.tidal_id }}" target="_blank" rel="noopener">open</a>{% else %}<span class="warn">not found</span>{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if snapshots|length > 1 %}
+<section class="card">
+  <h2>History</h2>
+  <ul class="history">
+  {% for s in snapshots %}
+    <li>{% if snapshot and s.id == snapshot.id %}<strong>{{ s.taken_at[:16] }}</strong>{% else %}<a href="/playlists/{{ playlist.id }}?snapshot={{ s.id }}">{{ s.taken_at[:16] }}</a>{% endif %}
+      · {{ s.name }} · {{ s.track_count }} tracks</li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

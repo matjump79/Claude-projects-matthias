@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card narrow">
+  <h1>Welcome</h1>
+  <p>Create the first account. It becomes the family admin, who can add everyone else.</p>
+  <form method="post" action="/setup" class="stack">
+    <label>Your name <input name="name" required autofocus></label>
+    <label>Username <input name="username" required autocomplete="username"></label>
+    <label>Password (at least 8 characters) <input name="password" type="password" minlength="8" required autocomplete="new-password"></label>
+    <button>Create account</button>
+  </form>
+</section>
+{% endblock %}

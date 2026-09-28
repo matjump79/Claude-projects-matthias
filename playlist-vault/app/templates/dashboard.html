@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h1>My vault</h1>
+  <div class="row">
+    {% if tidal %}
+      <p>TIDAL: connected as <strong>{{ tidal.username or "your account" }}</strong> ({{ tidal.country }})</p>
+      <form method="post" action="/backup"><button>Back up TIDAL now</button></form>
+      <form method="post" action="/tidal/disconnect"><button class="secondary">Disconnect</button></form>
+    {% elif tidal_configured %}
+      <p>TIDAL is not connected yet.</p>
+      <a class="button" href="/tidal/connect">Connect TIDAL</a>
+    {% else %}
+      <p class="muted">TIDAL is not set up on this server yet (README, step 2).</p>
+    {% endif %}
+  </div>
+  <p class="muted">A backup saves a new dated snapshot only for playlists that changed since the last one. Older snapshots are never overwritten.</p>
+</section>
+
+<section class="card">
+  <h2>Saved playlists</h2>
+  {% if playlists %}
+  <table>
+    <thead><tr><th>Playlist</th><th>From</th><th class="num">Tracks</th><th class="num hide-sm">Snapshots</th><th class="hide-sm">Last saved</th></tr></thead>
+    <tbody>
+    {% for p in playlists %}
+      <tr>
+        <td><a href="/playlists/{{ p.id }}">{{ p.name }}</a></td>
+        <td><span class="tag {{ p.source }}">{{ "TIDAL" if p.source == "tidal" else "Claude" }}</span></td>
+        <td class="num">{{ p.track_count }}</td>
+        <td class="num hide-sm">{{ p.snapshot_count }}</td>
+        <td class="hide-sm">{{ p.taken_at[:16] }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Nothing saved yet. Connect TIDAL and run a backup, or build a playlist with Claude.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Backup file</h2>
+  <p>Download everything (all playlists and every snapshot) as one file you can keep anywhere, e.g. on a USB stick or in iCloud Drive. The file can be loaded back in here if this computer is ever lost.</p>
+  <div class="row">
+    <a class="button" href="/export">Download backup file</a>
+    <form method="post" action="/import" enctype="multipart/form-data" class="row">
+      <input type="file" name="file" accept=".json,application/json" required>
+      <button class="secondary">Load backup file</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

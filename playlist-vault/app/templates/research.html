@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Build with Claude · Playlist Vault{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Build a playlist with Claude</h1>
+  <p>Describe what you want in plain words. Claude suggests the songs and explains each pick; the app then looks every song up on TIDAL{% if not tidal %} (once TIDAL is connected){% endif %}.</p>
+  <form method="post" action="/research" class="stack">
+    <label>Your request
+      <textarea name="prompt" rows="4" required autofocus
+        placeholder="e.g. 90 minutes of 1970s German Krautrock for a long drive, starting mellow and building up"></textarea>
+    </label>
+    <div class="row">
+      <label>Tracks <input name="count" type="number" min="5" max="60" value="25"></label>
+      <label class="check"><input type="checkbox" name="use_taste" value="true" checked> Use my saved playlists as a taste reference</label>
+    </div>
+    <button>Ask Claude</button>
+    <p class="muted">This takes up to a minute. Each request costs a few cents on your Claude API account.</p>
+  </form>
+</section>
+
+{% if drafts %}
+<section class="card">
+  <h2>Earlier Claude playlists</h2>
+  <ul class="history">
+    {% for d in drafts %}
+      <li><a href="/playlists/{{ d.id }}">{{ d.name }}</a> · {{ d.track_count }} tracks · {{ d.taken_at[:10] }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

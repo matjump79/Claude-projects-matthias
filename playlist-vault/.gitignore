@@ -1,0 +1,6 @@
+# your vault, login tokens and secrets never go to git
+data/
+.env
+.venv/
+__pycache__/
+.pytest_cache/

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Family · Playlist Vault{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Family</h1>
+  <p class="muted">Everyone has their own login, their own TIDAL connection and their own private vault.</p>
+  <table>
+    <thead><tr><th>Name</th><th>Username</th><th>TIDAL</th><th></th></tr></thead>
+    <tbody>
+    {% for m in members %}
+      <tr>
+        <td>{{ m.name }}{% if m.is_admin %} <span class="tag">admin</span>{% endif %}</td>
+        <td>{{ m.username }}</td>
+        <td>{{ m.tidal_username or ("connected" if m.tidal_username is not none else "—") }}</td>
+        <td>
+          {% if user.is_admin and m.id != user.id %}
+          <form method="post" action="/family/{{ m.id }}/delete" onsubmit="return confirm('Remove {{ m.name }} and their whole vault?')">
+            <button class="danger small">Remove</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if user.is_admin %}
+<section class="card">
+  <h2>Add a family member</h2>
+  <form method="post" action="/family" class="stack narrow">
+    <label>Name <input name="name" required></label>
+    <label>Username <input name="username" required autocomplete="off"></label>
+    <label>Starting password (at least 8 characters) <input name="password" type="password" minlength="8" required autocomplete="new-password"></label>
+    <button>Add member</button>
+  </form>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Change my password</h2>
+  <form method="post" action="/account/password" class="stack narrow">
+    <label>Current password <input name="current" type="password" required autocomplete="current-password"></label>
+    <label>New password <input name="new" type="password" minlength="8" required autocomplete="new-password"></label>
+    <button>Change password</button>
+  </form>
+</section>
+{% endblock %}
