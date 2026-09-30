@@ -257,13 +257,17 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   window.HIFI.forEach(p => {
     const e = { ...p, id: slug(p.brand + "-" + p.model), deep: true, cat: p.cat === "amplifier" ? ampCat(p) : p.cat };
     data.push(e);
-    byKey[norm(p.brand.split(" /")[0]) + norm(p.model.split(/[ (/]/)[0])] = e;
+    const b = norm(p.brand.split(" /")[0]);
+    const full = p.model.split(/\s*[(+]|\s\/\s/)[0];
+    byKey[b + norm(full)] = e;
+    const first = full.split(" ")[0];
+    if (/\d/.test(first) && norm(first).length >= 4) byKey[b + norm(first)] ||= e;   // e.g. SABA "9241 digital" ↔ "9241"
   });
   (window.HIFI_WIKI || []).forEach(w => {
     const hwSource = { t: `HiFi-Wiki – ${w.b} ${w.m}`, u: w.u, lang: "de" };
-    const twin = byKey[norm(w.b) + norm(w.m)];
-    if (twin) {
-      twin.de = { feat: w.f, rem: w.r, price: w.p };
+    const twin = byKey[norm(w.b) + norm(w.m)] || byKey[norm(w.b) + norm(w.m.split(" ")[0])];
+    if (twin && twin.deep) {
+      twin.de = { feat: w.f, rem: w.r, oem: w.o };
       if (!twin.sources.some(s => s.u === w.u)) twin.sources.push(hwSource);
       return;
     }
@@ -272,7 +276,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
       id: slug(w.b + "-" + w.m), brand: w.b, model: w.m, cat: w.c, year: w.y, built: w.bu || String(w.y),
       country: "", specs, sources: [hwSource], photos: w.u, img: w.i, pc: w.pc,
       desc: `${ONE[w.c]} by ${w.b}, built ${w.bu || w.y}.` + (w.pw ? ` Output ${w.pw}.` : "") + (w.p ? ` Launch price about ${w.p}.` : ""),
-      de: { feat: w.f, rem: w.r }
+      de: { feat: w.f, rem: w.r, oem: w.o }
     });
   });
   const index = Object.fromEntries(data.map(p => [p.id, p]));
@@ -331,7 +335,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     let h = hayCache.get(p.id);
     if (!h) {
       h = [p.brand, p.model, p.aka, p.market, p.type, p.country, p.specs, p.desc, p.year, CATS[p.cat], ONE[p.cat],
-           p.de?.rem, (p.de?.feat || []).join(" ")].join(" ").toLowerCase();
+           p.de?.rem, p.de?.oem, (p.de?.feat || []).join(" ")].join(" ").toLowerCase();
       hayCache.set(p.id, h);
     }
     return h;
@@ -478,6 +482,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
             ${p.aka ? `<dt>Also sold as</dt><dd>${esc(p.aka)}</dd>` : ""}
             ${p.market ? `<dt>Markets</dt><dd>${esc(p.market)}</dd>` : ""}
             ${p.country ? `<dt>Origin</dt><dd>${esc(p.country)}</dd>` : ""}
+            ${p.de?.oem ? `<dt>Maker note</dt><dd lang="de">${esc(p.de.oem)}</dd>` : ""}
             <dt>Key specs</dt><dd>${esc(p.specs)}</dd>
           </dl>
           ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">HiFi-Wiki notes (German)</h3>
