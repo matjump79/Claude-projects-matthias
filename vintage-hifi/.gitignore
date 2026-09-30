@@ -1,0 +1,3 @@
+tools/cand/
+tools/*.json
+!tools/products.json

@@ -7,8 +7,12 @@ import pathlib, re, sys
 
 root = pathlib.Path(__file__).parent
 html = (root / "index.html").read_text(encoding="utf-8")
+import base64
+def embed_photos(js):
+    return re.sub(r'"src": "(photos/[^"]+\.jpg)"', lambda m: '"src": "data:image/jpeg;base64,'
+                  + base64.b64encode((root / m.group(1)).read_bytes()).decode() + '"', js)
 html = re.sub(r'<script src="(data/[^"]+\.js)"></script>',
-              lambda m: "<script>\n" + (root / m.group(1)).read_text(encoding="utf-8") + "</script>", html)
+              lambda m: "<script>\n" + embed_photos((root / m.group(1)).read_text(encoding="utf-8")) + "</script>", html)
 
 if "--artifact" in sys.argv:
     target = pathlib.Path(sys.argv[sys.argv.index("--artifact") + 1])

@@ -103,7 +103,7 @@ select {
 }
 .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .photo { position: relative; aspect-ratio: 4 / 3; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
-.photo img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+.photo img { width: 100%; height: 100%; object-fit: contain; }
 .photo .ph { color: var(--muted); text-align: center; padding: 12px; font-size: 13px; }
 .photo .ph svg { width: 72px; height: 72px; opacity: .55; display: block; margin: 0 auto 6px; }
 .badge {
@@ -195,7 +195,8 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   <p>Year = year of introduction according to the cited sources. Where sources disagree this is marked “sources differ”.
   Specs are as published by the sources, not re-measured. Language codes: EN English, DE German, JA Japanese, FR French,
   IT Italian, ES Spanish, PL Polish, MULTI multilingual site (e.g. Radiomuseum.org).</p>
-  <p>Photos: Wikimedia Commons (licence and author shown on each photo), or a photo URL you add yourself (saved only in this browser).</p>
+  <p>Photos: taken from the credited source pages (Radiomuseum.org, hifi-wiki, classicreceivers.com, audio-heritage.jp and others) and checked by eye against each model.
+  They are shown for personal reference; the rights stay with their owners, so ask before publishing the page more widely.</p>
 </footer>
 
 <dialog id="dlg" aria-label="Product details"></dialog>
@@ -204,6 +205,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <script src="data/receivers.js"></script>
 <script src="data/amplifiers.js"></script>
 <script src="data/turntables.js"></script>
+<script src="data/photos.js"></script>
 <script>
 (() => {
   const YEARS = [1977, 1978, 1979, 1980, 1981, 1982, 1983];
@@ -349,7 +351,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   const CACHE_KEY = "hifi.photos.v1";
   const MONTH = 30 * 24 * 3600 * 1000;
   const LIVE = !window.HIFI_NO_REMOTE;
-  if (!LIVE) $("#photoNote").textContent = "Open any product for links to photo pages and image search. The downloadable version also shows free-licence photos from Wikimedia Commons.";
+  $("#photoNote").textContent = "Photos are hand-checked against each model and credited to the page they come from.";
   const cache = store.get(CACHE_KEY) || {};
   const custom = store.get("hifi.custom") || {};
   const pending = {};
@@ -393,8 +395,10 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     return null;
   }
   function getPhoto(p) {
+    if (LIVE && custom[p.id]) return Promise.resolve({ src: custom[p.id], custom: true });
+    const own = (window.HIFI_PHOTOS || {})[p.id];
+    if (own) return Promise.resolve({ ...own, local: true });
     if (!LIVE) return Promise.resolve(null);
-    if (custom[p.id]) return Promise.resolve({ src: custom[p.id], custom: true });
     const c = cache[p.id];
     if (c && Date.now() - c.t < MONTH) return Promise.resolve(c.v);
     return pending[p.id] ||= findCommons(p).then(v => {
@@ -472,7 +476,8 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     getPhoto(p).then(ph => {
       const c = dlg.querySelector("#dlgCredit");
       if (!c) return;
-      if (!LIVE) c.textContent = "Photos: use the links under “Photos”.";
+      if (ph && ph.local) c.innerHTML = `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.site)}</a> · shown for personal reference, rights stay with the source`;
+      else if (!LIVE || !ph) c.textContent = "No verified photo yet. Use the links under “Photos” and “Photo databases”.";
       else if (!ph) c.innerHTML = `No free-licence photo on Wikimedia Commons matched this model. Use the photo links under “Photos”.`;
       else if (ph.custom) c.textContent = "Your own photo (saved only in this browser).";
       else c.innerHTML = `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.title)}</a> · ${esc(ph.license || "see file page")}${ph.author ? " · " + esc(ph.author) : ""} · Wikimedia Commons (auto-matched, please verify)`;
