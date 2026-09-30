@@ -4,60 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vintage HiFi Database</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap">
 <meta name="description" content="Receivers, amplifiers and turntables 1977–1983, searchable by year, category and brand, with sources in several languages.">
 <style>
+/* Layout: sticky filter "control panel" over a year-by-year grid of silver-face product cards. */
 :root {
-  --bg: #f4f1ea;
-  --surface: #fffdf8;
-  --surface-2: #ece6da;
-  --text: #22201c;
-  --muted: #6b645a;
-  --line: #d8d0c1;
-  --accent: #9a4a1c;
-  --accent-soft: #f3e2d4;
-  --chip-on: #22201c;
-  --chip-on-text: #fffdf8;
-  --shadow: 0 1px 2px rgba(40, 30, 20, .06), 0 4px 16px rgba(40, 30, 20, .06);
-  --receiver: #2f6f73;
-  --amplifier: #9a4a1c;
-  --turntable: #5b4f9c;
+  --bg: #e6e8ea;
+  --surface: #f6f7f8;
+  --surface-2: #d9dde0;
+  --text: #1a1d20;
+  --muted: #5a6168;
+  --line: #c3c9ce;
+  --accent: #a8560a;
+  --chip-on: #1a1d20;
+  --chip-on-text: #f6f7f8;
+  --shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 1px 2px rgba(20,24,28,.08), 0 6px 18px rgba(20,24,28,.07);
+  --receiver: #2d6b70;
+  --amplifier: #a8560a;
+  --turntable: #56509a;
   --badge-text: #fff;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #161412;
-    --surface: #201d1a;
-    --surface-2: #2a2622;
-    --text: #efe9df;
-    --muted: #a59c8f;
-    --line: #3a342e;
-    --accent: #e39a62;
-    --accent-soft: #3a2a1f;
-    --chip-on: #efe9df;
-    --chip-on-text: #161412;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
-    --receiver: #6fb7bb;
-    --amplifier: #e39a62;
-    --turntable: #a99df0;
-    --badge-text: #111;
+    --bg: #111315; --surface: #1a1d20; --surface-2: #23272b; --text: #e7e9eb; --muted: #99a1a8; --line: #31363b;
+    --accent: #f2a541; --chip-on: #f2a541; --chip-on-text: #111315;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.3);
+    --receiver: #6db6ba; --amplifier: #f2a541; --turntable: #a79ff0; --badge-text: #111315;
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #161412;
-  --surface: #201d1a;
-  --surface-2: #2a2622;
-  --text: #efe9df;
-  --muted: #a59c8f;
-  --line: #3a342e;
-  --accent: #e39a62;
-  --accent-soft: #3a2a1f;
-  --chip-on: #efe9df;
-  --chip-on-text: #161412;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
-  --receiver: #6fb7bb;
-  --amplifier: #e39a62;
-  --turntable: #a99df0;
-  --badge-text: #111;
+  --bg: #111315; --surface: #1a1d20; --surface-2: #23272b; --text: #e7e9eb; --muted: #99a1a8; --line: #31363b;
+  --accent: #f2a541; --chip-on: #f2a541; --chip-on-text: #111315;
+  --shadow: 0 1px 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.3);
+  --receiver: #6db6ba; --amplifier: #f2a541; --turntable: #a79ff0; --badge-text: #111315;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -66,19 +52,19 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font: 16px/1.55 var(--font-body);
 }
 a { color: var(--accent); }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
 
 header.top { padding-top: 28px; padding-bottom: 8px; }
 .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; font-size: clamp(28px, 5vw, 42px); margin: 4px 0 6px; line-height: 1.1; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 6vw, 54px); margin: 4px 0 8px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; text-wrap: balance; }
 .lede { color: var(--muted); max-width: 70ch; margin: 0 0 8px; }
 .theme-btn { float: right; background: none; border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
 
 .controls {
-  position: sticky; top: 0; z-index: 5;
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
@@ -105,8 +91,8 @@ select {
 .status { font-size: 14px; color: var(--muted); margin: 14px 0 0; }
 
 .year-block { margin: 26px 0 8px; }
-.year-head { display: flex; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--text); padding-bottom: 4px; margin-bottom: 14px; }
-.year-head h2 { font-family: Georgia, serif; font-size: 30px; margin: 0; }
+.year-head { display: flex; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; margin-bottom: 14px; }
+.year-head h2 { font-family: var(--font-display); font-size: 40px; font-weight: 600; line-height: 1; margin: 0; color: var(--accent); font-variant-numeric: tabular-nums; }
 .year-head span { color: var(--muted); font-size: 14px; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
@@ -127,15 +113,15 @@ select {
 .b-receiver { background: var(--receiver); } .b-amplifier { background: var(--amplifier); } .b-turntable { background: var(--turntable); }
 .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .brand { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.model { font-family: Georgia, serif; font-size: 21px; font-weight: 600; line-height: 1.2; }
+.model { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: .01em; }
 .meta { font-size: 13px; color: var(--muted); }
-.specs { font-size: 13.5px; margin-top: 4px; }
+.specs { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.5; margin-top: 4px; }
 .langs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; padding-top: 8px; }
-.lang { font-size: 11px; font-weight: 600; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; color: var(--muted); }
+.lang { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; color: var(--muted); }
 
 .brands { columns: 3 220px; column-gap: 24px; margin-top: 20px; }
 .brands div { break-inside: avoid; margin-bottom: 14px; }
-.brands h3 { margin: 0 0 4px; font-family: Georgia, serif; font-size: 20px; }
+.brands h3 { margin: 0 0 4px; font-family: var(--font-display); font-size: 24px; font-weight: 600; }
 .brands button { background: none; border: 0; padding: 2px 0; color: var(--accent); cursor: pointer; font: inherit; font-size: 14px; text-align: left; }
 .brands small { color: var(--muted); }
 
@@ -178,7 +164,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   <div class="eyebrow">Vintage HiFi · Volume 1</div>
   <h1>Receivers, Amplifiers &amp; Turntables 1977–1983</h1>
   <p class="lede">Each entry lists year of introduction, key specs and the sources used, with each source's language marked.
-  Photos load live from Wikimedia Commons where a matching free-licence image exists. Otherwise the card links to a source page with photos.</p>
+  <span id="photoNote">Photos load live from Wikimedia Commons where a matching free-licence image exists. Otherwise the card links to a source page with photos.</span></p>
 </header>
 
 <div class="controls">
@@ -1158,6 +1144,8 @@ HIFI.push(
   // Order: user-supplied URL → cached Commons match → live Commons search.
   const CACHE_KEY = "hifi.photos.v1";
   const MONTH = 30 * 24 * 3600 * 1000;
+  const LIVE = !window.HIFI_NO_REMOTE;
+  if (!LIVE) $("#photoNote").textContent = "Open any product for links to photo pages and image search. The downloadable version also shows free-licence photos from Wikimedia Commons.";
   const cache = store.get(CACHE_KEY) || {};
   const custom = store.get("hifi.custom") || {};
   const pending = {};
@@ -1201,6 +1189,7 @@ HIFI.push(
     return null;
   }
   function getPhoto(p) {
+    if (!LIVE) return Promise.resolve(null);
     if (custom[p.id]) return Promise.resolve({ src: custom[p.id], custom: true });
     const c = cache[p.id];
     if (c && Date.now() - c.t < MONTH) return Promise.resolve(c.v);
@@ -1220,7 +1209,7 @@ HIFI.push(
     });
   }
   function noPhoto(p, big) {
-    return `<div class="ph">${ICONS[p.cat]}No free-licence photo found${big ? `<br><a href="${esc(p.photos)}" target="_blank" rel="noopener">See photos at ${esc(host(p.photos))}</a>` : ""}</div>`;
+    return `<div class="ph">${ICONS[p.cat]}${LIVE ? "No free-licence photo found" : "Photo links inside"}${big ? `<br><a href="${esc(p.photos)}" target="_blank" rel="noopener">See photos at ${esc(host(p.photos))}</a>` : ""}</div>`;
   }
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -1264,8 +1253,8 @@ HIFI.push(
             <a href="${esc(p.photos)}" target="_blank" rel="noopener">Photos at ${esc(host(p.photos))}</a>
             <a href="https://commons.wikimedia.org/w/index.php?search=${imgq}&title=Special:MediaSearch&type=image" target="_blank" rel="noopener">Search Wikimedia Commons</a>
             <a href="https://www.google.com/search?tbm=isch&q=${imgq}" target="_blank" rel="noopener">Image search</a>
-            <button type="button" id="setPhoto">${custom[p.id] ? "Change my photo" : "Add my own photo URL"}</button>
-            ${custom[p.id] ? `<button type="button" id="clearPhoto">Remove my photo</button>` : ""}
+            ${LIVE ? `<button type="button" id="setPhoto">${custom[p.id] ? "Change my photo" : "Add my own photo URL"}</button>` : ""}
+            ${LIVE && custom[p.id] ? `<button type="button" id="clearPhoto">Remove my photo</button>` : ""}
           </div>
         </div>
       </div>`;
@@ -1275,11 +1264,12 @@ HIFI.push(
     getPhoto(p).then(ph => {
       const c = dlg.querySelector("#dlgCredit");
       if (!c) return;
-      if (!ph) c.innerHTML = `No free-licence photo on Wikimedia Commons matched this model. Use the photo links under “Photos”.`;
+      if (!LIVE) c.textContent = "Photos: use the links under “Photos”.";
+      else if (!ph) c.innerHTML = `No free-licence photo on Wikimedia Commons matched this model. Use the photo links under “Photos”.`;
       else if (ph.custom) c.textContent = "Your own photo (saved only in this browser).";
       else c.innerHTML = `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.title)}</a> · ${esc(ph.license || "see file page")}${ph.author ? " · " + esc(ph.author) : ""} · Wikimedia Commons (auto-matched, please verify)`;
     });
-    dlg.querySelector("#setPhoto").addEventListener("click", () => {
+    dlg.querySelector("#setPhoto")?.addEventListener("click", () => {
       const u = prompt("Paste a direct image URL (ending in .jpg / .png) for " + p.brand + " " + p.model, custom[p.id] || "");
       if (u === null) return;
       if (u.trim()) custom[p.id] = u.trim(); else delete custom[p.id];
