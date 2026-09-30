@@ -24,6 +24,8 @@
   --receiver: #2d6b70;
   --amplifier: #a8560a;
   --turntable: #56509a;
+  --preamp: #7a5a12;
+  --poweramp: #8a2f2f;
   --badge-text: #fff;
   --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -34,7 +36,7 @@
     --bg: #111315; --surface: #1a1d20; --surface-2: #23272b; --text: #e7e9eb; --muted: #99a1a8; --line: #31363b;
     --accent: #f2a541; --chip-on: #f2a541; --chip-on-text: #111315;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.3);
-    --receiver: #6db6ba; --amplifier: #f2a541; --turntable: #a79ff0; --badge-text: #111315;
+    --receiver: #6db6ba; --amplifier: #f2a541; --turntable: #a79ff0; --preamp: #d9bf6a; --poweramp: #e58b86; --badge-text: #111315;
     color-scheme: dark;
   }
 }
@@ -42,7 +44,7 @@
   --bg: #111315; --surface: #1a1d20; --surface-2: #23272b; --text: #e7e9eb; --muted: #99a1a8; --line: #31363b;
   --accent: #f2a541; --chip-on: #f2a541; --chip-on-text: #111315;
   --shadow: 0 1px 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.3);
-  --receiver: #6db6ba; --amplifier: #f2a541; --turntable: #a79ff0; --badge-text: #111315;
+  --receiver: #6db6ba; --amplifier: #f2a541; --turntable: #a79ff0; --preamp: #d9bf6a; --poweramp: #e58b86; --badge-text: #111315;
   color-scheme: dark;
 }
 
@@ -110,7 +112,7 @@ select {
   position: absolute; top: 10px; left: 10px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   padding: 3px 8px; border-radius: 999px; color: var(--badge-text);
 }
-.b-receiver { background: var(--receiver); } .b-amplifier { background: var(--amplifier); } .b-turntable { background: var(--turntable); }
+.b-receiver { background: var(--receiver); } .b-integrated { background: var(--amplifier); } .b-preamp { background: var(--preamp); } .b-poweramp { background: var(--poweramp); } .b-turntable { background: var(--turntable); }
 .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .brand { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
 .model { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.1; letter-spacing: .01em; }
@@ -119,6 +121,10 @@ select {
 .langs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; padding-top: 8px; }
 .lang { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; color: var(--muted); }
 
+.more { display: block; margin: 16px auto 0; font: inherit; font-size: 14px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.deep { color: var(--accent); font-weight: 600; }
+.de-notes { font-size: 14px; margin: 6px 0 0; padding-left: 18px; }
+.de-notes li { margin: 2px 0; }
 .brands { columns: 3 220px; column-gap: 24px; margin-top: 20px; }
 .brands div { break-inside: avoid; margin-bottom: 14px; }
 .brands h3 { margin: 0 0 4px; font-family: var(--font-display); font-size: 24px; font-weight: 600; }
@@ -163,7 +169,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   <button class="theme-btn" id="themeBtn" type="button">Theme</button>
   <div class="eyebrow">Vintage HiFi · Volume 1</div>
   <h1>Receivers, Amplifiers &amp; Turntables 1977–1983</h1>
-  <p class="lede">Each entry lists year of introduction, key specs and the sources used, with each source's language marked.
+  <p class="lede">Every receiver, amplifier and turntable launched between 1977 and 1983 that HiFi-Wiki documents, plus in-depth entries with multilingual sources for the landmark models.
   <span id="photoNote">Photos load live from Wikimedia Commons where a matching free-licence image exists. Otherwise the card links to a source page with photos.</span></p>
 </header>
 
@@ -174,6 +180,10 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
       <select id="brand" aria-label="Brand"></select>
       <select id="lang" aria-label="Source language">
         <option value="">Any source language</option>
+      </select>
+      <select id="depth" aria-label="Entry depth">
+        <option value="">All entries</option>
+        <option value="deep">In-depth entries only</option>
       </select>
       <select id="view" aria-label="View">
         <option value="year">Group by year</option>
@@ -206,10 +216,13 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <script src="data/amplifiers.js"></script>
 <script src="data/turntables.js"></script>
 <script src="data/photos.js"></script>
+<script src="data/hifiwiki.js"></script>
 <script>
 (() => {
   const YEARS = [1977, 1978, 1979, 1980, 1981, 1982, 1983];
-  const CATS = { receiver: "Receivers", amplifier: "Amplifiers", turntable: "Turntables" };
+  const CATS = { receiver: "Receivers", integrated: "Integrated amps", preamp: "Preamplifiers", poweramp: "Power amps", turntable: "Turntables" };
+  const ONE = { receiver: "Receiver", integrated: "Integrated amplifier", preamp: "Preamplifier", poweramp: "Power amplifier", turntable: "Turntable" };
+  const PAGE = 48;
   // Photo databases: [label, search URL prefix or site for a site-restricted image search, tooltip]
   const PHOTO_DBS = [
     ["The Vintage Knob", "thevintageknob.org", "Large studio photos, brochures (EN)"],
@@ -221,18 +234,48 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     ["1001hifi", "1001hifi.info", "Illustrated model histories"]
   ];
   const LANGS = { en: "English", de: "German", ja: "Japanese", fr: "French", it: "Italian", es: "Spanish", pl: "Polish", multi: "Multilingual" };
+  const AMP = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="20" width="58" height="24" rx="3"/><circle cx="46" cy="32" r="7"/><circle cx="14" cy="32" r="3"/><circle cx="24" cy="32" r="3"/><path d="M33 26v12"/></svg>';
   const ICONS = {
     turntable: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="12" width="56" height="40" rx="4"/><circle cx="26" cy="32" r="15"/><circle cx="26" cy="32" r="2"/><path d="M50 18v18l-8 8"/><circle cx="50" cy="18" r="2.5"/></svg>',
-    amplifier: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="20" width="58" height="24" rx="3"/><circle cx="46" cy="32" r="7"/><circle cx="14" cy="32" r="3"/><circle cx="24" cy="32" r="3"/><path d="M33 26v12"/></svg>',
+    integrated: AMP, preamp: AMP, poweramp: AMP,
     receiver: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="18" width="58" height="28" rx="3"/><rect x="8" y="23" width="30" height="8" rx="1"/><path d="M12 23v8M18 23v8M24 23v8M30 23v8"/><circle cx="49" cy="32" r="7"/><circle cx="12" cy="39" r="2"/><circle cx="20" cy="39" r="2"/></svg>'
   };
 
-  const data = window.HIFI.map(p => ({ ...p, id: slug(p.brand + "-" + p.model) }));
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   function slug(s) { return s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
-  const norm = s => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]/g, "");
+  const norm = s => String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0-9]/g, "");
   const host = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
+
+  // ---- data: in-depth entries + HiFi-Wiki entries ----
+  function ampCat(p) {
+    const t = (p.type || "").toLowerCase();
+    return /pre/.test(t) ? "preamp" : /power/.test(t) ? "poweramp" : "integrated";
+  }
+  const data = [];
+  const byKey = {};
+  window.HIFI.forEach(p => {
+    const e = { ...p, id: slug(p.brand + "-" + p.model), deep: true, cat: p.cat === "amplifier" ? ampCat(p) : p.cat };
+    data.push(e);
+    byKey[norm(p.brand.split(" /")[0]) + norm(p.model.split(/[ (/]/)[0])] = e;
+  });
+  (window.HIFI_WIKI || []).forEach(w => {
+    const hwSource = { t: `HiFi-Wiki – ${w.b} ${w.m}`, u: w.u, lang: "de" };
+    const twin = byKey[norm(w.b) + norm(w.m)];
+    if (twin) {
+      twin.de = { feat: w.f, rem: w.r, price: w.p };
+      if (!twin.sources.some(s => s.u === w.u)) twin.sources.push(hwSource);
+      return;
+    }
+    const specs = [w.pw, w.dr, w.p, w.wt].filter(Boolean).join(" · ");
+    data.push({
+      id: slug(w.b + "-" + w.m), brand: w.b, model: w.m, cat: w.c, year: w.y, built: w.bu || String(w.y),
+      country: "", specs, sources: [hwSource], photos: w.u, img: w.i, pc: w.pc,
+      desc: `${ONE[w.c]} by ${w.b}, built ${w.bu || w.y}.` + (w.pw ? ` Output ${w.pw}.` : "") + (w.p ? ` Launch price about ${w.p}.` : ""),
+      de: { feat: w.f, rem: w.r }
+    });
+  });
+  const index = Object.fromEntries(data.map(p => [p.id, p]));
 
   // ---- safe localStorage ----
   const store = {
@@ -254,13 +297,17 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   });
 
   // ---- state ----
-  const state = Object.assign({ q: "", cat: "", year: "", brand: "", lang: "", view: "year" }, store.get("hifi.filters") || {});
-  const save = () => store.set("hifi.filters", { cat: state.cat, year: state.year, brand: state.brand, lang: state.lang, view: state.view });
+  const state = Object.assign({ q: "", cat: "", year: "", brand: "", lang: "", view: "year", depth: "" }, store.get("hifi.filters.v2") || {});
+  if (!CATS[state.cat]) state.cat = "";
+  const save = () => store.set("hifi.filters.v2", { cat: state.cat, year: state.year, brand: state.brand, lang: state.lang, view: state.view, depth: state.depth });
+  const shown = {};   // how many cards are revealed per block
 
   // ---- controls ----
-  const brands = [...new Set(data.map(p => p.brand))].sort((a, b) => a.localeCompare(b));
+  const brandCount = {};
+  data.forEach(p => brandCount[p.brand] = (brandCount[p.brand] || 0) + 1);
+  const brands = Object.keys(brandCount).sort((a, b) => a.localeCompare(b));
   $("#brand").innerHTML = `<option value="">All brands (${brands.length})</option>` +
-    brands.map(b => `<option value="${esc(b)}">${esc(b)} (${data.filter(p => p.brand === b).length})</option>`).join("");
+    brands.map(b => `<option value="${esc(b)}">${esc(b)} (${brandCount[b]})</option>`).join("");
   const usedLangs = [...new Set(data.flatMap(p => p.sources.map(s => s.lang)))];
   $("#lang").innerHTML += Object.keys(LANGS).filter(l => usedLangs.includes(l))
     .map(l => `<option value="${l}">Has ${LANGS[l]} source</option>`).join("");
@@ -274,19 +321,30 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
     state[b.dataset.k] = b.dataset.v; save(); render();
   }));
-  $("#q").addEventListener("input", e => { state.q = e.target.value; render(); });
-  $("#brand").addEventListener("change", e => { state.brand = e.target.value; save(); render(); });
-  $("#lang").addEventListener("change", e => { state.lang = e.target.value; save(); render(); });
-  $("#view").addEventListener("change", e => { state.view = e.target.value; save(); render(); });
+  let qTimer;
+  $("#q").addEventListener("input", e => { clearTimeout(qTimer); qTimer = setTimeout(() => { state.q = e.target.value; render(); }, 150); });
+  for (const k of ["brand", "lang", "view", "depth"])
+    $("#" + k).addEventListener("change", e => { state[k] = e.target.value; save(); render(); });
 
+  const hayCache = new Map();
+  function hay(p) {
+    let h = hayCache.get(p.id);
+    if (!h) {
+      h = [p.brand, p.model, p.aka, p.market, p.type, p.country, p.specs, p.desc, p.year, CATS[p.cat], ONE[p.cat],
+           p.de?.rem, (p.de?.feat || []).join(" ")].join(" ").toLowerCase();
+      hayCache.set(p.id, h);
+    }
+    return h;
+  }
   function matches(p, ignore) {
     if (ignore !== "cat" && state.cat && p.cat !== state.cat) return false;
     if (ignore !== "year" && state.year && String(p.year) !== state.year) return false;
     if (state.brand && p.brand !== state.brand) return false;
+    if (state.depth && !p.deep) return false;
     if (state.lang && !p.sources.some(s => s.lang === state.lang)) return false;
     if (state.q) {
-      const hay = [p.brand, p.model, p.aka, p.market, p.type, p.country, p.specs, p.desc, p.year, CATS[p.cat]].join(" ").toLowerCase();
-      if (!state.q.toLowerCase().split(/\s+/).filter(Boolean).every(w => hay.includes(w))) return false;
+      const h = hay(p);
+      if (!state.q.toLowerCase().split(/\s+/).filter(Boolean).every(w => h.includes(w))) return false;
     }
     return true;
   }
@@ -295,11 +353,11 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   function card(p) {
     const langs = [...new Set(p.sources.map(s => s.lang))];
     return `<button class="card" type="button" data-id="${p.id}">
-      <div class="photo" data-photo="${p.id}">${placeholder(p)}<span class="badge b-${p.cat}">${esc(CATS[p.cat].slice(0, -1))}</span></div>
+      <div class="photo" data-photo="${p.id}">${placeholder(p)}<span class="badge b-${p.cat}">${esc(ONE[p.cat])}</span></div>
       <div class="body">
-        <div class="brand">${esc(p.brand)}</div>
+        <div class="brand">${esc(p.brand)}${p.deep ? ` · <span class="deep">In-depth</span>` : ""}</div>
         <div class="model">${esc(p.model)}</div>
-        <div class="meta">${p.year} · ${esc(p.country)}${p.type ? " · " + esc(p.type) : ""}</div>
+        <div class="meta">${esc(p.built || p.year)}${p.country ? " · " + esc(p.country) : ""}${p.type ? " · " + esc(p.type) : ""}</div>
         ${p.aka ? `<div class="meta">Also: ${esc(p.aka.split(" (")[0])}</div>` : ""}
         <div class="specs">${esc(p.specs)}</div>
         <div class="langs">${langs.map(l => `<span class="lang" title="${LANGS[l] || l} source">${l.toUpperCase()}</span>`).join("")}
@@ -309,9 +367,16 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   function placeholder(p) {
     return `<div class="ph">${ICONS[p.cat]}Photo loading…</div>`;
   }
+  function block(key, items) {
+    const n = shown[key] || PAGE;
+    const rest = items.length - n;
+    return `<div class="grid">${items.slice(0, n).map(card).join("")}</div>` +
+      (rest > 0 ? `<button class="more" type="button" data-more="${key}">Show ${Math.min(rest, 96)} more of ${rest}</button>` : "");
+  }
+  const sortWithin = (a, b) => (b.deep ? 1 : 0) - (a.deep ? 1 : 0) || a.cat.localeCompare(b.cat) || a.brand.localeCompare(b.brand) || a.model.localeCompare(b.model, undefined, { numeric: true });
 
   function render() {
-    $("#q").value = state.q; $("#brand").value = state.brand; $("#lang").value = state.lang; $("#view").value = state.view;
+    $("#q").value = state.q; for (const k of ["brand", "lang", "view", "depth"]) $("#" + k).value = state[k];
     document.querySelectorAll(".chip").forEach(b => {
       b.setAttribute("aria-pressed", String(state[b.dataset.k] === b.dataset.v));
       const n = data.filter(p => matches(p, b.dataset.k) && (!b.dataset.v || String(p[b.dataset.k]) === b.dataset.v)).length;
@@ -319,7 +384,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     });
     const list = data.filter(p => matches(p));
     const nb = new Set(list.map(p => p.brand)).size;
-    $("#status").textContent = `${list.length} of ${data.length} products · ${nb} brands`;
+    $("#status").textContent = `${list.length} of ${data.length} products · ${nb} brands · ${list.filter(p => p.deep).length} in-depth`;
     const out = $("#out");
     if (!list.length) { out.innerHTML = `<p class="empty">No products match these filters.</p>`; return; }
 
@@ -327,84 +392,44 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
       const by = {};
       list.forEach(p => (by[p.brand] ||= []).push(p));
       out.innerHTML = `<div class="brands">${Object.keys(by).sort((a, b) => a.localeCompare(b)).map(b =>
-        `<div><h3>${esc(b)}</h3>${by[b].sort((x, y) => x.year - y.year).map(p =>
-          `<button type="button" data-id="${p.id}">${esc(p.model)}</button> <small>${p.year} · ${esc(CATS[p.cat].slice(0, -1))}</small><br>`).join("")}</div>`).join("")}</div>`;
+        `<div><h3>${esc(b)}</h3>${by[b].sort((x, y) => x.year - y.year || x.model.localeCompare(y.model, undefined, { numeric: true })).map(p =>
+          `<button type="button" data-id="${p.id}">${esc(p.model)}</button> <small>${p.year} · ${esc(ONE[p.cat])}</small><br>`).join("")}</div>`).join("")}</div>`;
       out.querySelectorAll("[data-id]").forEach(el => el.addEventListener("click", () => open(el.dataset.id)));
       return;
     }
     if (state.view === "list") {
-      const sorted = [...list].sort((a, b) => a.brand.localeCompare(b.brand) || a.year - b.year || a.model.localeCompare(b.model));
-      out.innerHTML = `<div class="grid" style="margin-top:20px">${sorted.map(card).join("")}</div>`;
+      const sorted = [...list].sort((a, b) => a.brand.localeCompare(b.brand) || a.year - b.year || a.model.localeCompare(b.model, undefined, { numeric: true }));
+      out.innerHTML = `<div style="margin-top:20px">${block("list", sorted)}</div>`;
     } else {
       out.innerHTML = YEARS.map(y => {
-        const items = list.filter(p => p.year === y).sort((a, b) => a.cat.localeCompare(b.cat) || a.brand.localeCompare(b.brand));
+        const items = list.filter(p => p.year === y).sort(sortWithin);
         if (!items.length) return "";
-        return `<section class="year-block"><div class="year-head"><h2>${y}</h2><span>${items.length} product${items.length > 1 ? "s" : ""}</span></div>
-          <div class="grid">${items.map(card).join("")}</div></section>`;
+        return `<section class="year-block" id="y${y}"><div class="year-head"><h2>${y}</h2><span>${items.length} product${items.length > 1 ? "s" : ""}</span></div>
+          ${block("y" + y, items)}</section>`;
       }).join("");
     }
     out.querySelectorAll(".card").forEach(el => el.addEventListener("click", () => open(el.dataset.id)));
+    out.querySelectorAll("[data-more]").forEach(el => el.addEventListener("click", () => {
+      shown[el.dataset.more] = (shown[el.dataset.more] || PAGE) + 96; render();
+    }));
     out.querySelectorAll("[data-photo]").forEach(el => observer.observe(el));
   }
 
   // ---- photos ----
-  // Order: user-supplied URL → cached Commons match → live Commons search.
-  const CACHE_KEY = "hifi.photos.v1";
-  const MONTH = 30 * 24 * 3600 * 1000;
+  // In-depth entries: hand-checked photos (HIFI_PHOTOS). HiFi-Wiki entries: photo chunks published
+  // alongside the page (HIFI_PHOTO_CHUNKS) or, in the downloadable version, the HiFi-Wiki image itself.
   const LIVE = !window.HIFI_NO_REMOTE;
-  $("#photoNote").textContent = "Photos are hand-checked against each model and credited to the page they come from.";
-  const cache = store.get(CACHE_KEY) || {};
-  const custom = store.get("hifi.custom") || {};
-  const pending = {};
-
-  function modelKey(p) {
-    const m = norm(p.model.split(/[\s/(]/)[0]);
-    const b = norm(p.brand.split(/[\s/]/)[0]);
-    return { m, b };
-  }
-  function titleMatches(p, title) {
-    const t = norm(title.replace(/^File:/, "").replace(/\.[a-z]+$/i, ""));
-    const { m, b } = modelKey(p);
-    const needles = /[a-z]/.test(m) && /\d/.test(m) && m.length >= 5 ? [m, b + m] : [b + m];
-    return needles.some(n => {
-      let i = t.indexOf(n);
-      while (i !== -1) {
-        const after = t[i + n.length];
-        if (!after || !/\d/.test(after)) return true;
-        i = t.indexOf(n, i + 1);
-      }
-      return false;
-    });
-  }
-  async function findCommons(p) {
-    const q = p.commonsQuery || `${p.brand.replace(/\s*\/.*$/, "")} ${p.model.replace(/\s*\(.*\)/, "")}`;
-    const url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=15"
-      + "&prop=imageinfo&iiprop=url|extmetadata|mime&iiurlwidth=640&gsrsearch=" + encodeURIComponent(q);
-    const r = await fetch(url);
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const j = await r.json();
-    const pages = Object.values(j.query?.pages || {}).sort((a, b) => (a.index || 0) - (b.index || 0));
-    for (const pg of pages) {
-      const ii = pg.imageinfo?.[0];
-      if (!ii || !/image\/(jpeg|png|webp)/.test(ii.mime)) continue;
-      if (!titleMatches(p, pg.title)) continue;
-      const md = ii.extmetadata || {};
-      const strip = h => (h || "").replace(/<[^>]*>/g, "").trim();
-      return { src: ii.thumburl || ii.url, page: ii.descriptionurl, author: strip(md.Artist?.value).slice(0, 80),
-               license: strip(md.LicenseShortName?.value), title: pg.title.replace(/^File:/, "") };
-    }
-    return null;
+  $("#photoNote").textContent = "";
+  const chunkCache = {};
+  function loadChunk(n) {
+    return chunkCache[n] ||= fetch(`photos/p${String(n).padStart(2, "0")}.json`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
   }
   function getPhoto(p) {
-    if (LIVE && custom[p.id]) return Promise.resolve({ src: custom[p.id], custom: true });
     const own = (window.HIFI_PHOTOS || {})[p.id];
     if (own) return Promise.resolve({ ...own, local: true });
-    if (!LIVE) return Promise.resolve(null);
-    const c = cache[p.id];
-    if (c && Date.now() - c.t < MONTH) return Promise.resolve(c.v);
-    return pending[p.id] ||= findCommons(p).then(v => {
-      cache[p.id] = { t: Date.now(), v }; store.set(CACHE_KEY, cache); return v;
-    }).catch(() => null);
+    if (p.pc != null && window.HIFI_PHOTO_CHUNKS) return loadChunk(p.pc).then(c => c[p.id] ? { src: c[p.id], page: p.photos, site: "hifi-wiki.de", local: true } : null);
+    if (p.img && LIVE) return Promise.resolve({ src: p.img, page: p.photos, site: "hifi-wiki.de", local: true });
+    return Promise.resolve(null);
   }
   function fillPhoto(el, p, big) {
     getPhoto(p).then(ph => {
@@ -418,81 +443,65 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     });
   }
   function noPhoto(p, big) {
-    return `<div class="ph">${ICONS[p.cat]}${LIVE ? "No free-licence photo found" : "Photo links inside"}${big ? `<br><a href="${esc(p.photos)}" target="_blank" rel="noopener">See photos at ${esc(host(p.photos))}</a>` : ""}</div>`;
+    return `<div class="ph">${ICONS[p.cat]}No photo yet${big ? `<br><a href="${esc(p.photos)}" target="_blank" rel="noopener">See ${esc(host(p.photos))}</a>` : ""}</div>`;
   }
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       observer.unobserve(e.target);
-      const p = data.find(x => x.id === e.target.dataset.photo);
+      const p = index[e.target.dataset.photo];
       if (p) fillPhoto(e.target, p, false);
     });
-  }, { rootMargin: "300px" });
+  }, { rootMargin: "400px" });
 
   // ---- detail dialog ----
   const dlg = $("#dlg");
   function open(id) {
-    const p = data.find(x => x.id === id);
+    const p = index[id];
     if (!p) return;
     const imgq = encodeURIComponent(`${p.brand.replace(/\s*\/.*$/, "")} ${p.model}`);
+    const de = p.de || {};
     dlg.innerHTML = `<button class="close" type="button" aria-label="Close">×</button>
       <div class="dlg">
         <div style="display:flex;flex-direction:column">
-          <div class="photo" id="dlgPhoto" style="flex:1">${placeholder(p)}<span class="badge b-${p.cat}">${esc(CATS[p.cat].slice(0, -1))}</span></div>
-          <div class="credit" id="dlgCredit">Looking for a free-licence photo…</div>
+          <div class="photo" id="dlgPhoto" style="flex:1">${placeholder(p)}<span class="badge b-${p.cat}">${esc(ONE[p.cat])}</span></div>
+          <div class="credit" id="dlgCredit"></div>
         </div>
         <div class="content">
-          <div class="brand">${esc(p.brand)}</div>
+          <div class="brand">${esc(p.brand)}${p.deep ? ` · <span class="deep">In-depth entry</span>` : ""}</div>
           <h2 class="model" style="font-size:30px;margin:2px 0 6px">${esc(p.model)}</h2>
           <p style="margin:0">${esc(p.desc)}</p>
           <dl class="facts">
-            <dt>Category</dt><dd>${esc(CATS[p.cat].slice(0, -1))}${p.type ? " · " + esc(p.type) : ""}</dd>
+            <dt>Category</dt><dd>${esc(ONE[p.cat])}${p.type && p.deep ? " · " + esc(p.type) : ""}</dd>
             <dt>Introduced</dt><dd>${p.year}</dd>
             <dt>Built</dt><dd>${esc(p.built)}</dd>
             ${p.aka ? `<dt>Also sold as</dt><dd>${esc(p.aka)}</dd>` : ""}
             ${p.market ? `<dt>Markets</dt><dd>${esc(p.market)}</dd>` : ""}
-            <dt>Origin</dt><dd>${esc(p.country)}</dd>
+            ${p.country ? `<dt>Origin</dt><dd>${esc(p.country)}</dd>` : ""}
             <dt>Key specs</dt><dd>${esc(p.specs)}</dd>
           </dl>
+          ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">HiFi-Wiki notes (German)</h3>
+            ${de.rem ? `<p style="margin:6px 0 0;font-size:14px" lang="de">${esc(de.rem)}</p>` : ""}
+            ${de.feat && de.feat.length ? `<ul class="de-notes" lang="de">${de.feat.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}` : ""}
           <h3 class="sec">Sources (${p.sources.length})</h3>
           <ul class="sources">${p.sources.map(s =>
             `<li><span class="lang" title="${LANGS[s.lang] || s.lang}">${s.lang.toUpperCase()}</span>
              <span><a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)}</a><br><small style="color:var(--muted)">${esc(host(s.u))}</small></span></li>`).join("")}
           </ul>
-          <h3 class="sec">Photos</h3>
-          <div class="actions">
-            <a href="${esc(p.photos)}" target="_blank" rel="noopener">Photos at ${esc(host(p.photos))}</a>
-            <a href="https://commons.wikimedia.org/w/index.php?search=${imgq}&title=Special:MediaSearch&type=image" target="_blank" rel="noopener">Search Wikimedia Commons</a>
-            <a href="https://www.google.com/search?tbm=isch&q=${imgq}" target="_blank" rel="noopener">Image search</a>
-          </div>
           <h3 class="sec">Photo databases</h3>
           <div class="actions">
             ${PHOTO_DBS.map(([name, site, note]) => `<a href="${site.startsWith("http") ? site + imgq : "https://www.google.com/search?tbm=isch&q=site%3A" + site + "+" + imgq}" target="_blank" rel="noopener" title="${esc(note)}">${esc(name)}</a>`).join("")}
-            ${LIVE ? `<button type="button" id="setPhoto">${custom[p.id] ? "Change my photo" : "Add my own photo URL"}</button>` : ""}
-            ${LIVE && custom[p.id] ? `<button type="button" id="clearPhoto">Remove my photo</button>` : ""}
+            <a href="https://www.google.com/search?tbm=isch&q=${imgq}" target="_blank" rel="noopener">Image search</a>
           </div>
         </div>
       </div>`;
     dlg.querySelector(".close").addEventListener("click", () => dlg.close());
-    const el = dlg.querySelector("#dlgPhoto");
-    fillPhoto(el, p, true);
+    fillPhoto(dlg.querySelector("#dlgPhoto"), p, true);
     getPhoto(p).then(ph => {
       const c = dlg.querySelector("#dlgCredit");
       if (!c) return;
-      if (ph && ph.local) c.innerHTML = `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.site)}</a> · shown for personal reference, rights stay with the source`;
-      else if (!LIVE || !ph) c.textContent = "No verified photo yet. Use the links under “Photos” and “Photo databases”.";
-      else if (!ph) c.innerHTML = `No free-licence photo on Wikimedia Commons matched this model. Use the photo links under “Photos”.`;
-      else if (ph.custom) c.textContent = "Your own photo (saved only in this browser).";
-      else c.innerHTML = `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.title)}</a> · ${esc(ph.license || "see file page")}${ph.author ? " · " + esc(ph.author) : ""} · Wikimedia Commons (auto-matched, please verify)`;
-    });
-    dlg.querySelector("#setPhoto")?.addEventListener("click", () => {
-      const u = prompt("Paste a direct image URL (ending in .jpg / .png) for " + p.brand + " " + p.model, custom[p.id] || "");
-      if (u === null) return;
-      if (u.trim()) custom[p.id] = u.trim(); else delete custom[p.id];
-      store.set("hifi.custom", custom); open(p.id); render();
-    });
-    dlg.querySelector("#clearPhoto")?.addEventListener("click", () => {
-      delete custom[p.id]; store.set("hifi.custom", custom); open(p.id); render();
+      c.innerHTML = ph ? `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.site)}</a> · shown for personal reference, rights stay with the source`
+                       : "No photo yet. Try the photo databases listed on the right.";
     });
     if (!dlg.open) dlg.showModal();
     history.replaceState(null, "", "#" + p.id);
