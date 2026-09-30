@@ -38,13 +38,15 @@ HIFI.push(
 },
 {
   brand: "Marantz", model: "2500", cat: "receiver", year: 1977, built: "1977–1980", country: "USA / Japan",
+  market: "European version with a second AUX input; US version prepared for a Dolby FM decoder",
   specs: "250 W/ch @ 8 Ω · approx. 27 kg · built-in oscilloscope",
   desc: "Flagship with a real 2-inch CRT (cathode ray tube) oscilloscope for tuning, multipath and X-Y stereo display, 'Gyro-Touch' flywheel tuning, dual phono inputs, a large toroidal transformer and a cooling fan.",
   sources: [
     { t: "Audio magazine, Feb. 1978 – Equipment Profile (archive)", u: "https://www.gammaelectronics.xyz/audio_02-1978_marantz.html", lang: "en" },
     { t: "Sound & Vision – The Mighty Marantz 2500", u: "https://www.soundandvision.com/content/mighty-marantz-2500-commanding-presence", lang: "en" },
     { t: "AudioKarma forum – Marantz 2500 Stereo Review", u: "https://audiokarma.org/forums/threads/marantz-2500-stereo-review.65583/", lang: "en" },
-    { t: "classicreceivers.com – 2500", u: "https://classicreceivers.com/marantz-2500", lang: "en" }
+    { t: "classicreceivers.com – 2500", u: "https://classicreceivers.com/marantz-2500", lang: "en" },
+    { t: "hifi-wiki – Marantz 2500", u: "https://hifi-wiki.com/index.php/Marantz_2500", lang: "en" }
   ],
   photos: "https://classicreceivers.com/marantz-2500"
 },
@@ -72,12 +74,14 @@ HIFI.push(
 },
 {
   brand: "Sansui", model: "G-33000", cat: "receiver", year: 1978, built: "1978–1980", country: "Japan",
+  market: "Export only, not sold in Japan",
   specs: "300 W/ch @ 8 Ω · 5 Hz–50 kHz · 0.009 % THD · 45.4 kg",
   desc: "Largest of Sansui's 'Pure Power' receivers with a Straight-DC design. Tied for second place among the most powerful receivers of the era.",
   sources: [
     { t: "hifi-wiki – Sansui G-33000", u: "https://hifi-wiki.com/index.php/Sansui_G-33000", lang: "en" },
     { t: "Radiomuseum.org – G-33000", u: "https://www.radiomuseum.org/r/sansui_g_33000.html", lang: "multi" },
-    { t: "HiFi Engine – G-33000 manual", u: "https://www.hifiengine.com/manual_library/sansui/g-33000.shtml", lang: "en" }
+    { t: "HiFi Engine – G-33000 manual", u: "https://www.hifiengine.com/manual_library/sansui/g-33000.shtml", lang: "en" },
+    { t: "The Vintage Knob – Sansui G-33000", u: "https://www.thevintageknob.org/sansui-G-33000.html", lang: "en" }
   ],
   photos: "https://hifi-wiki.com/index.php/Sansui_G-33000"
 },
@@ -94,13 +98,15 @@ HIFI.push(
 },
 {
   brand: "Technics", model: "SA-1000", cat: "receiver", year: 1977, built: "1977–1979", country: "Japan",
+  market: "Built for the US market; hardly known in Japan",
   specs: "330 W/ch @ 8 Ω, 0.03 % THD · approx. 39 kg · 63 cm wide",
   desc: "When launched, the most powerful receiver on the market. Triple push-pull Darlington output stage, four 18,000 µF filter capacitors, 24 LED power meters and adjustable phono impedance.",
   sources: [
     { t: "The Vintage Knob – SA-1000", u: "https://www.thevintageknob.org/technics-SA-1000.html", lang: "en" },
     { t: "Radiomuseum.org – SA-1000", u: "https://www.radiomuseum.org/r/technics_fmam_stereo_receiver_sa_1_11.html", lang: "multi" },
     { t: "audiobaza (Polish blog) – SA-1000", u: "http://audiobaza.blogspot.com/2015/06/technics-sa-1000-analog-stereo-receiver.html", lang: "pl" },
-    { t: "classicreceivers.com – SA-1000", u: "https://classicreceivers.com/technics-sa-1000", lang: "en" }
+    { t: "classicreceivers.com – SA-1000", u: "https://classicreceivers.com/technics-sa-1000", lang: "en" },
+    { t: "Classic Audio – Technics SA-1000", u: "https://classic-audio.com/technics/SA-1000.html", lang: "en" }
   ],
   photos: "https://www.thevintageknob.org/technics-SA-1000.html"
 },
@@ -194,6 +200,7 @@ HIFI.push(
 },
 {
   brand: "Kenwood", model: "KR-9050", cat: "receiver", year: 1979, built: "1979–1981", country: "Japan",
+  aka: "Trio KR-9050 (Trio brand in Japan, UK and other markets)",
   specs: "200 W/ch @ 8 Ω · 0.02 % THD · 24 kg",
   desc: "'High Speed DC' flagship receiver: tape-through circuit for two decks plus subsonic and high filters.",
   sources: [
@@ -205,12 +212,14 @@ HIFI.push(
 },
 {
   brand: "Sony", model: "STR-V7", cat: "receiver", year: 1978, built: "from 1978", country: "Japan",
+  market: "Export only: the STR-V series was not sold in Japan and sold best in Europe",
   specs: "150 W/ch @ 8 Ω, 200 W/ch @ 4 Ω · 21.9 kg",
   desc: "Sony's flagship receiver of the late 1970s, with MC and MM phono inputs.",
   sources: [
     { t: "Radiomuseum.org – STR-V7", u: "https://www.radiomuseum.org/r/sony_str_v7.html", lang: "multi" },
     { t: "Classic Audio – STR-V7", u: "http://www.classic-audio.com/sony-strv7-p-261.html", lang: "en" },
-    { t: "AudioKarma forum – thoughts on the STR-V7", u: "https://audiokarma.org/forums/threads/thoughts-on-sony-str-v7-offered-to-purchase.990435/", lang: "en" }
+    { t: "AudioKarma forum – thoughts on the STR-V7", u: "https://audiokarma.org/forums/threads/thoughts-on-sony-str-v7-offered-to-purchase.990435/", lang: "en" },
+    { t: "The Vintage Knob – Sony STR-V7", u: "https://www.thevintageknob.org/sony-STR-V7.html", lang: "en" }
   ],
   photos: "https://www.radiomuseum.org/r/sony_str_v7.html"
 },

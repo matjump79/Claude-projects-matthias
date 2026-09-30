@@ -285,7 +285,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     if (state.brand && p.brand !== state.brand) return false;
     if (state.lang && !p.sources.some(s => s.lang === state.lang)) return false;
     if (state.q) {
-      const hay = [p.brand, p.model, p.type, p.country, p.specs, p.desc, p.year, CATS[p.cat]].join(" ").toLowerCase();
+      const hay = [p.brand, p.model, p.aka, p.market, p.type, p.country, p.specs, p.desc, p.year, CATS[p.cat]].join(" ").toLowerCase();
       if (!state.q.toLowerCase().split(/\s+/).filter(Boolean).every(w => hay.includes(w))) return false;
     }
     return true;
@@ -300,6 +300,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
         <div class="brand">${esc(p.brand)}</div>
         <div class="model">${esc(p.model)}</div>
         <div class="meta">${p.year} · ${esc(p.country)}${p.type ? " · " + esc(p.type) : ""}</div>
+        ${p.aka ? `<div class="meta">Also: ${esc(p.aka.split(" (")[0])}</div>` : ""}
         <div class="specs">${esc(p.specs)}</div>
         <div class="langs">${langs.map(l => `<span class="lang" title="${LANGS[l] || l} source">${l.toUpperCase()}</span>`).join("")}
           <span class="lang" title="Number of sources">${p.sources.length} src</span></div>
@@ -448,6 +449,8 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
             <dt>Category</dt><dd>${esc(CATS[p.cat].slice(0, -1))}${p.type ? " · " + esc(p.type) : ""}</dd>
             <dt>Introduced</dt><dd>${p.year}</dd>
             <dt>Built</dt><dd>${esc(p.built)}</dd>
+            ${p.aka ? `<dt>Also sold as</dt><dd>${esc(p.aka)}</dd>` : ""}
+            ${p.market ? `<dt>Markets</dt><dd>${esc(p.market)}</dd>` : ""}
             <dt>Origin</dt><dd>${esc(p.country)}</dd>
             <dt>Key specs</dt><dd>${esc(p.specs)}</dd>
           </dl>

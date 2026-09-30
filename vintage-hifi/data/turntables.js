@@ -130,12 +130,14 @@ HIFI.push(
 },
 {
   brand: "Kenwood", model: "L-07D", cat: "turntable", type: "Direct drive", year: 1979, built: "1979–1982", country: "Japan",
+  aka: "Trio L-07D (Trio brand in Japan, UK and other markets)",
   specs: "33 kg · quartz-lock double servo · resin-concrete and mahogany base",
   desc: "Kenwood's attempt to 'reinvent the turntable': a closed, ultra-rigid motor–platter–tonearm loop, layered aluminium/duralumin/stainless platter and integrated arm.",
   sources: [
     { t: "1001hifi – Kenwood L-07D (1979)", u: "https://www.1001hifi.info/2024/07/kenwood-l-07d-1979-ultimate-turntable.html", lang: "en" },
     { t: "The Vintage Knob – L-07D", u: "https://www.thevintageknob.org/kenwood-L-07D.html", lang: "en" },
-    { t: "Unofficial L-07D website – Evolution", u: "http://www.l-07d.com/evolution.htm", lang: "en" }
+    { t: "Unofficial L-07D website – Evolution", u: "http://www.l-07d.com/evolution.htm", lang: "en" },
+    { t: "zstereo.co.uk – Trio L-07D", u: "https://zstereo.co.uk/2015/01/13/trio-lo-7d/", lang: "en" }
   ],
   photos: "https://www.thevintageknob.org/kenwood-L-07D.html"
 },
@@ -229,6 +231,7 @@ HIFI.push(
 },
 {
   brand: "Pioneer", model: "PL-L1000", cat: "turntable", type: "Direct drive, linear tracking", year: 1979, built: "1979–1981", country: "Japan",
+  aka: "PL-L5 (Japan) · Phase Linear 8000 Series Two (USA)",
   specs: "Linear-motor tangential arm · fully automatic",
   desc: "Pioneer's top linear-tracking turntable, a close relative of the PL-L1.",
   sources: [

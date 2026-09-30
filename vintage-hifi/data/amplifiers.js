@@ -27,11 +27,14 @@ HIFI.push(
 },
 {
   brand: "Sansui", model: "AU-D907", cat: "amplifier", type: "Integrated", year: 1978, built: "from 1978", country: "Japan",
+  aka: "AU-919 (international / US)",
   specs: "100 W/ch @ 8 Ω, 10 Hz–20 kHz, 0.008 % THD · ¥142,000",
   desc: "Wide-range DC integrated amplifier using Sansui's 'Diamond' circuit to reduce dynamic distortion. All-FET inputs and direct coupling throughout. Start of the long AU-D907 line (907F, Limited, 907X Decade).",
   sources: [
     { t: "audio-heritage.jp – SANSUI AU-D907の仕様", u: "https://audio-heritage.jp/SANSUI/amp/au-d907.html", lang: "ja" },
-    { t: "showa-archives.com – サンスイ AU-D907", u: "https://showa-archives.com/sansui-aud907/", lang: "ja" }
+    { t: "showa-archives.com – サンスイ AU-D907", u: "https://showa-archives.com/sansui-aud907/", lang: "ja" },
+    { t: "The Vintage Knob – Sansui AU-919", u: "https://www.thevintageknob.org/sansui-AU-919.html", lang: "en" },
+    { t: "sansui.us – AU-919", u: "http://www.sansui.us/AU-919.htm", lang: "en" }
   ],
   photos: "https://audio-heritage.jp/SANSUI/amp/au-d907.html"
 },
@@ -69,12 +72,14 @@ HIFI.push(
 },
 {
   brand: "Luxman", model: "L-58A", cat: "amplifier", type: "Integrated", year: 1979, built: "1979–1981", country: "Japan",
+  aka: "L-580 (North America, with added LED power meters)",
   specs: "100 W/ch @ 8 Ω, 0.015 % THD · Duo-Beta circuit · MOS-FET outputs",
-  desc: "Released October 1979. Luxman's 'Duo-Beta' feedback, FET inputs, DC design and high bias (Class A for most listening levels). Counted among Luxman's best transistor amplifiers.",
+  desc: "Released October 1979. Luxman's 'Duo-Beta' feedback, FET inputs, DC design and high bias (Class A for most listening levels). Counted among Luxman's best transistor amplifiers. The export version for North America was sold as the L-580, with added LED power meters (not to be confused with the unrelated 1994 L-580).",
   sources: [
     { t: "The Vintage Knob – Luxman L-58A", u: "https://www.thevintageknob.org/luxman-L-58A.html", lang: "en" },
     { t: "audio-database.com – LUXMAN L-58A", u: "https://audio-database.com/LUXMAN/amp/l-58a-e.html", lang: "en" },
     { t: "Radiomuseum.org – L-58A", u: "https://www.radiomuseum.org/r/luxman_l_58a.html", lang: "multi" },
+    { t: "AudioKarma forum – Luxman L-580 (export L-58A)", u: "https://audiokarma.org/forums/threads/luxman-l580-58a-or-r-117.413252/", lang: "en" },
     { t: "AudioKarma forum – L-58A on the bench", u: "https://audiokarma.org/forums/threads/luxman-l-58a-a-beauty-on-the-bench.954031/", lang: "en" }
   ],
   photos: "https://www.thevintageknob.org/luxman-L-58A.html"
@@ -148,6 +153,7 @@ HIFI.push(
 },
 {
   brand: "Kenwood", model: "L-07M", cat: "amplifier", type: "Mono power amp", year: 1978, built: "1978–1980 (sources differ)", country: "Japan",
+  aka: "Trio L-07M (Trio brand in Japan, UK and other markets)",
   specs: "150 W @ 8 Ω each · 13 kg · pair ¥200,000",
   desc: "Compact 'Trio/Kenwood' monoblocks, usually paired with the all-discrete L-07C preamp. Later updated as L-07MII with very wide bandwidth.",
   sources: [
