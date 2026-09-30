@@ -123,6 +123,7 @@ select {
 
 .more { display: block; margin: 16px auto 0; font: inherit; font-size: 14px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
 .deep { color: var(--accent); font-weight: 600; }
+.catpage { position: absolute; bottom: 8px; right: 8px; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); }
 .de-notes { font-size: 14px; margin: 6px 0 0; padding-left: 18px; }
 .de-notes li { margin: 2px 0; }
 .brands { columns: 3 220px; column-gap: 24px; margin-top: 20px; }
@@ -274,7 +275,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     const specs = [w.pw, w.dr, w.p, w.wt].filter(Boolean).join(" · ");
     data.push({
       id: slug(w.b + "-" + w.m), brand: w.b, model: w.m, cat: w.c, year: w.y, built: w.bu || String(w.y),
-      country: "", specs, sources: [hwSource], photos: w.u, img: w.i, pc: w.pc,
+      country: "", specs, sources: [hwSource], photos: w.u, img: w.i, pc: w.pc, catPage: !!w.k,
       desc: `${ONE[w.c]} by ${w.b}, built ${w.bu || w.y}.` + (w.pw ? ` Output ${w.pw}.` : "") + (w.p ? ` Launch price about ${w.p}.` : ""),
       de: { feat: w.f, rem: w.r, oem: w.o }
     });
@@ -439,7 +440,8 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     getPhoto(p).then(ph => {
       const badge = el.querySelector(".badge")?.outerHTML || "";
       if (ph) {
-        el.innerHTML = `<img src="${esc(ph.src)}" alt="${esc(p.brand + " " + p.model)}" loading="lazy" referrerpolicy="no-referrer">${badge}`;
+        el.innerHTML = `<img src="${esc(ph.src)}" alt="${esc(p.brand + " " + p.model)}" loading="lazy" referrerpolicy="no-referrer">${badge}`
+          + (p.catPage ? `<span class="catpage">Catalogue page</span>` : "");
         el.querySelector("img").addEventListener("error", () => { el.innerHTML = noPhoto(p, big) + badge; });
       } else {
         el.innerHTML = noPhoto(p, big) + badge;
@@ -505,7 +507,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     getPhoto(p).then(ph => {
       const c = dlg.querySelector("#dlgCredit");
       if (!c) return;
-      c.innerHTML = ph ? `Photo: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.site)}</a> · shown for personal reference, rights stay with the source`
+      c.innerHTML = ph ? `${p.catPage ? "Period catalogue / data page" : "Photo"}: <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(ph.site)}</a> · shown for personal reference, rights stay with the source`
                        : "No photo yet. Try the photo databases listed on the right.";
     });
     if (!dlg.open) dlg.showModal();

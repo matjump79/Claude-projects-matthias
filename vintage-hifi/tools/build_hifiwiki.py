@@ -96,7 +96,10 @@ def main():
             if n % 200 == 0: print("photos", n, "/", len(todo), flush=True)
     with_photo = sorted(e["id"] for e in out if ok.get(e["fid"]))
     chunk = {pid: i // PER_CHUNK for i, pid in enumerate(with_photo)}
+    kf = T / "hw" / "photo_kind.json"
+    kind = json.loads(kf.read_text()) if kf.exists() else {}
     for e in out:
+        if kind.get(e["fid"]) == "catalogue": e["k"] = 1
         if e["id"] in chunk:
             e["pc"] = chunk[e["id"]]; e["ph"] = f"photos/hw/{e['fid']}.jpg"
         e.pop("fid", None)
