@@ -2,3 +2,4 @@ tools/cand/
 tools/*.json
 !tools/products.json
 tools/hw/
+__pycache__/
