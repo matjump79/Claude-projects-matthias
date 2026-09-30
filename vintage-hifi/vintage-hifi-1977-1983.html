@@ -1014,6 +1014,16 @@ HIFI.push(
 (() => {
   const YEARS = [1977, 1978, 1979, 1980, 1981, 1982, 1983];
   const CATS = { receiver: "Receivers", amplifier: "Amplifiers", turntable: "Turntables" };
+  // Photo databases: [label, search URL prefix or site for a site-restricted image search, tooltip]
+  const PHOTO_DBS = [
+    ["The Vintage Knob", "thevintageknob.org", "Large studio photos, brochures (EN)"],
+    ["Radiomuseum", "radiomuseum.org", "Member photos incl. interiors (multilingual)"],
+    ["hifi-wiki", "hifi-wiki.de", "German HiFi wiki"],
+    ["audio-heritage.jp", "audio-heritage.jp", "Japanese catalogue photos"],
+    ["HiFi Engine", "hifiengine.com", "Manuals and brochures"],
+    ["HiFi Shark listings", "https://www.hifishark.com/search?q=", "Photos from current used-market listings"],
+    ["1001hifi", "1001hifi.info", "Illustrated model histories"]
+  ];
   const LANGS = { en: "English", de: "German", ja: "Japanese", fr: "French", it: "Italian", es: "Spanish", pl: "Polish", multi: "Multilingual" };
   const ICONS = {
     turntable: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="12" width="56" height="40" rx="4"/><circle cx="26" cy="32" r="15"/><circle cx="26" cy="32" r="2"/><path d="M50 18v18l-8 8"/><circle cx="50" cy="18" r="2.5"/></svg>',
@@ -1253,6 +1263,10 @@ HIFI.push(
             <a href="${esc(p.photos)}" target="_blank" rel="noopener">Photos at ${esc(host(p.photos))}</a>
             <a href="https://commons.wikimedia.org/w/index.php?search=${imgq}&title=Special:MediaSearch&type=image" target="_blank" rel="noopener">Search Wikimedia Commons</a>
             <a href="https://www.google.com/search?tbm=isch&q=${imgq}" target="_blank" rel="noopener">Image search</a>
+          </div>
+          <h3 class="sec">Photo databases</h3>
+          <div class="actions">
+            ${PHOTO_DBS.map(([name, site, note]) => `<a href="${site.startsWith("http") ? site + imgq : "https://www.google.com/search?tbm=isch&q=site%3A" + site + "+" + imgq}" target="_blank" rel="noopener" title="${esc(note)}">${esc(name)}</a>`).join("")}
             ${LIVE ? `<button type="button" id="setPhoto">${custom[p.id] ? "Change my photo" : "Add my own photo URL"}</button>` : ""}
             ${LIVE && custom[p.id] ? `<button type="button" id="clearPhoto">Remove my photo</button>` : ""}
           </div>
