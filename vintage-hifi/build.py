@@ -49,6 +49,17 @@ if "--artifact" in sys.argv:
         for n, c in xch.items():
             (out / "photos" / f"x{n:02d}.json").write_text(json.dumps(c), encoding="utf-8")
         print(f"{len(xch)} extra photo chunks")
+    # second photos (tools/second_photos.py) -> photos/yNN.json
+    pf = root / "data" / "photos2.js"
+    if pf.exists():
+        pj = pf.read_text(encoding="utf-8"); p2 = json.loads(pj[pj.index("{"): pj.rindex("}") + 1])
+        ych = {}
+        for pid, e in p2.items():
+            f = root / "photos" / "y" / f"{pid}.jpg"
+            if f.exists(): ych.setdefault(e["yc"], {})[pid] = data_uri(f.relative_to(root))
+        for n, c in ych.items():
+            (out / "photos" / f"y{n:02d}.json").write_text(json.dumps(c), encoding="utf-8")
+        print(f"{len(ych)} second-photo chunks")
     print(f"{len(chunks)} photo chunks")
     html = html.lstrip()
 else:
