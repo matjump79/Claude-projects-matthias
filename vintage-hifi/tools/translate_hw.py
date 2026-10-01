@@ -31,7 +31,18 @@ GLOSSARY = [
     ("Nachfolgemodell", "successor"), ("Vorgängermodell", "predecessor"), ("Schwestermodell", "sister model"),
     ("baugleich", "identical in construction"), ("Klirrfaktor", "distortion"), ("Gegenkopplung", "negative feedback"),
     ("Rauschfilter", "noise filter"), ("Rumpelfilter", "rumble filter"), ("Loudness", "loudness"),
+    ("abschaltbar", "can be switched off"), ("zuschaltbar", "can be switched on"), ("umschaltbar", "switchable"),
+    ("Schalter", "switch"), ("Gusskühlkörper", "cast heat sinks"), ("Gußkühlkörper", "cast heat sinks"), ("Kühlkörper", "heat sinks"),
+    ("foliert", "foil-covered"), ("Kupferplattenteller", "copper platter"), ("regelbar", "adjustable"),
+    ("Lautstärkeabsenkung", "volume dimmer"), ("Anschluss", "socket"), ("Anschlüsse", "connections"),
 ]
+POSTFIX = [(r"\bfollicated\b", "foil-covered"), (r"\bRegulateable\b", "adjustable"), (r"\bplater\b", "platter"),
+           (r"\bcooling bodies\b", "heat sinks"), (r"\bphonomotor\b", "motor"), (r"\bfinal stage\b", "power amp"),
+           (r"\bpre-stage\b", "preamp"), (r"\bVHF\b", "FM")]
+def post(s):
+    for a, b in POSTFIX:
+        s = re.sub(a, b, s, flags=re.I)
+    return s
 JUNK = re.compile(r"\[\s*Bearbeiten\s*\]|\bBilder\b\s*(?=\[|$)|\bBild:\s*|\bBerichte\b\s*(?=\[|$)|\bDokumente\b\s*(?=\[|$)|\[\d+\]")
 
 def clean(s):
@@ -62,11 +73,14 @@ def main():
             if w.get(k) and SHORT_DE.search(w[k]): texts.add(w[k])
     texts.discard("")
     cache = json.loads(CACHE.read_text()) if CACHE.exists() else {}
+    if "--refresh" in sys.argv:   # re-translate texts touched by newer glossary entries
+        terms = [d.lower() for d, _ in GLOSSARY[-12:]]
+        cache = {k: v for k, v in cache.items() if not any(t in k.lower() for t in terms)}
     todo = [t for t in texts if t not in cache]
     print(len(texts), "texts,", len(todo), "to translate", flush=True)
     def one(t):
         p = pre(t)
-        return t, (tr.translate(p, "de", "en") if looks_german(p) or p != t or re.search(r"[A-Za-zäöü]{5,}", p) else p)
+        return t, post(tr.translate(p, "de", "en") if looks_german(p) or p != t or re.search(r"[A-Za-zäöü]{5,}", p) else p)
     with ThreadPoolExecutor(4) as ex:
         for n, (t, e) in enumerate(ex.map(one, todo), 1):
             cache[t] = e

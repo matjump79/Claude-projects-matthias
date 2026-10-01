@@ -37,9 +37,9 @@ NO_PRICE = re.compile(r"siehe Technische Daten|unbekannt", re.I)
 def en(s):
     """English version of a HiFi-Wiki text (translation cache), first letter capitalised."""
     if not s: return s
-    from translate_hw import clean
+    from translate_hw import clean, post
     c = clean(s)
-    t = TR.get(c) or TR.get(s) or c
+    t = post(TR.get(c) or TR.get(s) or c)
     return t[:1].upper() + t[1:] if t else t
 
 def first_year(s):
@@ -100,7 +100,9 @@ def main():
              "r": (d.get("Bemerkungen") or "")[:500]}
         if NO_PRICE.search(e["p"]): e["p"] = ""
         for k in ("bu", "p", "wt", "pw"):
-            if e.get(k) in TR: e[k] = TR[e[k]]
+            if e.get(k) in TR:
+                from translate_hw import post
+                e[k] = post(TR[e[k]])
         e["f"] = [x for x in (en(x) for x in e["f"]) if x and not PLACEHOLDER.match(x)]
         e["r"] = en(e["r"]); e["o"] = en(e["o"]) if e["o"] else ""
         img = pick_image(d.get("images", []))
