@@ -1,6 +1,6 @@
 """Inline the data files into self-contained HTML.
 
-python3 build.py                -> vintage-hifi-1977-1983.html (download version; HiFi-Wiki photos load from hifi-wiki.de)
+python3 build.py                -> vintage-hifi-1970-1989.html (download version; HiFi-Wiki photos load from hifi-wiki.de)
 python3 build.py --artifact DIR -> DIR/vintage-hifi.html + DIR/photos/pNN.json
                                    (hosted page: no document wrapper; HiFi-Wiki photos packed into chunk files)
 """
@@ -39,6 +39,6 @@ if "--artifact" in sys.argv:
     print(f"{len(chunks)} photo chunks")
     html = html.lstrip()
 else:
-    target = root / "vintage-hifi-1977-1983.html"
+    target = root / "vintage-hifi-1970-1989.html"
 target.write_text(html, encoding="utf-8")
 print(f"wrote {target} ({len(html) // 1024} KB)")

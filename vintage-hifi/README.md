@@ -2,7 +2,7 @@
 
 Receivers, amplifiers and turntables, filterable by year, category, brand and source language.
 
-- `vintage-hifi-1977-1983.html` — single self-contained file; open it in any browser.
+- `vintage-hifi-1970-1989.html` — single self-contained file; open it in any browser.
 - `index.html` + `data/*.js` — editable source. Add a product by appending an entry to the matching data file.
 - `python3 build.py` — regenerates the self-contained file from the source.
 
