@@ -8,10 +8,10 @@ HIFI.push(
     { t: "Wikipedia – Technics SL-1200", u: "https://en.wikipedia.org/wiki/Technics_SL-1200", lang: "en" },
     { t: "Technics (official) – History of the SL-1200", u: "https://www.technics.com/global/home/60th-anniversary/technics-brand-story/history-of-the-sl-1200.html", lang: "en" },
     { t: "hifi-wiki – Technics SL-1200MK2", u: "https://hifi-wiki.com/index.php/Technics_SL-1200MK2", lang: "en" },
-    { t: "TNT-Audio – Giradischi Technics SL-1200 MkII", u: "https://www.tnt-audio.com/sorgenti/technics_sl1200.html", lang: "it" },
-    { t: "Passione Strumenti – Technics SL-1200, il re dei giradischi", u: "https://www.passionestrumenti.it/gear-per-dj-technics-sl-1200/", lang: "it" },
-    { t: "Future Music España – modelos del SL-1200", u: "https://www.futuremusic-es.com/cuantos-modelos-de-technics-sl-1200-se-lanzaron-al-mercado-y-que-caracteristicas-tienen/", lang: "es" },
-    { t: "Hablando de Teles – Historia del Technics SL 1200", u: "https://hablandodeteles.es/technics-sl-1200-historia/", lang: "es" }
+    { t: "TNT-Audio – Technics SL-1200 MkII turntable", u: "https://www.tnt-audio.com/sorgenti/technics_sl1200.html", lang: "it" },
+    { t: "Passione Strumenti – Technics SL-1200, king of turntables", u: "https://www.passionestrumenti.it/gear-per-dj-technics-sl-1200/", lang: "it" },
+    { t: "Future Music España – the SL-1200 models", u: "https://www.futuremusic-es.com/cuantos-modelos-de-technics-sl-1200-se-lanzaron-al-mercado-y-que-caracteristicas-tienen/", lang: "es" },
+    { t: "Hablando de Teles – History of the Technics SL 1200", u: "https://hablandodeteles.es/technics-sl-1200-historia/", lang: "es" }
   ],
   photos: "https://en.wikipedia.org/wiki/Technics_SL-1200"
 },
@@ -56,7 +56,7 @@ HIFI.push(
   sources: [
     { t: "hifi-wiki.de – Thorens Reference", u: "https://www.hifi-wiki.de/index.php/Thorens_Reference", lang: "de" },
     { t: "Thorens (official) – History of the Reference", u: "https://reference.thorens.com/de/history.html", lang: "de" },
-    { t: "hifi-zeile.de – Unser Thorens Reference", u: "https://hifi-zeile.de/unser-thorens-reference/", lang: "de" }
+    { t: "hifi-zeile.de – Our Thorens Reference", u: "https://hifi-zeile.de/unser-thorens-reference/", lang: "de" }
   ],
   photos: "https://www.hifi-wiki.de/index.php/Thorens_Reference"
 },
@@ -66,7 +66,7 @@ HIFI.push(
   desc: "Developed in Sainte-Croix, built in Lahr. Offered with many tonearms (TMC 63, SME 3009, SME Series III, Dynavector DV 505 and others).",
   sources: [
     { t: "hifi-wiki.de – Thorens TD 126 MK III", u: "https://www.hifi-wiki.de/index.php/Thorens_TD_126_MK_III", lang: "de" },
-    { t: "radiogeschichte.de – Markante Geräte: TD 126 MK III", u: "https://radiogeschichte.de/markante-geraete-der-radiogeschichte?view=article&id=1651:thorens-td-126-mk-iii-markante-geraete-der-radiogeschichte&catid=118:radio-hersteller", lang: "de" },
+    { t: "radiogeschichte.de – Landmark devices: TD 126 MK III", u: "https://radiogeschichte.de/markante-geraete-der-radiogeschichte?view=article&id=1651:thorens-td-126-mk-iii-markante-geraete-der-radiogeschichte&catid=118:radio-hersteller", lang: "de" },
     { t: "mackern.de – Thorens TD 126 MK III", u: "https://www.mackern.de/2009/12/02/thorens-td-126-mk-iii", lang: "de" }
   ],
   photos: "https://www.hifi-wiki.de/index.php/Thorens_TD_126_MK_III"
@@ -78,7 +78,7 @@ HIFI.push(
   sources: [
     { t: "hifi-wiki.de – Dual CS 505", u: "https://www.hifi-wiki.de/index.php/Dual_CS_505", lang: "de" },
     { t: "Hi-Fi News – Dual CS505 (Vintage)", u: "https://www.hifinews.com/content/dual-cs505-vintage", lang: "en" },
-    { t: "Dual-Board.de – 505-1 bis 505-5", u: "https://dual-board.de/index.php?thread%2F69888-505-1-bis-505-5=", lang: "de" }
+    { t: "Dual-Board.de – 505-1 to 505-5", u: "https://dual-board.de/index.php?thread%2F69888-505-1-bis-505-5=", lang: "de" }
   ],
   photos: "https://www.hifi-wiki.de/index.php/Dual_CS_505"
 },
@@ -122,9 +122,9 @@ HIFI.push(
   specs: "16 kg gunmetal platter (85 % copper, 15 % tin) · separate RY-5500 motor unit",
   desc: "Heavyweight Japanese high-end drive. Record sits directly on the gunmetal platter, no mat. Used prices in Japan: ¥400,000–800,000.",
   sources: [
-    { t: "audio-heritage.jp – MICRO RX-5000/RY-5500の仕様", u: "https://audio-heritage.jp/MICRO/etc/rx-5000.html", lang: "ja" },
+    { t: "audio-heritage.jp – Micro Seiki RX-5000/RY-5500 specifications", u: "https://audio-heritage.jp/MICRO/etc/rx-5000.html", lang: "ja" },
     { t: "hifi-wiki – Micro Seiki RX-5000", u: "https://hifi-wiki.com/index.php/Micro_Seiki_RX-5000", lang: "en" },
-    { t: "kaitori-tsuruoka.com – MICRO精機の名機まとめ", u: "https://kaitori-tsuruoka.com/audio/blog/%E3%80%90%E4%BF%9D%E5%AD%98%E7%89%88%E3%80%91micro%E7%B2%BE%E6%A9%9F%E3%81%AE%E5%90%8D%E6%A9%9F%E3%81%BE%E3%81%A8%E3%82%81%EF%BD%9C%E9%87%8D%E9%87%8F%E7%B4%9A%E3%82%BF%E3%83%BC%E3%83%B3%E3%83%86/", lang: "ja" }
+    { t: "kaitori-tsuruoka.com – Overview of Micro Seiki's classic models", u: "https://kaitori-tsuruoka.com/audio/blog/%E3%80%90%E4%BF%9D%E5%AD%98%E7%89%88%E3%80%91micro%E7%B2%BE%E6%A9%9F%E3%81%AE%E5%90%8D%E6%A9%9F%E3%81%BE%E3%81%A8%E3%82%81%EF%BD%9C%E9%87%8D%E9%87%8F%E7%B4%9A%E3%82%BF%E3%83%BC%E3%83%B3%E3%83%86/", lang: "ja" }
   ],
   photos: "https://audio-heritage.jp/MICRO/etc/rx-5000.html"
 },
@@ -168,8 +168,8 @@ HIFI.push(
   specs: "Hand-built in France · Laboratoires Verdier founded 1972",
   desc: "Jean-Constant Verdier's famous turntable, first shown at the 'Maison de l'Audiophile' in Paris. Especially admired by German vinyl fans. The brand was later bought by Audio Tuning (Austria).",
   sources: [
-    { t: "ON-mag – Audio Tuning achète la marque J.C. Verdier", u: "https://www.on-mag.fr/index.php/topaudio/actualites-news/26780-audio-tuning-austria-achete-la-mythique-marque-francaise-de-platines-vinyles-et-electroniques-a-tubes-j-c-verdier", lang: "fr" },
-    { t: "Forum Bleu – Reportage avec Jean Constant Verdier", u: "https://www.forum-bleu.com/t1824-reportage-avec-jean-constant-verdier", lang: "fr" },
+    { t: "ON-mag – Audio Tuning buys the J.C. Verdier brand", u: "https://www.on-mag.fr/index.php/topaudio/actualites-news/26780-audio-tuning-austria-achete-la-mythique-marque-francaise-de-platines-vinyles-et-electroniques-a-tubes-j-c-verdier", lang: "fr" },
+    { t: "Forum Bleu – Interview with Jean-Constant Verdier", u: "https://www.forum-bleu.com/t1824-reportage-avec-jean-constant-verdier", lang: "fr" },
     { t: "truefi – La Platine Verdier", u: "http://truefi.blogspot.com/2014/10/la-platine-verdier-final-turntable.html", lang: "en" }
   ],
   photos: "http://truefi.blogspot.com/2014/10/la-platine-verdier-final-turntable.html"
@@ -213,8 +213,8 @@ HIFI.push(
   desc: "Denon's high-end direct-drive motor unit of the late 1970s. Listed in Denon's own museum as a 1978 model.",
   sources: [
     { t: "DENON Museum (official) – 1978 DP-80", u: "https://www.denon.jp/ja-jp/museum/products/dp80.html", lang: "ja" },
-    { t: "audio-heritage.jp – DENON DP-80の仕様", u: "https://audio-heritage.jp/DENON/etc/dp-80.html", lang: "ja" },
-    { t: "Blog – 甦った30年の老兵ターンテーブル DP-80", u: "http://osnogfloyd.cocolog-nifty.com/blog/2009/11/30-denon-dp-80-.html", lang: "ja" }
+    { t: "audio-heritage.jp – Denon DP-80 specifications", u: "https://audio-heritage.jp/DENON/etc/dp-80.html", lang: "ja" },
+    { t: "Blog – A 30-year-old veteran turntable revived: Denon DP-80", u: "http://osnogfloyd.cocolog-nifty.com/blog/2009/11/30-denon-dp-80-.html", lang: "ja" }
   ],
   photos: "https://www.denon.jp/ja-jp/museum/products/dp80.html"
 },

@@ -230,7 +230,7 @@ HIFI.push(
   sources: [
     { t: "hifimuseum.de – Grundig R 3000", u: "http://www.hifimuseum.de/grundig-r3000.html", lang: "de" },
     { t: "hifi-wiki.de – Grundig R 3000", u: "https://www.hifi-wiki.de/index.php/Grundig_R_3000", lang: "de" },
-    { t: "grundig-forum.de – R 3000 von 1980: ja oder nein?", u: "https://www.grundig-forum.de/viewtopic.php?t=492", lang: "de" },
+    { t: "grundig-forum.de – A 1980 Grundig R 3000: yes or no?", u: "https://www.grundig-forum.de/viewtopic.php?t=492", lang: "de" },
     { t: "Old Fidelity Forum – Grundig R 3000", u: "https://old-fidelity-forum.de/thread-11394.html", lang: "de" }
   ],
   photos: "http://www.hifimuseum.de/grundig-r3000.html"

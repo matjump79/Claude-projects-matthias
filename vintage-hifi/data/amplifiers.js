@@ -7,9 +7,9 @@ HIFI.push(
   sources: [
     { t: "Wikipedia – NAD 3020", u: "https://en.wikipedia.org/wiki/NAD_3020", lang: "en" },
     { t: "The Absolute Sound – TAS Legacy: NAD 3020", u: "https://www.theabsolutesound.com/articles/tas-legacy-nad-3020-integrated-amplifier/", lang: "en" },
-    { t: "son-vintage.fr – NAD 3020, l'ampli discret qui sait écouter", u: "https://son-vintage.fr/nad-3020-lampli-discret-qui-sait-ecouter/", lang: "fr" },
-    { t: "Son-Vidéo.com – NAD : tout savoir sur la marque", u: "https://www.son-video.com/guide/nad-tout-savoir-sur-la-marque", lang: "fr" },
-    { t: "Audiofanzine – avis d'utilisateurs NAD 3020", u: "https://fr.audiofanzine.com/ampli-hifi/nad/3020-ampli/avis/", lang: "fr" }
+    { t: "son-vintage.fr – NAD 3020, the discreet amp that knows how to listen", u: "https://son-vintage.fr/nad-3020-lampli-discret-qui-sait-ecouter/", lang: "fr" },
+    { t: "Son-Vidéo.com – NAD: all about the brand", u: "https://www.son-video.com/guide/nad-tout-savoir-sur-la-marque", lang: "fr" },
+    { t: "Audiofanzine – NAD 3020 user reviews", u: "https://fr.audiofanzine.com/ampli-hifi/nad/3020-ampli/avis/", lang: "fr" }
   ],
   photos: "https://en.wikipedia.org/wiki/NAD_3020"
 },
@@ -31,8 +31,8 @@ HIFI.push(
   specs: "100 W/ch @ 8 Ω, 10 Hz–20 kHz, 0.008 % THD · ¥142,000",
   desc: "Wide-range DC integrated amplifier using Sansui's 'Diamond' circuit to reduce dynamic distortion. All-FET inputs and direct coupling throughout. Start of the long AU-D907 line (907F, Limited, 907X Decade).",
   sources: [
-    { t: "audio-heritage.jp – SANSUI AU-D907の仕様", u: "https://audio-heritage.jp/SANSUI/amp/au-d907.html", lang: "ja" },
-    { t: "showa-archives.com – サンスイ AU-D907", u: "https://showa-archives.com/sansui-aud907/", lang: "ja" },
+    { t: "audio-heritage.jp – Sansui AU-D907 specifications", u: "https://audio-heritage.jp/SANSUI/amp/au-d907.html", lang: "ja" },
+    { t: "showa-archives.com – Sansui AU-D907", u: "https://showa-archives.com/sansui-aud907/", lang: "ja" },
     { t: "The Vintage Knob – Sansui AU-919", u: "https://www.thevintageknob.org/sansui-AU-919.html", lang: "en" },
     { t: "sansui.us – AU-919", u: "http://www.sansui.us/AU-919.htm", lang: "en" }
   ],
@@ -43,7 +43,7 @@ HIFI.push(
   specs: "130 W/ch @ 8 Ω · 4 parallel push-pull MOS-FETs · 20 kg · ¥245,000",
   desc: "Accuphase flagship integrated with a built-in MC head amplifier. Pre and power sections can be separated. Predecessor of the E-305 (1987).",
   sources: [
-    { t: "audio-heritage.jp – Accuphase E-303の仕様", u: "https://audio-heritage.jp/ACCUPHASE/amp/e-303.html", lang: "ja" },
+    { t: "audio-heritage.jp – Accuphase E-303 specifications", u: "https://audio-heritage.jp/ACCUPHASE/amp/e-303.html", lang: "ja" },
     { t: "Accuphase – Product museum (official)", u: "https://www.accuphase.com/history.html", lang: "en" }
   ],
   photos: "https://audio-heritage.jp/ACCUPHASE/amp/e-303.html"
@@ -146,8 +146,8 @@ HIFI.push(
   sources: [
     { t: "hifi-wiki.de – Braun A 501", u: "https://www.hifi-wiki.de/index.php/Braun_A_501", lang: "de" },
     { t: "hifi-wiki.de – Braun Studio Line", u: "https://www.hifi-wiki.de/index.php/Braun_Studio_Line", lang: "de" },
-    { t: "Braun-HiFi-Forum – studio A 501", u: "https://www.braun-hifi-forum.de/viewtopic.php?t=621", lang: "de" },
-    { t: "designundtext.com – Braun HiFi-Verstärker (Dieter Rams)", u: "https://www.designundtext.com/de/2.1.33_braun-design-hifi-verstaerker-rams-pbdd.php", lang: "de" }
+    { t: "Braun hi-fi forum – Studio A 501", u: "https://www.braun-hifi-forum.de/viewtopic.php?t=621", lang: "de" },
+    { t: "designundtext.com – Braun hi-fi amplifiers (Dieter Rams)", u: "https://www.designundtext.com/de/2.1.33_braun-design-hifi-verstaerker-rams-pbdd.php", lang: "de" }
   ],
   photos: "https://www.hifi-wiki.de/index.php/Braun_A_501"
 },
@@ -245,7 +245,7 @@ HIFI.push(
   specs: "2 × 8 W Class A, sliding up to 2 × 100 W Class AB · Duo-Beta / Plus-X",
   desc: "Smaller sibling of the L-550: plays in Class A at low levels and switches automatically to Class AB when more power is needed. The German magazine Stereoplay (10/1982) rated its value for money very good (top class, group 1).",
   sources: [
-    { t: "Audio Everywhere – Luxman L-510 im Test", u: "https://audio-everywhere.com/en-ww/blogs/geraete-archiv/luxman-l-510-japanischer-class-a-vollverstarker-im-test", lang: "de" },
+    { t: "Audio Everywhere – Luxman L-510 tested", u: "https://audio-everywhere.com/en-ww/blogs/geraete-archiv/luxman-l-510-japanischer-class-a-vollverstarker-im-test", lang: "de" },
     { t: "hifi-wiki – Luxman L-510", u: "https://hifi-wiki.com/index.php/Luxman_L-510", lang: "en" },
     { t: "The Vintage Knob – Luxman L-510", u: "https://www.thevintageknob.org/luxman-l-510.html", lang: "en" }
   ],

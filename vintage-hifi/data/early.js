@@ -145,7 +145,7 @@ HIFI.push(
   specs: "80 W/ch · 0.08 % THD · 17.9 kg · ¥140,000",
   desc: "Iconic 1970s Sansui integrated. Its unusual layout puts preamp and tone controls at the front and power stage, heat sinks and supply at the rear.",
   sources: [
-    { t: "audio-heritage.jp – SANSUI AU-9900の仕様", u: "https://audio-heritage.jp/SANSUI/amp/au-9900.html", lang: "ja" },
+    { t: "audio-heritage.jp – Sansui AU-9900 specifications", u: "https://audio-heritage.jp/SANSUI/amp/au-9900.html", lang: "ja" },
     { t: "hifi-wiki – Sansui AU-9900", u: "https://hifi-wiki.com/index.php/Sansui_AU-9900", lang: "en" },
     { t: "Radiomuseum.org – AU-9900", u: "https://www.radiomuseum.org/r/sansui_integrated_amplifier_au_9900.html", lang: "multi" }
   ],
@@ -234,8 +234,8 @@ HIFI.push(
   specs: "Sub-chassis on three conical springs · belt drive",
   desc: "Thorens' long-running best seller: more than half a million sold by 1975. Combined sub-chassis and belt drive, still the brand's signature layout.",
   sources: [
-    { t: "Thorens (official) – Geschichte", u: "https://www.thorens.com/de/geschichte.html", lang: "de" },
-    { t: "lowbeats.de – Thorens TD 1601: die Legende TD 160 reloaded", u: "https://www.lowbeats.de/thorens-td-1601-im-test-halbautomatischer-subchassis-plattenspieler/", lang: "de" },
+    { t: "Thorens (official) – History", u: "https://www.thorens.com/de/geschichte.html", lang: "de" },
+    { t: "lowbeats.de – Thorens TD 1601: the TD 160 legend reloaded", u: "https://www.lowbeats.de/thorens-td-1601-im-test-halbautomatischer-subchassis-plattenspieler/", lang: "de" },
     { t: "hifi-wiki – Thorens TD 160", u: "https://hifi-wiki.com/index.php/Thorens_TD_160", lang: "en" }
   ],
   photos: "https://hifi-wiki.com/index.php/Thorens_TD_160"
@@ -246,7 +246,7 @@ HIFI.push(
   desc: "Shown at the 1973 Hanover fair as the first direct-drive turntable developed and built in Europe.",
   sources: [
     { t: "Dual (official) – Timeline 1973", u: "https://hifi.dual.de/timeline/1973-4/", lang: "de" },
-    { t: "hifimuseum.de – Der Dual 701 (1973)", u: "http://www.hifimuseum.de/der-dual-701.html", lang: "de" },
+    { t: "hifimuseum.de – The Dual 701 (1973)", u: "http://www.hifimuseum.de/der-dual-701.html", lang: "de" },
     { t: "Radiomuseum.org – Dual 701", u: "https://www.radiomuseum.org/r/dual_701.html", lang: "multi" }
   ],
   photos: "https://www.radiomuseum.org/r/dual_701.html"
@@ -267,8 +267,8 @@ HIFI.push(
   desc: "Brought Denon's broadcast direct-drive technology to home users, based on the DP-5000 of 1971. Demand was so high that deliveries took months.",
   sources: [
     { t: "DENON Museum (official) – 1972 DP-3000/3500", u: "https://www.denon.jp/ja-jp/museum/products/dp3000.html", lang: "ja" },
-    { t: "audio-heritage.jp – DENON DP-3000の仕様", u: "https://audio-heritage.jp/DENON/etc/dp-3000.html", lang: "ja" },
-    { t: "Denon blog – 銘機探訪 DP-3000", u: "https://www.denon.jp/ja-jp/blog/3656/", lang: "ja" }
+    { t: "audio-heritage.jp – Denon DP-3000 specifications", u: "https://audio-heritage.jp/DENON/etc/dp-3000.html", lang: "ja" },
+    { t: "Denon blog – Classic machines revisited: DP-3000", u: "https://www.denon.jp/ja-jp/blog/3656/", lang: "ja" }
   ],
   photos: "https://www.denon.jp/ja-jp/museum/products/dp3000.html"
 }

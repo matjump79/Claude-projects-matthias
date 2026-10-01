@@ -72,8 +72,8 @@ HIFI.push(
   specs: "180 W/ch @ 8 Ω · α-X balanced circuit · MOS-FET outputs · 28 kg",
   desc: "Built for Sansui's 40th anniversary, with matched MOS-FET output pairs, a sealed oversized transformer and a direct power-amp input.",
   sources: [
-    { t: "audio-heritage.jp – SANSUI AU-α907の仕様", u: "https://audio-heritage.jp/SANSUI/amp/au-alpha907.html", lang: "ja" },
-    { t: "vinmusic07.com – SANSUI AU-α907を徹底解説", u: "https://vinmusic07.com/amplifier-sansui-au-%CE%B1907/", lang: "ja" }
+    { t: "audio-heritage.jp – Sansui AU-α907 specifications", u: "https://audio-heritage.jp/SANSUI/amp/au-alpha907.html", lang: "ja" },
+    { t: "vinmusic07.com – Sansui AU-α907 explained in detail", u: "https://vinmusic07.com/amplifier-sansui-au-%CE%B1907/", lang: "ja" }
   ],
   photos: "https://audio-heritage.jp/SANSUI/amp/au-alpha907.html"
 },
@@ -129,7 +129,7 @@ HIFI.push(
   sources: [
     { t: "hifi-wiki.de – Thorens TD 320", u: "https://www.hifi-wiki.de/index.php/Thorens_TD_320", lang: "de" },
     { t: "Explorations in Audio – Thorens TD320", u: "https://eiaudio.de/de/gear-and-review/turntables/thorens-td-320/", lang: "de" },
-    { t: "thorens-info.de – 300er Reihe", u: "http://www.thorens-info.de/html/300_Reihe.html", lang: "de" }
+    { t: "thorens-info.de – The 300 series", u: "http://www.thorens-info.de/html/300_Reihe.html", lang: "de" }
   ],
   photos: "https://www.hifi-wiki.de/index.php/Thorens_TD_320"
 },

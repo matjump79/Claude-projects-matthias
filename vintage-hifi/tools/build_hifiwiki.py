@@ -3,13 +3,14 @@
 Keeps models whose production started 1970–1989. Photos: the page's main product image (brochure,
 schematic and rear-view images are skipped when a better one exists), resized to 400×300.
 """
-import json, pathlib, re, time, threading
+import json, pathlib, re, sys, time, threading
 from concurrent.futures import ThreadPoolExecutor
 from io import BytesIO
 import requests
 from PIL import Image
 
 T = pathlib.Path(__file__).parent
+sys.path.insert(0, str(T))
 ROOT = T.parent
 PH = ROOT / "photos" / "hw"; PH.mkdir(parents=True, exist_ok=True)
 S = requests.Session(); S.headers["User-Agent"] = "Mozilla/5.0 (Macintosh) Safari/605.1.15 (personal vintage-hifi research)"
@@ -28,6 +29,18 @@ def clean_brand(raw):
     b = re.sub(r"[\[\]]", "", raw).strip()
     b = re.split(r"\s*\(|\s*,|\s+-\s+|\s+/\s+|\s+\bOEM\b", b)[0].strip() or raw
     return BRAND_FIX.get(norm_b(b), b)
+
+TR_FILE = T / "hw" / "translations.json"
+TR = json.loads(TR_FILE.read_text()) if TR_FILE.exists() else {}
+PLACEHOLDER = re.compile(r"^(hier,? (wenn|falls) vorhanden|-+|k\.?\s?a\.?|keine?|n/a|\?)$", re.I)
+NO_PRICE = re.compile(r"siehe Technische Daten|unbekannt", re.I)
+def en(s):
+    """English version of a HiFi-Wiki text (translation cache), first letter capitalised."""
+    if not s: return s
+    from translate_hw import clean
+    c = clean(s)
+    t = TR.get(c) or TR.get(s) or c
+    return t[:1].upper() + t[1:] if t else t
 
 def first_year(s):
     m = re.search(r"(19\d\d)", s or "")
@@ -83,8 +96,13 @@ def main():
              "pw": en_power(d.get("Leistung")) if d["cat"] != "turntable" else "",
              "dr": en_drive(d.get("Antrieb") or d.get("Antriebsart")) if d["cat"] == "turntable" else "",
              "p": (d.get("Neupreis") or "").strip()[:40], "wt": (d.get("Gewicht") or "").strip()[:20],
-             "f": [x for x in d.get("Ausstattung", []) if len(x) < 140][:6],
+             "f": [x for x in d.get("Ausstattung", []) if len(x) < 140 and not PLACEHOLDER.match(x.strip())][:6],
              "r": (d.get("Bemerkungen") or "")[:500]}
+        if NO_PRICE.search(e["p"]): e["p"] = ""
+        for k in ("bu", "p", "wt", "pw"):
+            if e.get(k) in TR: e[k] = TR[e[k]]
+        e["f"] = [x for x in (en(x) for x in e["f"]) if x and not PLACEHOLDER.match(x)]
+        e["r"] = en(e["r"]); e["o"] = en(e["o"]) if e["o"] else ""
         img = pick_image(d.get("images", []))
         if img: e["i"] = img
         out.append({k: v for k, v in e.items() if v not in ("", [], None)})

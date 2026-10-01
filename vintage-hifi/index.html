@@ -488,12 +488,12 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
             ${p.aka ? `<dt>Also sold as</dt><dd>${esc(p.aka)}</dd>` : ""}
             ${p.market ? `<dt>Markets</dt><dd>${esc(p.market)}</dd>` : ""}
             ${p.country ? `<dt>Origin</dt><dd>${esc(p.country)}</dd>` : ""}
-            ${p.de?.oem ? `<dt>Maker note</dt><dd lang="de">${esc(p.de.oem)}</dd>` : ""}
+            ${p.de?.oem ? `<dt>Maker note</dt><dd>${esc(p.de.oem)}</dd>` : ""}
             <dt>Key specs</dt><dd>${esc(p.specs)}</dd>
           </dl>
-          ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">HiFi-Wiki notes (German)</h3>
-            ${de.rem ? `<p style="margin:6px 0 0;font-size:14px" lang="de">${esc(de.rem)}</p>` : ""}
-            ${de.feat && de.feat.length ? `<ul class="de-notes" lang="de">${de.feat.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}` : ""}
+          ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">Notes from HiFi-Wiki (translated from German)</h3>
+            ${de.rem ? `<p style="margin:6px 0 0;font-size:14px">${esc(de.rem)}</p>` : ""}
+            ${de.feat && de.feat.length ? `<ul class="de-notes">${de.feat.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}` : ""}
           <h3 class="sec">Sources (${p.sources.length})</h3>
           <ul class="sources">${p.sources.map(s =>
             `<li><span class="lang" title="${LANGS[s.lang] || s.lang}">${s.lang.toUpperCase()}</span>
