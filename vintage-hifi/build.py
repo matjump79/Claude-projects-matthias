@@ -19,6 +19,8 @@ def embed_photos(js):
 html = re.sub(r'<script src="(data/[^"]+\.js)"></script>',
               lambda m: "<script>\n" + embed_photos((root / m.group(1)).read_text(encoding="utf-8")) + "</script>", html)
 
+html = re.sub(r'src="(photos/[^"]+\.jpg)"', lambda m: 'src="' + data_uri(m.group(1)) + '"', html)   # banner image
+
 if "--artifact" in sys.argv:
     out = pathlib.Path(sys.argv[sys.argv.index("--artifact") + 1]); (out / "photos").mkdir(parents=True, exist_ok=True)
     for tag in ("<!doctype html>", '<html lang="en">', "<head>", "</head>", "<body>", "</body>", "</html>",

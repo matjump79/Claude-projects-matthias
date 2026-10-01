@@ -59,11 +59,28 @@ body {
 a { color: var(--accent); }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
 
-header.top { padding-top: 28px; padding-bottom: 8px; }
-.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 6vw, 54px); margin: 4px 0 8px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; text-wrap: balance; }
-.lede { color: var(--muted); max-width: 70ch; margin: 0 0 8px; }
-.theme-btn { float: right; background: none; border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
+/* Banner: deliberately dark in both themes, like the walnut-and-black of the photo */
+.banner { --banner-bg: #0d0c0b; --banner-fg: #f1ece4; --banner-muted: #b9b0a3; --banner-line: rgba(241,236,228,.25);
+  position: relative; background: var(--banner-bg); color: var(--banner-fg); overflow: hidden; }
+.banner-photo { position: absolute; inset: 0 0 0 auto; width: min(62%, 760px); height: 100%; margin: 0; }
+.banner-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 45%; display: block; }
+.banner-photo::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--banner-bg) 0%, rgba(13,12,11,.75) 22%, rgba(13,12,11,0) 55%),
+              linear-gradient(0deg, rgba(13,12,11,.55) 0%, rgba(13,12,11,0) 35%); }
+.banner-inner { position: relative; padding-block: 40px 34px; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-end; }
+.banner-text { max-width: 560px; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--banner-muted); }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 6vw, 58px); margin: 6px 0 10px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; text-wrap: balance; color: var(--banner-fg); }
+.lede { color: var(--banner-muted); max-width: 60ch; margin: 0; }
+.banner-credit { position: absolute; right: 12px; bottom: 8px; font-size: 11px; color: var(--banner-muted); }
+.banner-credit a { color: var(--banner-muted); }
+.theme-btn { position: absolute; top: 16px; right: 16px; z-index: 2; background: rgba(13,12,11,.55); border: 1px solid var(--banner-line); color: var(--banner-fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
+@media (max-width: 700px) {
+  .banner-photo { position: relative; width: 100%; height: 220px; }
+  .banner-photo::after { background: linear-gradient(0deg, var(--banner-bg) 0%, rgba(13,12,11,0) 45%); }
+  .banner-inner { min-height: 0; padding-block: 0 40px; margin-top: -40px; }
+  .banner-credit { left: 16px; right: 16px; bottom: 12px; }
+}
 
 .controls {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
@@ -166,12 +183,18 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 </style>
 </head>
 <body>
-<header class="top wrap">
+<header class="banner">
+  <figure class="banner-photo"><img src="photos/banner-luxman-l-58a.jpg" alt="Luxman L-58A integrated amplifier in its rosewood case, 1979"></figure>
   <button class="theme-btn" id="themeBtn" type="button">Theme</button>
-  <div class="eyebrow">Vintage HiFi · 1970–1989</div>
-  <h1>Receivers, Amplifiers &amp; Turntables 1970–1989</h1>
-  <p class="lede">Every receiver, amplifier and turntable launched between 1970 and 1989 that HiFi-Wiki documents, plus in-depth entries with multilingual sources for the landmark models.
-  <span id="photoNote">Photos load live from Wikimedia Commons where a matching free-licence image exists. Otherwise the card links to a source page with photos.</span></p>
+  <div class="wrap banner-inner">
+    <div class="banner-text">
+      <div class="eyebrow">Vintage HiFi · 1970–1989</div>
+      <h1>Receivers, Amplifiers &amp; Turntables</h1>
+      <p class="lede">Every receiver, amplifier and turntable launched between 1970 and 1989 that HiFi-Wiki documents, plus in-depth entries with multilingual sources for the landmark models.
+      <span id="photoNote"></span></p>
+    </div>
+  </div>
+  <div class="banner-credit">Luxman L-58A (1979) · photo: <a href="https://audio-heritage.jp/LUXMAN/amp/l-58a.html" target="_blank" rel="noopener">audio-heritage.jp</a></div>
 </header>
 
 <div class="controls">
