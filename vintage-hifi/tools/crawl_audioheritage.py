@@ -86,6 +86,16 @@ def ja_post(t):
     # drop sentences that still carry Japanese characters
     return " ".join(x for x in re.split(r"(?<=[.!?])\s+", t) if not JA_CHARS.search(x)).strip()
 
+# export brand -> Japanese home-market brand names used by the Japanese sites
+ALIAS = {"jvc": ["victor"], "hitachi": ["lod", "hitachi"], "toshiba": ["aurex", "toshiba"], "mitsubishi": ["diatone"],
+         "kenwood": ["trio", "kenwood"], "trio": ["trio", "kenwood"], "harmankardon": ["harman"], "revox": ["studer", "revox"],
+         "studer": ["studer", "revox"], "teac": ["teac", "esoteric"], "esoteric": ["teac", "esoteric"], "optonica": ["sharp"],
+         "lo-d": ["lod"], "aurex": ["aurex"], "bangolufsen": ["bang"], "columbia": ["denon"], "nippon": ["denon"]}
+def brand_ok(brand, brand_dir):
+    bn, d = re.sub(r"[^a-z0-9]", "", brand.lower()), re.sub(r"[^a-z0-9]", "", brand_dir.lower())
+    keys = ALIAS.get(bn, []) + ALIAS.get(bn.split()[0] if " " in bn else bn[:5], []) + [bn[:5]]
+    return any(k and k in d for k in keys)
+
 def main():
     import argostranslate.translate as tr
     pages = index(); print(len(pages), "Japanese model pages", flush=True)
@@ -100,8 +110,7 @@ def main():
     matched = {}
     for o in ours:
         if o["id"] in have: continue
-        bn = norm(o["b"])[:5]
-        cands = [c for c in by.get(norm(o["m"]), []) if bn and bn in norm(c["brand_dir"])]
+        cands = [c for c in by.get(norm(o["m"]), []) if brand_ok(o["b"], c["brand_dir"])]
         if cands: matched[o["id"]] = cands[0]["url"]
     print(len(matched), "matched", flush=True)
     rf = T / "hw" / "audioheritage.json"; res = json.loads(rf.read_text()) if rf.exists() else {}
