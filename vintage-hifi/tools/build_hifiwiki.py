@@ -42,7 +42,8 @@ def en(s):
     t = post(TR.get(c) or TR.get(s) or c)
     return t[:1].upper() + t[1:] if t else t
 
-SHORT_RULES = [(r"\(das entspric\w*", "(equivalent to"), (r"Japan-Version der", "Japanese version of the"),
+SHORT_RULES = [(r"\s*\([^)]*$", ""), (r"\s+(Was|Gerät)\b.*$", ""), (r"\(Silber-Ausführung\)", "(silver version)"),
+    (r"gemäß Testbericht", "according to test report"), (r"\bteilw\.?", "partly"),(r"\(das entspric\w*", "(equivalent to"), (r"Japan-Version der", "Japanese version of the"),
     (r"Mark der DDR", "East German marks"), (r"\(\s*Stück\s*!?\s*\)", "(each)"), (r"Soweit bekannt,?", "as far as known,"),
     (r"Was das Ge\w*", ""), (r"Messwert der Zeitschrift (\w+)", r"measured by \1 magazine"),
     (r"\s+bis\s+\+", " to +"), (r"^Zahlreiche Kühlöffnungen oben, unten und an den Seiten\.?$", "Numerous cooling vents on top, bottom and sides."),
@@ -125,6 +126,7 @@ def main():
                 e[k] = post(TR[e[k]])
         for k in ("bu", "p", "wt", "pw"):
             if e.get(k): e[k] = fix_short(e[k])
+        if re.match(r"(Eingänge|Inputs|Abmessungen|Dimensions|UKW|FM)\b", e.get("pw", "")): e["pw"] = ""
         e["f"] = [fix_short(x) for x in (en(x) for x in e["f"]) if x and not PLACEHOLDER.match(x)]
         e["r"] = en(e["r"]); e["o"] = en(e["o"]) if e["o"] else ""
         e["vn"] = fix_short(en(note)) if note else ""

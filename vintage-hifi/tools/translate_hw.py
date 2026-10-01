@@ -33,6 +33,8 @@ GLOSSARY = [
     ("Rauschfilter", "noise filter"), ("Rumpelfilter", "rumble filter"), ("Loudness", "loudness"),
     ("abschaltbar", "can be switched off"), ("zuschaltbar", "can be switched on"), ("umschaltbar", "switchable"),
     ("Schalter", "switch"), ("Gusskühlkörper", "cast heat sinks"), ("Gußkühlkörper", "cast heat sinks"), ("Kühlkörper", "heat sinks"),
+    ("Tonzelle", "cartridge"), ("Anzeigenteil", "display section"), ("Plastikgehäuse", "plastic case"),
+    ("Nußbaumfurnier", "walnut veneer"), ("Nussbaumfurnier", "walnut veneer"), ("Gehäusezarge", "plinth frame"),
     ("Ausführung", "version"), ("Gesamtanlage", "system"), ("Komponente", "component"), ("Modell", "model"), ("Serie", "series"),
     ("foliert", "foil-covered"), ("Kupferplattenteller", "copper platter"), ("regelbar", "adjustable"),
     ("Lautstärkeabsenkung", "volume dimmer"), ("Anschluss", "socket"), ("Anschlüsse", "connections"),
@@ -51,13 +53,13 @@ def clean(s):
     s = re.sub(r"\b(Bilder|Berichte|Dokumente)\s*$", "", s.strip())
     return re.sub(r"\s+", " ", s).strip(" -–")
 
-NOTE_SPLIT = re.compile(r"\s*\(|,\s+(?=\D)|\s+(?=(mit|ohne|in Schwarz|in Silber|Komponente|Ausführung|Version|Serie)\b)", re.I)
+NOTE_SPLIT = re.compile(r"\s*\(|,\s+(?=\D)|\s+-\s+|\s+(?=(mit|ohne|in Schwarz|in Silber|Komponente|Ausführung|Version|Serie|später|für|oder|und|ähnlich|siehe)\b)|-(?=Serie\b)", re.I)
 def split_model(m):
     """'KA-3006 (US-Ausführung)' -> ('KA-3006', 'US-Ausführung'); notes stay untranslated here."""
     parts = NOTE_SPLIT.split(m, maxsplit=1)
     core = parts[0].strip(" ,")
     rest = m[len(parts[0]):].strip(" ,")
-    if not rest or not core or not looks_german(rest + " ") and not re.search(r"Langwelle|Ausführung|Modell|Schwarz|Silber|baugleich|Komponente|Gesamtanlage|Serie|ähnlich|wie\b|nur\b", rest, re.I):
+    if not rest or not core or not looks_german(rest + " ") and not re.search(r"Langwelle|Ausführung|Modell|Schwarz|Silber|baugleich|Komponente|Gesamtanlage|Serie|ähnlich|wie\b|nur\b|später|für|oder|und\b|siehe|ab\s+\d", rest, re.I):
         return m, ""
     rest = rest[1:-1] if rest.startswith("(") and rest.endswith(")") and rest.count("(") == 1 else rest
     return core, rest.strip()
