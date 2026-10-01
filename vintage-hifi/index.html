@@ -205,7 +205,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <footer class="wrap">
   <p>Year = year of introduction according to the cited sources. Where sources disagree this is marked “sources differ”.
   Specs are as published by the sources, not re-measured. Language codes: EN English, DE German, JA Japanese, FR French,
-  IT Italian, ES Spanish, PL Polish, MULTI multilingual site (e.g. Radiomuseum.org).</p>
+  IT Italian, ES Spanish, PL Polish, RU Russian, MULTI multilingual site (e.g. Radiomuseum.org).</p>
   <p>Photos: taken from the credited source pages (Radiomuseum.org, hifi-wiki, classicreceivers.com, audio-heritage.jp and others) and checked by eye against each model.
   They are shown for personal reference; the rights stay with their owners, so ask before publishing the page more widely.</p>
 </footer>
@@ -216,6 +216,8 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <script src="data/receivers.js"></script>
 <script src="data/amplifiers.js"></script>
 <script src="data/turntables.js"></script>
+<script src="data/early.js"></script>
+<script src="data/late.js"></script>
 <script src="data/photos.js"></script>
 <script src="data/hifiwiki.js"></script>
 <script>
@@ -236,7 +238,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     ["HiFi Shark listings", "https://www.hifishark.com/search?q=", "Photos from current used-market listings"],
     ["1001hifi", "1001hifi.info", "Illustrated model histories"]
   ];
-  const LANGS = { en: "English", de: "German", ja: "Japanese", fr: "French", it: "Italian", es: "Spanish", pl: "Polish", multi: "Multilingual" };
+  const LANGS = { en: "English", de: "German", ja: "Japanese", fr: "French", it: "Italian", es: "Spanish", pl: "Polish", ru: "Russian", multi: "Multilingual" };
   const AMP = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="20" width="58" height="24" rx="3"/><circle cx="46" cy="32" r="7"/><circle cx="14" cy="32" r="3"/><circle cx="24" cy="32" r="3"/><path d="M33 26v12"/></svg>';
   const ICONS = {
     turntable: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="12" width="56" height="40" rx="4"/><circle cx="26" cy="32" r="15"/><circle cx="26" cy="32" r="2"/><path d="M50 18v18l-8 8"/><circle cx="50" cy="18" r="2.5"/></svg>',

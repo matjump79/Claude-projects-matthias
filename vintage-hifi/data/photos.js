@@ -349,5 +349,195 @@ window.HIFI_PHOTOS = {
   "src": "photos/yamaha-r-2000.jpg",
   "site": "hifi-wiki.com",
   "page": "https://hifi-wiki.com/index.php/Yamaha_R-2000"
+ },
+ "marantz-2270": {
+  "src": "photos/hw/marantz-2270.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Marantz_2270"
+ },
+ "marantz-2325": {
+  "src": "photos/hw/marantz-2325.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Marantz_2325"
+ },
+ "pioneer-sx-1010": {
+  "src": "photos/hw/pioneer-sx-1010.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Pioneer_SX-1010"
+ },
+ "pioneer-sx-1250": {
+  "src": "photos/hw/pioneer-sx-1250.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Pioneer_SX-1250"
+ },
+ "kenwood-kr-9600": {
+  "src": "photos/hw/kenwood-kr-9600.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Kenwood_KR-9600"
+ },
+ "yamaha-cr-1000": {
+  "src": "photos/hw/yamaha-cr-1000.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Yamaha_CR-1000"
+ },
+ "mcintosh-mac-1900": {
+  "src": "photos/hw/mcintosh-mac-1900.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/McIntosh_MAC_1900"
+ },
+ "braun-regie-510": {
+  "src": "photos/hw/braun-regie-510.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Braun_Regie_510"
+ },
+ "sansui-au-9900": {
+  "src": "photos/hw/sansui-au-9900.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Sansui_AU-9900"
+ },
+ "pioneer-sa-9900": {
+  "src": "photos/hw/pioneer-sa-9900.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Pioneer_SA-9900"
+ },
+ "technics-sl-1200": {
+  "src": "photos/hw/technics-sl-1200.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Technics_SL-1200"
+ },
+ "linn-sondek-lp12": {
+  "src": "photos/hw/linn-sondek-lp12.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Linn_Sondek_LP12"
+ },
+ "bang-olufsen-beogram-4000": {
+  "src": "photos/hw/bang-olufsen-beogram-4000.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Bang_%26_Olufsen_Beogram_4000"
+ },
+ "thorens-td-160": {
+  "src": "photos/hw/thorens-td-160.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Thorens_TD_160"
+ },
+ "rotel-ra-820bx": {
+  "src": "photos/hw/rotel-ra-820-bx.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Rotel_RA-820_BX"
+ },
+ "marantz-pm-94": {
+  "src": "photos/hw/marantz-pm-94.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Marantz_PM-94"
+ },
+ "quad-606": {
+  "src": "photos/hw/quad-606.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Quad_606"
+ },
+ "sansui-au-907": {
+  "src": "photos/hw/sansui-au-907.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Sansui_AU-%CE%B1_907"
+ },
+ "pioneer-a-717": {
+  "src": "photos/hw/pioneer-a-717.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Pioneer_A-717"
+ },
+ "sansui-au-x1111-mos-vintage": {
+  "src": "photos/hw/sansui-au-x-1111-mos-vintage.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Sansui_AU-X_1111_Mos_Vintage"
+ },
+ "luxman-l-570": {
+  "src": "photos/hw/luxman-l-570.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Luxman_L-570"
+ },
+ "accuphase-e-405": {
+  "src": "photos/hw/accuphase-e-405.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Accuphase_E-405"
+ },
+ "thorens-td-320": {
+  "src": "photos/hw/thorens-td-320.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Thorens_TD_320"
+ },
+ "yamaha-gt-2000x": {
+  "src": "photos/hw/yamaha-gt-2000-x.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Yamaha_GT-2000_X"
+ },
+ "sansui-9090": {
+  "src": "photos/sansui-9090.jpg",
+  "site": "olegvintageaudio.com",
+  "page": "https://www.olegvintageaudio.com/2023/06/sansui-9090-receiver-restoration.html"
+ },
+ "luxman-sq38fd": {
+  "src": "photos/luxman-sq38fd.jpg",
+  "site": "audio-database.com",
+  "page": "https://audio-database.com/LUXMAN/amp/sq38fd.html"
+ },
+ "dual-701": {
+  "src": "photos/dual-701.jpg",
+  "site": "radiomuseum.org",
+  "page": "https://www.radiomuseum.org/r/dual_701.html"
+ },
+ "garrard-zero-100": {
+  "src": "photos/garrard-zero-100.jpg",
+  "site": "andydoz.blogspot.com",
+  "page": "https://andydoz.blogspot.com/2020/04/garrard-zero-100-from-zero-to-hero.html"
+ },
+ "denon-dp-3000": {
+  "src": "photos/denon-dp-3000.jpg",
+  "site": "audio-heritage.jp",
+  "page": "https://audio-heritage.jp/DENON/etc/dp-3000.html"
+ },
+ "yamaha-r-9": {
+  "src": "photos/yamaha-r-9.jpg",
+  "site": "hifi-wiki.com",
+  "page": "https://hifi-wiki.com/index.php/Yamaha_R-9"
+ },
+ "mission-cyrus-one": {
+  "src": "photos/mission-cyrus-one.jpg",
+  "site": "radiomuseum.org",
+  "page": "https://www.radiomuseum.org/r/mission_gb_cyrus_one_1_issue_06.html"
+ },
+ "roksan-xerxes": {
+  "src": "photos/roksan-xerxes.jpg",
+  "site": "en.wikipedia.org",
+  "page": "https://en.wikipedia.org/wiki/Roksan_Xerxes"
+ },
+ "linn-axis": {
+  "src": "photos/linn-axis.jpg",
+  "site": "gammaelectronics.xyz",
+  "page": "https://www.gammaelectronics.xyz/audio_05-1987_linn.html"
+ },
+ "yamaha-ca-1000": {
+  "src": "photos/yamaha-ca-1000.jpg",
+  "site": "gammaelectronics.xyz",
+  "page": "https://www.gammaelectronics.xyz/audio_09-1974_yamaha-int.html"
+ },
+ "phase-linear-700": {
+  "src": "photos/phase-linear-700.jpg",
+  "site": "holthill.com",
+  "page": "https://holthill.com/products/phase-linear-model-700-monster-power-amplifier"
+ },
+ "technics-sp-10": {
+  "src": "photos/technics-sp-10.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Technics_SP-10"
+ },
+ "technics-sl-1200mk3": {
+  "src": "photos/technics-sl-1200mk3.jpg",
+  "site": "hifi-wiki.com",
+  "page": "https://hifi-wiki.com/index.php/Technics_SL-1200MK3"
+ },
+ "quad-405": {
+  "src": "photos/quad-405.jpg",
+  "site": "hifi-wiki.com",
+  "page": "https://hifi-wiki.com/index.php/Quad_405"
  }
 };
