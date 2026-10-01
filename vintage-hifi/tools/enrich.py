@@ -20,10 +20,12 @@ PX = ROOT / "photos" / "x"; PX.mkdir(parents=True, exist_ok=True)
 load = lambda n: json.loads((T / "hw" / n).read_text()) if (T / "hw" / n).exists() else {}
 
 def sentences(text, limit=3, maxlen=520):
-    text = re.sub(r"\s+", " ", text or "").strip()
+    text = re.split(r"\b(?:Model Rating|Specifications|Rating)\b", text or "")[0]   # spec table that follows the commentary
+    text = re.sub(r"\s+", " ", text).strip()
     parts = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'(])", text)
     out = []
     for p in parts:
+        if re.search(r"[\u3040-\u30ff\u3400-\u9fff。、]", p): continue   # untranslated Japanese
         if len(" ".join(out + [p])) > maxlen: break
         out.append(p)
         if len(out) >= limit: break

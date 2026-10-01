@@ -54,7 +54,10 @@ SHORT_RULES = [(r"\s*\([^)]*$", ""), (r"\s+(Was|Gerät)\b.*$", ""), (r"\(Silber-
     (r"\bdas entsprich\w*", "equivalent to"), (r"\bentsprechend\b", "equivalent to"), (r"\bentspricht\b", "equivalent to"),
     (r"\s*/\s*Stück\b", " each"), (r"Set-Preis", "set price"), (r"Vorverstärker?", "preamplifier"), (r"\bin D\b", "in Germany"),
     (r"\bWurde\b", "Was"), (r"\bfür\b", "for"), (r"\bmit\b", "with"), (r"\bohne\b", "without"), (r"\bund\b", "and"),
-    (r"\bmindestens\b", "at least"), (r"\bnetto\b", "net")]
+    (r"\bmindestens\b", "at least"), (r"\bnetto\b", "net"), (r"Gesamtklirrfaktor", "THD"), (r"\bW/K\.?", "W/ch"), (r"\bSinus\b", "sine"),
+    (r"Messbereich", "measuring range"), (r"Impulsleistung", "peak power"), (r"Dauerleistung", "continuous power"),
+    (r"Frequenzbereich", "frequency range"), (r"\bpro Paar\b", "per pair"), (r"Japanischer Ye\w*", "Japanese yen"),
+    (r"Plastikgehäuse", "plastic case"), (r"Preisempfehlung", "recommended price"), (r"\ban (?=\d+\s*Ω)", "into "), (r"\bpro\b", "per")]
 def fix_short(v):
     for a, b in SHORT_RULES:
         v = re.sub(a, b, v, flags=re.I)
@@ -129,6 +132,7 @@ def main():
         if re.match(r"(Eingänge|Inputs|Abmessungen|Dimensions|UKW|FM)\b", e.get("pw", "")): e["pw"] = ""
         e["f"] = [fix_short(x) for x in (en(x) for x in e["f"]) if x and not PLACEHOLDER.match(x)]
         e["r"] = en(e["r"]); e["o"] = en(e["o"]) if e["o"] else ""
+        e["m"] = e["m"].replace("(ohne MW)", "(without MW)")
         e["vn"] = fix_short(en(note)) if note else ""
         img = pick_image(d.get("images", []))
         if img: e["i"] = img
