@@ -66,6 +66,26 @@ def parse(s, url):
             break
     return d
 
+# Katakana audio terms Argos leaves half-translated ("A ifier") -> English before translation
+JA_TERMS = [("プリメインアンプ", "integrated amplifier"), ("コントロールアンプ", "preamplifier"), ("プリアンプ", "preamplifier"),
+            ("パワーアンプ", "power amplifier"), ("メインアンプ", "power amplifier"), ("ステレオアンプ", "stereo amplifier"), ("アンプ", "amplifier"),
+            ("レコードプレーヤー", "record player"), ("プレーヤーシステム", "record player"), ("プレーヤー", "player"), ("トーンアーム", "tonearm"),
+            ("アーム", "arm"), ("カートリッジ", "cartridge"), ("ターンテーブル", "turntable"), ("フォノイコライザー", "phono stage"),
+            ("イコライザー", "equalizer"), ("レシーバー", "receiver"), ("チューナー", "tuner"), ("トランジスタ", "transistor"),
+            ("トランス", "transformer"), ("コンデンサー", "capacitor"), ("コンデンサ", "capacitor"), ("モーター", "motor"),
+            ("ベルトドライブ", "belt drive"), ("ダイレクトドライブ", "direct drive"), ("サーボ", "servo"), ("スピーカー", "loudspeaker"),
+            ("ボリューム", "volume control"), ("トーンコントロール", "tone control"), ("フィルター", "filter"), ("メーター", "meter"),
+            ("シャーシ", "chassis"), ("ヘッドシェル", "headshell"), ("キャビネット", "cabinet"), ("ダンプ", "damping"), ("回路", " circuit "),
+            ("電源", " power supply ")]
+def ja_pre(t):
+    for k, v in JA_TERMS: t = t.replace(k, f" {v} ")
+    return t
+JA_CHARS = re.compile(r"[\u3040-\u30ff\u3400-\u9fff\uff01-\uff60。、「」]")
+def ja_post(t):
+    t = re.sub(r"\s+", " ", t).strip()
+    # drop sentences that still carry Japanese characters
+    return " ".join(x for x in re.split(r"(?<=[.!?])\s+", t) if not JA_CHARS.search(x)).strip()
+
 def main():
     import argostranslate.translate as tr
     pages = index(); print(len(pages), "Japanese model pages", flush=True)
@@ -103,7 +123,7 @@ def main():
         ja = d.pop("commentary_ja", "")
         if ja:
             parts = re.split(r"(?<=。)", ja)
-            d["commentary_en"] = " ".join(tr.translate(p, "ja", "en") for p in parts[:4] if p.strip())
+            d["commentary_en"] = ja_post(" ".join(tr.translate(ja_pre(p), "ja", "en") for p in parts[:4] if p.strip()))
         return pid, d
     with ThreadPoolExecutor(4) as ex:
         for n, (pid, d) in enumerate(ex.map(trans, got), 1):

@@ -13,25 +13,33 @@ T = pathlib.Path(__file__).parent
 OUT = T / "hw" / "rm"; (OUT / "pages").mkdir(parents=True, exist_ok=True)
 BASE = "https://www.radiomuseum.org"
 S = requests.Session(); S.headers["User-Agent"] = "Mozilla/5.0 (Macintosh) Safari/605.1.15 (personal vintage-hifi research)"
-CC = ["j", "d", "usa", "gb", "ch", "dk", "nl", "i", "f", "s", "n", "a", "tw", "hk", "kor", "cdn", "aus", "b", "sf", "e"]
+CC = ["j", "d", "usa", "gb", "ch", "dk", "nl", "i", "f", "s", "n", "a", "tw", "hk"]
 norm = lambda s: re.sub(r"[^a-z0-9]", "", s.lower())
 
 def get(url):
-    for i in range(3):
+    for i in range(6):
+        time.sleep(1.2)
         try:
             r = S.get(url, timeout=40, allow_redirects=True)
             if r.status_code == 200: return r
             if r.status_code in (404, 410): return None
+            if r.status_code == 429: time.sleep(90); continue
         except requests.RequestException:
             pass
         time.sleep(5 * (i + 1))
     return None
 
+JP = set("accuphase aiwa akai denon fisher hitachi jvc kenwood trio luxman lux marantz micro mitsubishi nakamichi nec onkyo pioneer sansui sanyo sharp sony technics teac toshiba yamaha kyocera victor diatone esoteric sharp optonica rotel".split())
+DE = set("braun dual grundig saba telefunken uher wega elac thorens sabafidelity klein isophon heco canton blaupunkt nordmende loewe schneider revox studer".split())
+def guess_cc(brand):
+    f = brand.split()[0].lower()
+    return "j" if f in JP else "d" if f in DE else "ch" if f in ("revox", "studer", "thorens") else "nl" if f in ("philips", "erres") else "gb" if f in ("quad", "naim", "rega", "linn", "arcam", "leak", "sugden", "cambridge") else "usa"
+
 def resolve(brand):
     base = re.sub(r"[^a-z0-9]+", "_", brand.lower()).strip("_")
     first = base.split("_")[0]
     for b in dict.fromkeys([base, first]):
-        for cc in CC:
+        for cc in sorted(CC, key=lambda c: c != guess_cc(brand)):
             r = get(f"{BASE}/m/{b}_{cc}_en_1.html"); time.sleep(0.25)
             if r is not None and "/m/" in r.url and brand.split()[0].lower()[:4] in r.text.lower():
                 return re.sub(r"_en_\d+(~\w+)?\.html$", "", r.url.split("/m/")[1])
@@ -74,15 +82,19 @@ def main():
     deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=T.parent))
     ours = [{"id": w["id"], "b": w["b"], "m": w["m"]} for w in W] + \
            [{"id": re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", (p["brand"] + "-" + p["model"]).lower())), "b": p["brand"].split(" /")[0], "m": p["model"]} for p in deep]
-    brands = sorted({o["b"] for o in ours})
+    from collections import Counter
+    cnt = Counter(o["b"] for o in ours)
+    brands = [b for b, n in cnt.most_common() if n >= 8]   # brands with few units are not worth the requests
     sf = OUT / "slugs.json"; slugs = json.loads(sf.read_text()) if sf.exists() else {}
-    for b in brands:
-        if b not in slugs:
-            slugs[b] = resolve(b); sf.write_text(json.dumps(slugs, indent=1)); print("slug", b, slugs[b], flush=True)
+    todo = [b for b in brands if b not in slugs]
+    with ThreadPoolExecutor(1) as ex:
+        for b, sl in zip(todo, ex.map(resolve, todo)):
+            slugs[b] = sl; sf.write_text(json.dumps(slugs, indent=1)); print("slug", b, sl, flush=True)
     lf = OUT / "lists.json"; lists = json.loads(lf.read_text()) if lf.exists() else {}
-    for b, sl in slugs.items():
-        if sl and sl not in lists:
-            lists[sl] = model_list(sl); lf.write_text(json.dumps(lists)); print("list", sl, len(lists[sl]), flush=True)
+    todo = sorted({sl for sl in slugs.values() if sl and sl not in lists})
+    with ThreadPoolExecutor(1) as ex:
+        for sl, rows in zip(todo, ex.map(model_list, todo)):
+            lists[sl] = rows; lf.write_text(json.dumps(lists)); print("list", sl, len(rows), flush=True)
     matched = {}
     for o in ours:
         sl = slugs.get(o["b"])
@@ -104,7 +116,7 @@ def main():
             if r is None: return pid, None
             s = r.text; fn.write_bytes(gzip.compress(s.encode("utf-8")))
         return pid, parse_model(s, url)
-    with ThreadPoolExecutor(2) as ex:
+    with ThreadPoolExecutor(1) as ex:
         for n, (pid, d) in enumerate(ex.map(fetch, matched.items()), 1):
             if d: res[pid] = d
             if n % 200 == 0: rf.write_text(json.dumps(res, ensure_ascii=False)); print("fetched", n, flush=True)
