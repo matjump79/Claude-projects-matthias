@@ -42,6 +42,23 @@ def en(s):
     t = post(TR.get(c) or TR.get(s) or c)
     return t[:1].upper() + t[1:] if t else t
 
+SHORT_RULES = [(r"\(das entspric\w*", "(equivalent to"), (r"Japan-Version der", "Japanese version of the"),
+    (r"Mark der DDR", "East German marks"), (r"\(\s*Stück\s*!?\s*\)", "(each)"), (r"Soweit bekannt,?", "as far as known,"),
+    (r"Was das Ge\w*", ""), (r"Messwert der Zeitschrift (\w+)", r"measured by \1 magazine"),
+    (r"\s+bis\s+\+", " to +"), (r"^Zahlreiche Kühlöffnungen oben, unten und an den Seiten\.?$", "Numerous cooling vents on top, bottom and sides."),
+    (r"\bWatt\b", "W"), (r"\bOhm\b", "Ω"),(r"\(?\s*wer es wei(ß|ss), bitte eintragen\s*\)?", ""), (r"\bevtl\.?\s*erst\s*", "possibly only "),
+    (r"\bca\.\s*", "approx. "), (r"\betwa\b", "approx."), (r"\s+bis\s+", "–"), (r"\bab\s+(?=\d|[A-Z][a-z]+ \d)", "from "),
+    (r"\bseit\b", "since"), (r"\bum\b(?=\s*\d)", "around"), (r"\bvorgestellt\b", "introduced"),
+    (r"\bKlirr(faktor)?\b", "THD"), (r"Klemmanschlüsse", "terminals"), (r"\bUKW\b", "FM"), (r"\bAntenne\b", "antenna"),
+    (r"\bdas entsprich\w*", "equivalent to"), (r"\bentsprechend\b", "equivalent to"), (r"\bentspricht\b", "equivalent to"),
+    (r"\s*/\s*Stück\b", " each"), (r"Set-Preis", "set price"), (r"Vorverstärker?", "preamplifier"), (r"\bin D\b", "in Germany"),
+    (r"\bWurde\b", "Was"), (r"\bfür\b", "for"), (r"\bmit\b", "with"), (r"\bohne\b", "without"), (r"\bund\b", "and"),
+    (r"\bmindestens\b", "at least"), (r"\bnetto\b", "net")]
+def fix_short(v):
+    for a, b in SHORT_RULES:
+        v = re.sub(a, b, v, flags=re.I)
+    return re.sub(r"\s+", " ", v).strip(" ,;")
+
 def first_year(s):
     m = re.search(r"(19\d\d)", s or "")
     return int(m.group(1)) if m else None
@@ -88,6 +105,9 @@ def main():
         model = (d.get("Modell") or d["title"][len(raw):]).strip() or d["title"]
         fid = slug(raw + "-" + model)          # photo file name (stable across brand clean-ups)
         brand = clean_brand(raw)
+        from translate_hw import split_model
+        model, note = split_model(model)
+        model = re.sub(r"^Modell\b", "Model", model)
         pid = slug(brand + "-" + model)
         if pid in seen: continue
         seen.add(pid)
@@ -103,8 +123,11 @@ def main():
             if e.get(k) in TR:
                 from translate_hw import post
                 e[k] = post(TR[e[k]])
-        e["f"] = [x for x in (en(x) for x in e["f"]) if x and not PLACEHOLDER.match(x)]
+        for k in ("bu", "p", "wt", "pw"):
+            if e.get(k): e[k] = fix_short(e[k])
+        e["f"] = [fix_short(x) for x in (en(x) for x in e["f"]) if x and not PLACEHOLDER.match(x)]
         e["r"] = en(e["r"]); e["o"] = en(e["o"]) if e["o"] else ""
+        e["vn"] = fix_short(en(note)) if note else ""
         img = pick_image(d.get("images", []))
         if img: e["i"] = img
         out.append({k: v for k, v in e.items() if v not in ("", [], None)})
