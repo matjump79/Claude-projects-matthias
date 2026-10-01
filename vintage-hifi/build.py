@@ -38,6 +38,17 @@ if "--artifact" in sys.argv:
             chunks.setdefault(e["pc"], {})[e["id"]] = data_uri(e["ph"])
     for n, c in chunks.items():
         (out / "photos" / f"p{n:02d}.json").write_text(json.dumps(c), encoding="utf-8")
+    # second-source photos (tools/enrich.py) -> photos/xNN.json
+    ef = root / "data" / "enrich.js"
+    if ef.exists():
+        ej = ef.read_text(encoding="utf-8"); enr = json.loads(ej[ej.index("{"): ej.rindex("}") + 1])
+        xch = {}
+        for pid, e in enr.items():
+            ph = e.get("photo")
+            if ph and (root / ph["ph"]).exists(): xch.setdefault(ph["xc"], {})[pid] = data_uri(ph["ph"])
+        for n, c in xch.items():
+            (out / "photos" / f"x{n:02d}.json").write_text(json.dumps(c), encoding="utf-8")
+        print(f"{len(xch)} extra photo chunks")
     print(f"{len(chunks)} photo chunks")
     html = html.lstrip()
 else:

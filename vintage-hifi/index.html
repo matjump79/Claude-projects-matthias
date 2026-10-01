@@ -141,6 +141,8 @@ select {
 .more { display: block; margin: 16px auto 0; font: inherit; font-size: 14px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
 .deep { color: var(--accent); font-weight: 600; }
 .catpage { position: absolute; bottom: 8px; right: 8px; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); }
+.more { margin: 10px 0 0; font-size: 15px; }
+.more .via { color: var(--muted); font-size: 12px; white-space: nowrap; }
 .de-notes { font-size: 14px; margin: 6px 0 0; padding-left: 18px; }
 .de-notes li { margin: 2px 0; }
 .brands { columns: 3 220px; column-gap: 24px; margin-top: 20px; }
@@ -243,6 +245,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <script src="data/late.js"></script>
 <script src="data/photos.js"></script>
 <script src="data/hifiwiki.js"></script>
+<script src="data/enrich.js"></script>
 <script>
 (() => {
   const YEARS = Array.from({ length: 20 }, (_, i) => 1970 + i);
@@ -307,6 +310,15 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
       de: { feat: w.f, rem: w.r, oem: w.o, variant: w.vn }
     });
   });
+  // Second sources (audio-database.com, Radiomuseum.org, classicreceivers.com): extra text, links, facts, photos
+  const EN = window.HIFI_ENRICH || {};
+  data.forEach(p => {
+    const e = EN[p.id]; if (!e) return;
+    (e.src || []).forEach(x => { if (!p.sources.some(y => y.u === x.u)) p.sources.push(x); });
+    p.more = e.more || []; p.facts2 = e.facts || {};
+    if (!p.country && p.facts2.country) p.country = p.facts2.country;
+    if (e.photo && !(window.HIFI_PHOTOS || {})[p.id]) { p.xphoto = e.photo; p.catPage = false; }
+  });
   const index = Object.fromEntries(data.map(p => [p.id, p]));
 
   // ---- safe localStorage ----
@@ -363,7 +375,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     let h = hayCache.get(p.id);
     if (!h) {
       h = [p.brand, p.model, p.aka, p.market, p.type, p.country, p.specs, p.desc, p.year, CATS[p.cat], ONE[p.cat],
-           p.de?.rem, p.de?.oem, p.de?.variant, (p.de?.feat || []).join(" ")].join(" ").toLowerCase();
+           p.de?.rem, p.de?.oem, p.de?.variant, (p.more || []).map(m => m.t).join(" "), (p.de?.feat || []).join(" ")].join(" ").toLowerCase();
       hayCache.set(p.id, h);
     }
     return h;
@@ -454,11 +466,16 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   $("#photoNote").textContent = "";
   const chunkCache = {};
   function loadChunk(n) {
-    return chunkCache[n] ||= fetch(`photos/p${String(n).padStart(2, "0")}.json`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+    return chunkCache[n] ||= fetch(typeof n === "string" ? `photos/${n}.json` : `photos/p${String(n).padStart(2, "0")}.json`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
   }
   function getPhoto(p) {
     const own = (window.HIFI_PHOTOS || {})[p.id];
     if (own) return Promise.resolve({ ...own, local: true });
+    if (p.xphoto) {
+      const x = p.xphoto;
+      if (window.HIFI_PHOTO_CHUNKS) return loadChunk("x" + String(x.xc).padStart(2, "0")).then(c => c[p.id] ? { src: c[p.id], page: x.page, site: x.site, local: true } : null);
+      if (LIVE) return Promise.resolve({ src: x.u, page: x.page, site: x.site, local: true });
+    }
     if (p.pc != null && window.HIFI_PHOTO_CHUNKS) return loadChunk(p.pc).then(c => c[p.id] ? { src: c[p.id], page: p.photos, site: "hifi-wiki.de", local: true } : null);
     if (p.img && LIVE) return Promise.resolve({ src: p.img, page: p.photos, site: "hifi-wiki.de", local: true });
     return Promise.resolve(null);
@@ -504,6 +521,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
           <div class="brand">${esc(p.brand)}${p.deep ? ` · <span class="deep">In-depth entry</span>` : ""}</div>
           <h2 class="model" style="font-size:30px;margin:2px 0 6px">${esc(p.model)}</h2>
           <p style="margin:0">${esc(p.desc)}</p>
+          ${(p.more || []).map(m => `<p class="more">${esc(m.t)} <span class="via">(${esc(m.s)})</span></p>`).join("")}
           <dl class="facts">
             <dt>Category</dt><dd>${esc(ONE[p.cat])}${p.type && p.deep ? " · " + esc(p.type) : ""}</dd>
             <dt>Introduced</dt><dd>${p.year}</dd>
@@ -514,6 +532,9 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
             ${p.de?.variant ? `<dt>Variants</dt><dd>${esc(p.de.variant)}</dd>` : ""}
             ${p.de?.oem ? `<dt>Maker note</dt><dd>${esc(p.de.oem)}</dd>` : ""}
             <dt>Key specs</dt><dd>${esc(p.specs)}</dd>
+            ${p.facts2?.price && !/price|¥|\$|DM|£/i.test(p.specs) ? `<dt>Launch price</dt><dd>${esc(p.facts2.price)}</dd>` : ""}
+            ${p.facts2?.weight && !/kg/i.test(p.specs) ? `<dt>Weight</dt><dd>${esc(p.facts2.weight)}</dd>` : ""}
+            ${p.facts2?.dims ? `<dt>Dimensions</dt><dd>${esc(p.facts2.dims)}</dd>` : ""}
           </dl>
           ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">Notes from HiFi-Wiki (translated from German)</h3>
             ${de.rem ? `<p style="margin:6px 0 0;font-size:14px">${esc(de.rem)}</p>` : ""}
