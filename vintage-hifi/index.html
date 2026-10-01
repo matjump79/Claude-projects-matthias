@@ -168,9 +168,9 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <body>
 <header class="top wrap">
   <button class="theme-btn" id="themeBtn" type="button">Theme</button>
-  <div class="eyebrow">Vintage HiFi · Volume 1</div>
-  <h1>Receivers, Amplifiers &amp; Turntables 1977–1983</h1>
-  <p class="lede">Every receiver, amplifier and turntable launched between 1977 and 1983 that HiFi-Wiki documents, plus in-depth entries with multilingual sources for the landmark models.
+  <div class="eyebrow">Vintage HiFi · 1970–1989</div>
+  <h1>Receivers, Amplifiers &amp; Turntables 1970–1989</h1>
+  <p class="lede">Every receiver, amplifier and turntable launched between 1970 and 1989 that HiFi-Wiki documents, plus in-depth entries with multilingual sources for the landmark models.
   <span id="photoNote">Photos load live from Wikimedia Commons where a matching free-licence image exists. Otherwise the card links to a source page with photos.</span></p>
 </header>
 
@@ -220,7 +220,9 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
 <script src="data/hifiwiki.js"></script>
 <script>
 (() => {
-  const YEARS = [1977, 1978, 1979, 1980, 1981, 1982, 1983];
+  const YEARS = Array.from({ length: 20 }, (_, i) => 1970 + i);
+  const ERAS = [["1970-1976", "1970–76"], ["1977-1983", "1977–83"], ["1984-1989", "1984–89"]];
+  const yearOk = (p, v) => !v || (v.includes("-") ? (p.year >= +v.split("-")[0] && p.year <= +v.split("-")[1]) : String(p.year) === v);
   const CATS = { receiver: "Receivers", integrated: "Integrated amps", preamp: "Preamplifiers", poweramp: "Power amps", turntable: "Turntables" };
   const ONE = { receiver: "Receiver", integrated: "Integrated amplifier", preamp: "Preamplifier", poweramp: "Power amplifier", turntable: "Turntable" };
   const PAGE = 48;
@@ -322,7 +324,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
       `<button class="chip" type="button" data-k="${key}" data-v="${v}">${label}<span class="n"></span></button>`).join(""));
   }
   chips($("#cats"), [["", "All"], ...Object.entries(CATS)], "cat");
-  chips($("#years"), [["", "All"], ...YEARS.map(y => [String(y), y])], "year");
+  chips($("#years"), [["", "All"], ...ERAS, ...YEARS.map(y => [String(y), y])], "year");
   document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
     state[b.dataset.k] = b.dataset.v; save(); render();
   }));
@@ -343,7 +345,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
   }
   function matches(p, ignore) {
     if (ignore !== "cat" && state.cat && p.cat !== state.cat) return false;
-    if (ignore !== "year" && state.year && String(p.year) !== state.year) return false;
+    if (ignore !== "year" && !yearOk(p, state.year)) return false;
     if (state.brand && p.brand !== state.brand) return false;
     if (state.depth && !p.deep) return false;
     if (state.lang && !p.sources.some(s => s.lang === state.lang)) return false;
@@ -373,7 +375,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     return `<div class="ph">${ICONS[p.cat]}Photo loading…</div>`;
   }
   function block(key, items) {
-    const n = shown[key] || PAGE;
+    const n = shown[key] || (state.year && !state.year.includes("-") ? PAGE : 12);
     const rest = items.length - n;
     return `<div class="grid">${items.slice(0, n).map(card).join("")}</div>` +
       (rest > 0 ? `<button class="more" type="button" data-more="${key}">Show ${Math.min(rest, 96)} more of ${rest}</button>` : "");
@@ -384,7 +386,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     $("#q").value = state.q; for (const k of ["brand", "lang", "view", "depth"]) $("#" + k).value = state[k];
     document.querySelectorAll(".chip").forEach(b => {
       b.setAttribute("aria-pressed", String(state[b.dataset.k] === b.dataset.v));
-      const n = data.filter(p => matches(p, b.dataset.k) && (!b.dataset.v || String(p[b.dataset.k]) === b.dataset.v)).length;
+      const n = data.filter(p => matches(p, b.dataset.k) && (b.dataset.k === "year" ? yearOk(p, b.dataset.v) : !b.dataset.v || String(p[b.dataset.k]) === b.dataset.v)).length;
       b.querySelector(".n").textContent = n;
     });
     const list = data.filter(p => matches(p));
@@ -415,7 +417,7 @@ footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
     }
     out.querySelectorAll(".card").forEach(el => el.addEventListener("click", () => open(el.dataset.id)));
     out.querySelectorAll("[data-more]").forEach(el => el.addEventListener("click", () => {
-      shown[el.dataset.more] = (shown[el.dataset.more] || PAGE) + 96; render();
+      shown[el.dataset.more] = el.parentElement.querySelectorAll(".card").length + 96; render();
     }));
     out.querySelectorAll("[data-photo]").forEach(el => observer.observe(el));
   }

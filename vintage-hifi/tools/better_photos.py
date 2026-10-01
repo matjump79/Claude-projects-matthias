@@ -18,8 +18,13 @@ def page_file(url):
     title = url.split("/index.php/", 1)[1]
     return T / "hw" / "pages" / (re.sub(r"[^A-Za-z0-9._-]", "_", urllib.parse.unquote(title))[:150] + ".html.gz")
 
+KF = T / "hw" / "photo_kind.json"
+done = json.loads(KF.read_text()) if KF.exists() else {}
+
 def improve(e):
     fid = pathlib.Path(e["ph"]).stem
+    if fid in done: return fid, done[fid]
+    if fid not in sc and (PH / f"{fid}.jpg").exists(): sc[fid] = docscore(PH / f"{fid}.jpg")
     cur = sc.get(fid, [9])[0]
     if cur < CUT: return fid, "photo"
     try:
@@ -51,5 +56,5 @@ with ThreadPoolExecutor(3) as ex:
     for n, (fid, k) in enumerate(ex.map(improve, todo), 1):
         kind[fid] = k
         if n % 250 == 0: print(n, "/", len(todo), sum(v == "catalogue" for v in kind.values()), "catalogue so far", flush=True)
-(T / "hw" / "photo_kind.json").write_text(json.dumps(kind))
+KF.write_text(json.dumps(kind)); (T / "hw" / "docscore.json").write_text(json.dumps(sc))
 print("done", sum(v == "photo" for v in kind.values()), "photos,", sum(v == "catalogue" for v in kind.values()), "catalogue pages")
