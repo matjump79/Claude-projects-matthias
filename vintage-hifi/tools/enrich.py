@@ -46,7 +46,7 @@ def main():
     slug = lambda s: re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", s.lower()))
     deep_ids = {slug(p["brand"] + "-" + p["model"]): p for p in deep}
     kinds = load("photo_kind.json")
-    ad, rm, cr = load("audiodb.json"), load("radiomuseum.json"), load("classicreceivers.json")
+    ad, rm, cr, ah = load("audiodb.json"), load("radiomuseum.json"), load("classicreceivers.json"), load("audioheritage.json")
     pj = (ROOT / "data" / "photos.js").read_text(); hand = json.loads(pj[pj.index("{"): pj.rindex("}") + 1])
 
     units = [(w["id"], w["b"], w["m"], w) for w in W] + [(i, p["brand"], p["model"], None) for i, p in deep_ids.items()]
@@ -61,6 +61,14 @@ def main():
             if com: bits.append(com)
             if bits: more.append({"t": " ".join(bits), "s": "audio-database.com"})
             src.append({"t": f"audio-database.com – {brand} {model} (catalogue commentary)", "u": a["url"], "lang": "en"})
+        h = ah.get(pid) if not a else None
+        if h:
+            bits = []
+            if h.get("released"): bits.append(f"Released {h['released']}" + (f" at {h['price']}" if h.get("price") else "") + ".")
+            com = sentences(h.get("commentary_en", ""), 3)
+            if com: bits.append(com)
+            if bits: more.append({"t": " ".join(bits), "s": "audio-heritage.jp, translated from Japanese"})
+            src.append({"t": f"audio-heritage.jp – {brand} {model} (catalogue commentary)", "u": h["url"], "lang": "ja"})
         if c:
             txt = sentences(" ".join(c.get("text", [])), 3, 600)
             if txt: more.append({"t": txt, "s": "classicreceivers.com"})
@@ -78,6 +86,7 @@ def main():
         cur_bad = (w is None) or ("ph" not in w) or kinds.get(pathlib.Path(w.get("ph", "x")).stem) == "catalogue"
         if cur_bad:
             cands = [(u, "audio-database.com", a["url"]) for u in (a or {}).get("images", [])[:3]] + \
+                    [(u, "audio-heritage.jp", h["url"]) for u in (h or {}).get("images", [])[:3]] + \
                     [(u, "radiomuseum.org", r["url"]) for u in (r or {}).get("images", [])[:3]] + \
                     [(u, "classicreceivers.com", c["url"]) for u in (c or {}).get("images", [])[:2]]
             if cands: photo_todo.append((pid, cands))
