@@ -81,7 +81,8 @@ h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs); m
   .banner-photo { position: relative; width: 100%; height: 220px; }
   .banner-photo::after { background: linear-gradient(0deg, var(--banner-bg) 0%, rgba(13,12,11,0) 45%); }
   .banner-inner { min-height: 0; padding-block: 0 40px; margin-top: -40px; }
-  .banner-credit { left: 16px; right: 16px; bottom: 12px; }
+  .banner-credit { position: static; padding: 0 16px 14px; }
+  .banner-inner { padding-bottom: 16px; }
 }
 
 .controls {
@@ -122,6 +123,8 @@ select {
   box-shadow: var(--shadow); display: flex; flex-direction: column; cursor: pointer; text-align: left;
   font: inherit; color: inherit; padding: 0;
 }
+.parts-btn { margin-top: 10px; align-self: flex-start; font: inherit; padding: 6px 10px; border-radius: 3px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer; }
+.parts-btn:hover { background: var(--accent); color: var(--chip-on-text); }
 .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .photo { position: relative; aspect-ratio: 4 / 3; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
 .photo img { width: 100%; height: 100%; object-fit: contain; }
@@ -462,7 +465,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
   // ---- rendering ----
   function card(p) {
     const langs = [...new Set(p.sources.map(s => s.lang))];
-    return `<button class="card" type="button" data-id="${p.id}">
+    return `<div class="card" role="button" tabindex="0" data-id="${p.id}" aria-label="${esc(p.brand + " " + p.model)}">
       <div class="photo" data-photo="${p.id}">${placeholder(p)}<span class="badge b-${p.cat}">${esc(ONE[p.cat])}</span></div>
       <div class="body">
         <div class="brand">${esc(p.brand)}${p.deep ? ` · <span class="deep">In-depth</span>` : ""}</div>
@@ -472,7 +475,8 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
         <div class="specs">${esc(p.specs)}</div>
         <div class="langs">${langs.map(l => `<span class="lang" title="${LANGS[l] || l} source">${l.toUpperCase()}</span>`).join("")}
           <span class="lang" title="Number of sources">${p.sources.length} src</span></div>
-      </div></button>`;
+        <button class="parts-btn" type="button" data-parts="${p.id}">Spare parts &amp; service</button>
+      </div></div>`;
   }
   function placeholder(p) {
     return `<div class="ph">${ICONS[p.cat]}Photo loading…</div>`;
@@ -518,7 +522,10 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
           ${block("y" + y, items)}</section>`;
       }).join("");
     }
-    out.querySelectorAll(".card").forEach(el => el.addEventListener("click", () => open(el.dataset.id)));
+    out.querySelectorAll(".card").forEach(el => {
+      el.addEventListener("click", e => open(el.dataset.id, e.target.closest("[data-parts]") ? "secParts" : null));
+      el.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === el) { e.preventDefault(); open(el.dataset.id); } });
+    });
     out.querySelectorAll("[data-more]").forEach(el => el.addEventListener("click", () => {
       shown[el.dataset.more] = el.parentElement.querySelectorAll(".card").length + 96; render();
     }));
@@ -578,7 +585,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
 
   // ---- detail dialog ----
   const dlg = $("#dlg");
-  function open(id) {
+  function open(id, section) {
     const p = index[id];
     if (!p) return;
     const imgq = encodeURIComponent(`${p.brand.replace(/\s*\/.*$/, "")} ${p.model}`);
@@ -613,7 +620,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
             <ul class="de-notes">${de.rem ? bullets(de.rem) : ""}${(de.feat || []).map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
           <h3 class="sec">Current prices – US market</h3>
           ${linkRow(PRICE_LINKS.map(([n, u, note]) => [n, u + q, note]))}
-          <h3 class="sec">Spare parts and service manuals</h3>
+          <h3 class="sec" id="secParts">Spare parts and service manuals</h3>
           ${linkRow(sv ? sv.parts : PARTS_LINKS.map(([n, f, note]) => [n, f(q, p), note]).filter(x => x[1]))}
           <h3 class="sec">Service forums and threads</h3>
           ${linkRow(sv ? sv.forums : FORUM_LINKS.map(([n, f, note]) => [n, f(q), note]))}
@@ -651,6 +658,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
       }));
     });
     if (!dlg.open) dlg.showModal();
+    if (section) dlg.querySelector("#" + section)?.scrollIntoView({ block: "start" });
     history.replaceState(null, "", "#" + p.id);
   }
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
