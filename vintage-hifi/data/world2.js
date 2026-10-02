@@ -802,7 +802,7 @@ HIFI.push(
 {
   brand: "Sansui", model: "5050", cat: "receiver", year: 1975, built: "mid 1970s (some sources: 1976)", country: "Japan",
   specs: "30 W/ch @ 8 Ω · 0.3 % THD · 11 kg",
-  desc: "A mid-range Sansui receiver of the mid-1970s with a black-glass dial and silver front. It gives 30 W per channel and has a sensitive, selective AM/FM tuner. It is part of the same family as the 7070 and 9090 and still affordable in Europe today.",
+  desc: "A mid-range Sansui receiver of the mid-1970s. It gives 30 W per channel and has a sensitive, selective AM/FM tuner. Used prices in Europe are still moderate (about €300–600).",
   sources: [
     { t: "Radiomuseum.org – Sansui 5050", u: "https://www.radiomuseum.org/r/sansui_stereo_receiver_5050.html", lang: "multi" },
     { t: "HiFi Shark – Sansui 5050 price history", u: "https://www.hifishark.com/model/sansui-5050", lang: "multi" }
@@ -819,5 +819,138 @@ HIFI.push(
     { t: "HiFi Engine – Pioneer QX-949 manual", u: "https://www.hifiengine.com/manual_library/pioneer/qx-949.shtml", lang: "en" }
   ],
   photos: "https://classicreceivers.com/pioneer-qx-949"
+},
+// ---------- More turntables ----------
+{
+  brand: "Luxman", model: "PD-121", cat: "turntable", year: 1975, built: "1975–late 1970s", country: "Japan",
+  specs: "Direct drive (20-pole brushless DC servo motor) · supplied without arm · bayonet arm bases (SME as standard) · die-cast platter",
+  desc: "Luxman's 'armless' direct-drive turntable of 1975, sold without a tonearm. Luxman recommended the SME 3009, and interchangeable bayonet arm bases let owners swap arms quickly; versions were made for SME, Ortofon and others. The motor is a 20-pole brushless DC servo type, said to be shared with Technics' SP-10. The PD-121 was based on the Micro Seiki DD-10. The heavy die-cast platter was designed with attention to resonance and bearing load.",
+  sources: [
+    { t: "audio-database.com – Luxman PD121", u: "https://audio-database.com/LUXMAN/player/pd121.html", lang: "ja" },
+    { t: "The Vintage Knob – Luxman PD121", u: "https://www.thevintageknob.org/luxman-PD121.html", lang: "en" },
+    { t: "Audio Asylum – Luxman PD121U: how does it rank?", u: "https://www.audioasylum.com/cgi/vt.mpl?f=vinyl&m=1039757", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/luxman-PD121.html"
+},
+{
+  brand: "Micro Seiki", model: "DDX-1000", cat: "turntable", year: 1976, built: "1976–1981", country: "Japan",
+  specs: "Direct drive · up to three tonearms at once · separate power supply unit · three large isolating feet",
+  desc: "Micro Seiki's spectacular entry into high-end turntables. It could carry up to three tonearms at once, so owners could switch between three cartridges as if they had three turntables in the space of one. Three large insulating feet isolate it from outside vibration, and the transformer and power supply are in a separate box to avoid hum. Audio magazine reviewed it in September 1976. Sound & Vision called Micro Seiki 'the jewel in the rack'.",
+  sources: [
+    { t: "Audio magazine review, Sept 1976 (archived)", u: "https://www.gammaelectronics.xyz/audio_09-1976_micro-seiki.html", lang: "en" },
+    { t: "Sound & Vision – Micro Seiki: the jewel in the rack", u: "https://www.soundandvision.com/content/micro-seiki-jewel-rack", lang: "en" },
+    { t: "Vinyl Engine – Micro Seiki DDX-1000 manual", u: "https://www.vinylengine.com/library/micro-seiki/ddx-1000.shtml", lang: "en" }
+  ],
+  photos: "https://www.soundandvision.com/content/micro-seiki-jewel-rack"
+},
+{
+  brand: "Elac", model: "Miracord 50H II", cat: "turntable", year: 1970, built: "about 1970–early 1970s", country: "Germany",
+  specs: "Idler (roller) drive · Papst hysteresis synchronous motor with outer rotor · 3 speeds · fully automatic · Elac STS-444 cartridge",
+  desc: "Elac's top automatic turntable around 1970, and one of the most refined idler-drive turntables made in Germany. A Papst hysteresis synchronous motor with an outer rotor keeps the speed steady whatever the mains voltage or load. It has three speeds with pitch control, a straight statically balanced arm and Elac's STS-444 cartridge. Audio magazine reviewed it in March 1970.",
+  sources: [
+    { t: "HiFi-Wiki (Germany) – Elac Miracord 50H", u: "https://www.hifi-wiki.de/index.php/Elac_Miracord_50H", lang: "de" },
+    { t: "Audio magazine review, Mar 1970 (archived)", u: "https://www.gammaelectronics.xyz/audio_03-1970_mira.html", lang: "en" },
+    { t: "Stereonomono – Elac Miracord 50H MkII", u: "https://stereonomono.blogspot.com/2024/08/elac-miracord-50h-mkii-turntable.html", lang: "en" }
+  ],
+  photos: "https://stereonomono.blogspot.com/2024/08/elac-miracord-50h-mkii-turntable.html"
+},
+{
+  brand: "Mitsubishi", model: "LT-5V", cat: "turntable", year: 1980, built: "1980–1984 (1001hifi: 1979)", country: "Japan",
+  specs: "Vertical (upright) turntable · linear-tracking arm with opto-electronic control · PLL DC servo · belt drive · 20 cm deep",
+  desc: "One of the few vertical turntables ever made, alongside the Technics SL-V5: the record stands upright. It needs only 20 cm of depth and fits on a shelf or windowsill. A motor guides the tangential arm across the record under opto-electronic control to 0.1° accuracy, so there is no tracking error. It was fully automatic, belt-driven by a PLL-controlled DC motor and supplied with an Audio-Technica AT-12E cartridge.",
+  sources: [
+    { t: "1001hifi – Mitsubishi LT-5V (1979)", u: "https://www.1001hifi.info/2024/09/mitsubishi-lt-5v-1979-linear-tracking.html", lang: "en" },
+    { t: "Vinyl Engine – Mitsubishi LT-5V manual", u: "https://www.vinylengine.com/library/mitsubishi/lt-5v.shtml", lang: "en" },
+    { t: "HiFi Vintage (France) – Mitsubishi LT-5V", u: "https://hifivintage.eu/en/td-a-bras-tangentiel/5913-mitsubishi-lt-5v.html", lang: "en" }
+  ],
+  photos: "https://www.1001hifi.info/2024/09/mitsubishi-lt-5v-1979-linear-tracking.html"
+},
+{
+  brand: "Heybrook", model: "TT2", cat: "turntable", year: 1980, built: "about 1980–later 1980s (sources: 1980 or 1982)", country: "UK (Plymouth)",
+  specs: "Belt drive · suspended sub-chassis (first U-channel, later die-cast) · solid plinth · speed stability < 0.08 %",
+  desc: "Turntable from Heybrook of Plymouth, founded in 1978 by Peter Comeau and Stuart Mee and named after Heybrook Bay. Like most British decks it is belt-driven with a suspended sub-chassis, following the Linn and Thorens idea. It has a much more solid plinth, and the sub-chassis changed from crossed U-channel to die-cast during production. It measured well and won a Hi-Fi Choice 'Recommended' badge in 1984. Audio magazine reviewed it in November 1984.",
+  sources: [
+    { t: "Z Stereo (UK) – Heybrook TT2", u: "https://zstereo.co.uk/2017/09/11/heybrook-tt2/", lang: "en" },
+    { t: "Audio magazine review, Nov 1984 (archived)", u: "https://www.gammaelectronics.xyz/audio_11-1984_heybrook.html", lang: "en" },
+    { t: "The Art of Sound forum – Heybrook TT2 info thread", u: "https://theartofsound.net/forum/archive/index.php/t-56271.html", lang: "en" }
+  ],
+  photos: "https://zstereo.co.uk/2017/09/11/heybrook-tt2/"
+},
+{
+  brand: "Revox", model: "B795", cat: "turntable", year: 1979, built: "1979–1986", country: "Switzerland / Germany (Studer)",
+  specs: "Quartz-controlled direct drive · 'Linatrack' tangential arm only 4 cm long (40 g incl. cartridge) · opto-electronic servo",
+  desc: "Revox's tangential turntable, designed by Studer engineer Herbert Lanz. The 'Linatrack' arm is only about 4 cm long and weighs 40 g including the cartridge. An opto-electronic servo moves it straight across the record, the way the record was cut, so it needs no anti-skating. Quartz-controlled direct drive turns the platter. It was aimed at studios and demanding listeners, and Revox still lists it among its classic products.",
+  sources: [
+    { t: "Revox – B795 turntable (classic products)", u: "https://revox.com/us/classic/classic-products/186/b795-turntable", lang: "en" },
+    { t: "The Vintage Knob – Revox B795", u: "http://www.thevintageknob.org/revox-B795.html", lang: "en" },
+    { t: "Radiomuseum.org – Revox B795", u: "https://www.radiomuseum.org/r/studer_revox_b795.html", lang: "multi" }
+  ],
+  photos: "http://www.thevintageknob.org/revox-B795.html"
+},
+{
+  brand: "Sony", model: "PS-X7", cat: "turntable", year: 1977, built: "1977–1978", country: "Japan",
+  specs: "Quartz-locked direct drive · fully automatic · carbon-fibre arm · magnetic speed sensing · 10.9 kg",
+  desc: "Sony's fully automatic direct-drive turntable of 1977. Speed is read by an 8-pole magnetic head from a magnetised rim on the platter and locked to a quartz reference. It has electronic touch switches with LED display, optical end-of-record sensing, a carbon-fibre arm wand, a direct-reading stylus-force gauge and damped cueing. It played the role later filled by the PS-X75 and PS-X800.",
+  sources: [
+    { t: "The Vintage Knob – Sony PS-X7", u: "https://www.thevintageknob.org/sony-PS-X7.html", lang: "en" },
+    { t: "Vinyl Engine – Sony PS-X7 manual", u: "https://www.vinylengine.com/library/sony/ps-x7.shtml", lang: "en" },
+    { t: "Vinyl Engine – Sony PS-X7 owner reviews", u: "https://www.vinylengine.com/turntable_reviews.php?make=Sony&model=PS-X7", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/sony-PS-X7.html"
+},
+{
+  brand: "Technics", model: "SL-Q2", cat: "turntable", year: 1979, built: "1979–1981", country: "Japan",
+  specs: "Quartz-locked direct drive · semi-automatic (auto return and stop) · lit platter strobe",
+  desc: "A popular mid-priced Technics turntable of 1979–1981. Quartz lock holds the speed exactly with no pitch fiddling, confirmed by the lit strobe on the platter. It is semi-automatic: you start play by hand, and at the end of the side the arm returns and the platter stops. AudioKarma and Vinyl Engine owners rate it a solid, reliable deck.",
+  sources: [
+    { t: "Vinyl Engine – Technics SL-Q2 manual", u: "https://www.vinylengine.com/library/technics/sl-q2.shtml", lang: "en" },
+    { t: "Vinyl Engine – Technics SL-Q2 owner reviews", u: "https://www.vinylengine.com/turntable_reviews.php?make=Technics&model=SL-Q2", lang: "en" },
+    { t: "AudioKarma forum – Is the SL-Q2 any good?", u: "https://audiokarma.org/forums/threads/is-the-sl-q2-any-good.290611/", lang: "en" }
+  ],
+  photos: "https://www.vinylengine.com/library/technics/sl-q2.shtml"
+},
+{
+  brand: "Sony", model: "PS-B80", cat: "turntable", year: 1978, built: "Nov 1978–1982", country: "Japan",
+  specs: "Direct drive · 'Biotracer' electronic tonearm (linear motors, speed and position sensors) · 2.2 kg platter · 15 kg",
+  desc: "The first Sony 'Biotracer' turntable, launched in November 1978 as a showpiece of the future of LP playback. Its tonearm is controlled entirely electronically. Speed and position sensors and linear motors in both planes feed a servo amplifier that sets stylus force (with LED readout), anti-skating, balance and damping. It also cancels subsonic vibration. The PS-B80 led the way for the later 'active' arms from JVC, Yamaha and Denon.",
+  sources: [
+    { t: "The Vintage Knob – Sony PS-B80", u: "https://www.thevintageknob.org/sony-PS-B80.html", lang: "en" },
+    { t: "audio-database.com – Sony PS-B80", u: "https://audio-database.com/SONY-ESPRIT/player/ps-b80.html", lang: "ja" },
+    { t: "HiFi Engine – Sony PS-B80 Biotracer arm (gallery)", u: "https://www.hifiengine.com/gallery/images/sony-ps-b80-biotracer-arm-1978-9.shtml", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/sony-PS-B80.html"
+},
+{
+  brand: "Lenco", model: "L 78", cat: "turntable", year: 1972, built: "1972–mid 1970s", country: "Switzerland",
+  specs: "Idler drive from a conical motor shaft · 4 speeds, infinitely variable",
+  desc: "Successor to the famous Lenco L 75 from Lenco of Burgdorf, Switzerland, founded in 1946 by Fritz and Marie Laeng with Bruno Grütter. Like the L 75 it is an idler-drive deck. A rubber idler wheel runs on a conical motor shaft, so moving it gives continuously variable speed across four speeds. Lenco went bankrupt in 1977, Swiss production ended in 1979 and Italian production in the early 1980s. Today L 75/L 78 decks are popular for restoration and heavy plinth rebuilds.",
+  sources: [
+    { t: "Lenco Heaven – Lenco L70, L75, L76, L77, L78 history", u: "https://www.lencoheaven.net/forum/index.php?topic=13.0", lang: "en" },
+    { t: "Wikipedia – Lenco Turntables", u: "https://en.wikipedia.org/wiki/Lenco_Turntables", lang: "en" },
+    { t: "Schopper (Switzerland) – Lenco", u: "https://www.schopper.ch/index.php/en/lenco", lang: "en" }
+  ],
+  photos: "https://stereonomono.blogspot.com/2025/06/lenco-l78-turntable.html"
+},
+{
+  brand: "Logic", model: "DM101", cat: "turntable", year: 1981, built: "1981–1985", country: "UK",
+  specs: "Belt drive · sprung sub-chassis · 24-pole AC synchronous motor on a steel plate · electronic two-speed supply from 1983 · £299",
+  desc: "A British alternative to the Linn LP12, launched in 1981 at £299. Like the Linn it is a well-finished belt-drive, sprung-chassis design with the Philips/Impex 24-pole synchronous motor, here mounted on a quarter-inch steel plate to reduce vibration. From 1983 an electronic power supply added two-speed switching. In the US it was priced at $750 to undercut the Linn. It was well reviewed, but the LP12 outsold it.",
+  sources: [
+    { t: "Z Stereo (UK) – Logic DM101", u: "https://zstereo.co.uk/2014/05/12/logic-dm101/", lang: "en" },
+    { t: "Audio Asylum – A look at the Logic DM101 turntable", u: "https://www.audioasylum.com/messages/vinyl/68985/a-look-at-the-logic-dm101-turntable-long", lang: "en" },
+    { t: "Vinyl Engine – Logic DM 101 manual", u: "https://www.vinylengine.com/library/logic/dm-101.shtml", lang: "en" }
+  ],
+  photos: "https://zstereo.co.uk/2014/05/12/logic-dm101/"
+},
+{
+  brand: "Optonica", model: "RP-7100", cat: "turntable", year: 1980, built: "1980–1982", country: "Japan (Sharp)",
+  specs: "Direct drive · APSS track selection via a second, optical sensor arm ('twin-tube tonearm') · glass lid",
+  desc: "Top turntable of Optonica, Sharp's upmarket brand. Its 'twin-tube' arm carries the cartridge in one tube and an optical sensor in the other. The sensor finds the shiny gaps between tracks for Sharp's APSS (Auto Program Search System), so you can choose tracks on an LP. Beautifully built, with a real glass lid. Australian Hi-Fi's Stereo Buyer's Guide 1980 tested it well.",
+  sources: [
+    { t: "Z Stereo (UK) – Sharp Optonica RP-7100", u: "https://zstereo.co.uk/2013/10/28/sharp-optonica-rp-7100/", lang: "en" },
+    { t: "Wikipedia – Optonica", u: "https://en.wikipedia.org/wiki/Optonica", lang: "en" },
+    { t: "hifi-wiki – Optonica RP-7100", u: "https://hifi-wiki.com/index.php/Optonica_RP-7100", lang: "en" }
+  ],
+  photos: "https://zstereo.co.uk/2013/10/28/sharp-optonica-rp-7100/"
 }
 );
