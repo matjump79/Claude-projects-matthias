@@ -583,6 +583,71 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     });
   }, { rootMargin: "400px" });
 
+  // ---- pros and cons: derived from each unit's specs and source texts (hand-written lists in HIFI_PROCON win) ----
+  const NOW = new Date().getFullYear();
+  function deriveProCon(p) {
+    const txt = [p.specs, p.desc, p.type, p.aka, (p.more || []).map(m => m.t).join(" "), (p.de?.feat || []).join(" "), p.de?.rem].join(" ");
+    const has = re => re.test(txt);
+    const pro = [], con = [];
+    const SPEC = "rated specs", DES = "design, per the sources", GEN = "general for vintage gear";
+    const amp = p.cat !== "turntable";
+    if (amp) {
+      const w = (String(p.specs).match(/(?:2\s*[×x]\s*)?(\d{1,3}(?:[.,]\d)?)\s*W(?![a-z])/) || [])[1];
+      const watts = w ? parseFloat(w.replace(",", ".")) : 0;
+      if (watts >= 100) pro.push([`High power (${watts} W per channel): drives almost any home loudspeaker`, SPEC]);
+      else if (watts >= 45) pro.push([`Enough power for most home speakers (${watts} W per channel)`, SPEC]);
+      else if (watts > 0 && watts < 30) con.push([`Modest power (${watts} W per channel): best with efficient speakers`, SPEC]);
+      const thd = (txt.match(/(\d+[.,]\d+)\s*%\s*(?:THD|total harmonic)/i) || txt.match(/THD[^0-9]{0,12}(\d+[.,]\d+)\s*%/i) || [])[1];
+      if (thd && parseFloat(thd.replace(",", ".")) <= 0.02) pro.push([`Very low rated distortion (${thd} % THD, total harmonic distortion)`, SPEC]);
+      const core = [p.specs, p.type, (p.de?.feat || []).join(" ")].join(" ");
+      if (/new class a|non[\s-]switching|synchro[\s-]bias|vari[\s-]bias/i.test(txt)) pro.push(["Non-switching bias circuit ('New Class A' / Non-Switching): output transistors never switch off, less switching distortion without Class A heat", DES]);
+      else if (/class[\s-]*a\b(?![\s-]*[b+])|pure class a/i.test(core)) {
+        pro.push(["Class A operation (fully or partly): avoids crossover/switching distortion", DES]);
+        con.push(["Class A bias makes it run hot: give it free air, don't stack units on top", DES]);
+      }
+      if (has(/dual[\s-]*mono|two (power )?transformers|separate power suppl|own power supply|twin powered|dual power suppl/i)) pro.push(["Separate power supplies per channel (dual mono): better channel separation and stability under load", DES]);
+      if (has(/\bDC\b[\s-]*(amp|coupled|design|power|integrated|receiver)|direct[\s-]coupled|full DC/i)) pro.push(["DC / direct-coupled circuit: no coupling capacitors in the signal path, very extended bass response", DES]);
+      if (has(/\bMC\b|moving[\s-]coil|head amp/i)) pro.push(["Built-in moving-coil (MC) phono stage: no extra step-up device needed", DES]);
+      else if (has(/phono/i) && p.cat !== "poweramp") pro.push(["Built-in phono stage for a turntable", DES]);
+      if (/valve \(tube\)|tube pre-?amp|valve pre-?amp|tube amplifier|valve amplifier|12AX7|12AU7|EL34|KT88/i.test([p.specs, p.type, p.desc].join(" "))) { pro.push(["Valve (tube) circuit: the warm, natural sound many listeners seek", DES]); con.push(["Valves age: check tube condition and budget for replacements", GEN]); }
+      if (has(/autoformer/i)) pro.push(["Output autoformers: full power into 2–8 Ω speakers", DES]);
+      if (has(/MOS-?FET/i)) pro.push(["Power MOSFET output devices: robust against thermal runaway", DES]);
+      else if (has(/V-?FET|\bSIT\b|all-FET/i)) pro.push(["Vertical FET (V-FET / SIT) output stage: the makers claimed valve-like linearity", DES]);
+      if (has(/V-?FET|\bSIT\b/i)) con.push(["Original V-FET / SIT output devices are no longer made: repairs need rare spare devices", GEN]);
+      if (has(/switching power supply|PWM/i)) con.push(["Switching power supply: harder to repair than a classic transformer supply", DES]);
+      if (has(/microprocessor|digital (frequency )?synthes|infra-?red remote/i)) con.push(["Microprocessor / digital control: custom chips can be hard to replace", GEN]);
+      if (p.cat === "receiver") {
+        pro.push(["All-in-one tuner and amplifier: fewer boxes and cables", DES]);
+        con.push(["After 40+ years the FM tuner usually needs re-alignment, and dial/meter lamps burn out (LED kits exist)", GEN]);
+      }
+      if (p.cat === "integrated") pro.push(["Preamp and power amp in one box", DES]);
+      if (has(/pre[\s-]?out|main[\s-]?in|separable/i)) pro.push(["Pre-out / main-in jacks: pre and power sections can be used separately", DES]);
+      if (has(/quadra|four[\s-]channel|4[\s-]channel|Dynaquad|\bSQ\b|CD-4/i)) con.push(["Four-channel (quadraphonic) formats are obsolete: today mostly used in stereo", GEN]);
+      if (p.cat !== "receiver" && has(/power meters?|VU meters?|output meters?|\bmeters\b/i)) con.push(["Meter lamps age and fail; replacement bulbs or LEDs needed", GEN]);
+    } else {
+      if (has(/quartz|PLL|crystal/i)) pro.push(["Quartz / PLL-locked speed: very stable, no pitch adjustment needed", DES]);
+      if (has(/direct[\s-]drive|\bD\.?D\.?\b/i)) pro.push(["Direct drive: no belt to wear out, fast start-up", DES]);
+      if (has(/belt[\s-]drive|belt drive|\bbelt\b/i)) { pro.push(["Belt drive isolates motor vibration from the platter", DES]); con.push(["Drive belt stretches with age: budget for a new belt (cheap and easy)", GEN]); }
+      if (has(/idler|friction wheel|roller drive|Reibrad/i)) { pro.push(["Idler drive: robust, high torque; a favourite for restoration", DES]); con.push(["Idler wheel hardens with age: needs service to avoid rumble and speed drift", GEN]); }
+      if (has(/tangential|linear[\s-]tracking|linear tracker|parallel tracking|straight[\s-]line/i)) { pro.push(["Tangential (linear-tracking) arm: no tracking-angle error and no skating force", DES]); con.push(["Complex tangential arm mechanics/electronics: repairs need a specialist and parts are scarce", GEN]); }
+      if (has(/suspend|sprung|suspension/i)) { pro.push(["Suspended sub-chassis isolates the record from footfall and vibration", DES]); con.push(["Suspension needs correct setup and levelling", GEN]); }
+      if (has(/fully automatic|full[\s-]auto|automatic/i)) { pro.push(["Automatic operation: lifts and returns the arm by itself", DES]); con.push(["More mechanics to service (auto mechanism, grease, gears)", GEN]); }
+      if (has(/without (a |an )?(tone)?arm|armless|supplied without/i)) con.push(["Supplied without tonearm: budget for an arm and fitting", DES]);
+      if (has(/biotracer|electronic(ally)? (controlled )?(tone)?arm|servo (tone)?arm|linear motors/i)) con.push(["Electronic tonearm: unique electronics are hard to repair", GEN]);
+      if (has(/changer|record changer/i)) con.push(["Record changer mechanism: more wear on records and mechanics", GEN]);
+      if (has(/\b78\b|4 speeds|four speeds|3 speeds/i)) pro.push(["Several speeds, including 78 rpm or 16 rpm records", DES]);
+      if (has(/vertical|upright/i)) pro.push(["Space-saving vertical design", DES]);
+    }
+    const kg = parseFloat(((String(p.specs).match(/(\d+[.,]?\d*)\s*kg/) || [])[1] || "0").replace(",", "."));
+    if (kg >= 20) con.push([`Very heavy (${kg} kg): shipping is costly and risky, look for local pick-up`, SPEC]);
+    if (p.deep && p.sources.length >= 3) pro.push([`Well documented: ${p.sources.length} sources, manuals and forum threads exist`, "this database"]);
+    const age = NOW - p.year;
+    con.push([`About ${age} years old: expect a service (capacitors, switch/pot cleaning${amp ? ", relays" : ", lubrication"}) before daily use`, GEN]);
+    if (!pro.length) pro.push([p.cat === "turntable" ? "Simple, serviceable mechanics typical of its era" : "Solid period build, typically repairable with standard parts", GEN]);
+    const uniq = a => a.filter((x, i) => a.findIndex(y => y[0] === x[0]) === i).slice(0, 6);
+    return { pro: uniq(pro), con: uniq(con), derived: true };
+  }
+
   // ---- detail dialog ----
   const dlg = $("#dlg");
   function open(id, section) {
@@ -591,7 +656,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     const imgq = encodeURIComponent(`${p.brand.replace(/\s*\/.*$/, "")} ${p.model}`);
     const de = p.de || {};
     const q = encodeURIComponent(`${p.brand.replace(/\s*\/.*$/, "")} ${p.model}`);
-    const pc = (window.HIFI_PROCON || {})[p.id], sv = (window.HIFI_SERVICE || {})[p.id];
+    const pc = (window.HIFI_PROCON || {})[p.id] || deriveProCon(p), sv = (window.HIFI_SERVICE || {})[p.id];
     const facts = [["Category", ONE[p.cat] + (p.type && p.deep && !ONE[p.cat].toLowerCase().startsWith(p.type.toLowerCase()) ? " · " + p.type : "")], ["Introduced", p.year], ["Built", p.built],
       ["Also sold as", p.aka], ["Markets", p.market], ["Origin", p.country], ["Variants", p.de?.variant], ["Maker note", p.de?.oem], ["Key specs", p.specs],
       ["Launch price", p.facts2?.price && !/price|¥|\$|DM|£/i.test(p.specs) ? p.facts2.price : ""],
@@ -613,7 +678,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
           <ul class="bul">${p.more.map(m => `<li><span class="k">${esc(m.s)}:</span><ul>${bullets(m.t)}</ul></li>`).join("")}</ul>` : ""}
           <h3 class="sec">Facts</h3>
           <ul class="bul">${facts.map(([k, v]) => `<li><span class="k">${esc(k)}:</span> ${esc(v)}</li>`).join("")}</ul>
-          ${pc ? `<h3 class="sec">Pros and cons</h3>
+          ${pc ? `<h3 class="sec">Pros and cons${pc.derived ? " (derived from the specs and sources above)" : ""}</h3>
           <div class="pc"><div class="pro"><b>+ Pros</b><ul>${pc.pro.map(x => `<li>${esc(x[0])} <span class="basis">(${esc(x[1])})</span></li>`).join("")}</ul></div>
             <div class="con"><b>− Cons</b><ul>${pc.con.map(x => `<li>${esc(x[0])} <span class="basis">(${esc(x[1])})</span></li>`).join("")}</ul></div></div>` : ""}
           ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">Notes from HiFi-Wiki (translated from German)</h3>
