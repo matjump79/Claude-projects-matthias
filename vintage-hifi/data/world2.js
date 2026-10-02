@@ -263,5 +263,295 @@ HIFI.push(
     { t: "di-marco.net (France) – Naim Audio NAIT 2", u: "https://di-marco.net/blog/hi-fi/2020-10-04-naim_audio_nait_2/", lang: "en" }
   ],
   photos: "https://di-marco.net/blog/hi-fi/2020-10-04-naim_audio_nait_2/"
+},
+// ---------- Preamplifiers and power amplifiers ----------
+{
+  brand: "Yamaha", model: "B-1", cat: "amplifier", type: "Power amplifier", year: 1974, built: "1974–1978", country: "Japan",
+  specs: "150 W/ch @ 8 Ω · all-FET (V-FET / SIT) · 14 FETs per channel · 37 kg",
+  desc: "Yamaha's first stereo power amplifier and the first all-FET power amplifier, which shocked the audio world in 1974. It uses vertical power FETs (SIT, static induction transistors) based on Professor Junichi Nishizawa's invention. Yamaha brought them into production in only a year and a half, which the industry had thought impossible. Each channel has 14 FETs of six types, all direct-coupled, promising tube-like linearity with transistor efficiency. Audio magazine (1975) measured 220 W at clipping into 8 Ω. It weighs 37 kg.",
+  sources: [
+    { t: "Yamaha – History of separate amplifiers", u: "https://usa.yamaha.com/products/contents/audio_visual/hifi_components/hifi-history/separate-amplifier/index.html", lang: "en" },
+    { t: "Audio magazine review, Aug 1975 (archived)", u: "https://www.gammaelectronics.xyz/audio_08-1975_yamaha.html", lang: "en" },
+    { t: "The Vintage Knob – Yamaha B-1", u: "https://www.thevintageknob.org/yamaha-B-1.html", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/yamaha-B-1.html"
+},
+{
+  brand: "Yamaha", model: "C-2", cat: "amplifier", type: "Preamplifier", year: 1976, built: "1976–1978 (C-2a later)", country: "Japan",
+  specs: "Slim 70 mm preamplifier · low-noise pair FETs · MC head amp · 8 kg",
+  desc: "Yamaha's 1976 preamplifier, admired for its slim 70 mm design and listed in Yamaha's own 'Innovation Road' collection. It uses Yamaha's super-low-noise pair FETs in a simple circuit: phono equaliser, tone-control amplifier and a head amp for moving-coil cartridges. It was known for very low distortion and noise and a neutral 'Natural Sound' character. The C-2a followed.",
+  sources: [
+    { t: "Yamaha Innovation Road – C-2 (display collection)", u: "https://www.yamaha.com/en/about/innovation/collection/detail/7007/", lang: "en" },
+    { t: "audio-database.com – Yamaha C-2", u: "https://audio-database.com/YAMAHA/amp/c-2.html", lang: "ja" },
+    { t: "The Vintage Knob – Yamaha C-2", u: "https://www.thevintageknob.org/yamaha-C-2.html", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/yamaha-C-2.html"
+},
+{
+  brand: "Pioneer", model: "Spec-1", cat: "amplifier", type: "Preamplifier", year: 1975, built: "1975–about 1980", country: "Japan",
+  aka: "C-77 (Japan)",
+  specs: "Preamplifier · twin bass (50/100 Hz) and treble (10/20 kHz) controls · two phono inputs · about $650",
+  desc: "Sold in Japan from 1975 as the C-77 and exported as the Spec-1. It has differential amplifier circuits in the equaliser and tone stages and two sets of bass and treble controls (50 and 100 Hz, 10 and 20 kHz) with a tone-bypass switch. The second phono input has its own gain control. It cost about $650 and was the partner of the Spec-2 power amplifier. Sound & Vision featured it in its 'Audio Time Machine' series.",
+  sources: [
+    { t: "Sound & Vision – Audio Time Machine: Pioneer Spec-1", u: "https://www.soundandvision.com/content/audio-time-machine-vintage-pioneer-spec-1-preamp", lang: "en" },
+    { t: "The Vintage Knob – Pioneer SPEC-1", u: "https://www.thevintageknob.org/pioneer-SPEC-1.html", lang: "en" },
+    { t: "Audio Classics (USA) – Pioneer SPEC-1", u: "https://www.audioclassics.com/detail?detail=SPEC-1&nav=brand", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/pioneer-SPEC-1.html"
+},
+{
+  brand: "Pioneer", model: "Spec-2", cat: "amplifier", type: "Power amplifier", year: 1975, built: "1975–1980", country: "Japan",
+  aka: "M-77 (Japan)",
+  specs: "250 W/ch · large power meters · rack-mount front · protection circuit · $995",
+  desc: "The Spec-1's partner, sold in Japan as the M-77 and exported as the Spec-2. It gives 250 W per channel and has large front-panel power meters and an advanced protection system that shuts the amplifier down on a fault. Its rack-mount front made it popular in recording studios as well as homes. It cost $995 and was sold from 1975 to 1980.",
+  sources: [
+    { t: "Lansing Heritage forums – Pioneer Spec-2 power amp", u: "https://www.audioheritage.org/vbulletin/archive/index.php/t-20301.html", lang: "en" },
+    { t: "hifi-wiki – Pioneer SPEC-1 (with Spec-2)", u: "https://hifi-wiki.com/index.php/Pioneer_SPEC-1", lang: "en" }
+  ],
+  photos: "https://www.audioheritage.org/vbulletin/archive/index.php/t-20301.html"
+},
+{
+  brand: "McIntosh", model: "MC2205", cat: "amplifier", type: "Power amplifier", year: 1975, built: "1975–1981", country: "USA",
+  specs: "200 W/ch into 1–8 Ω (400 W mono) · 0.1 % THD · output autoformers · Power Guard · 38.5 kg",
+  desc: "McIntosh's 200 W per channel solid-state power amplifier, made 1975–1981 in Binghamton, New York. McIntosh says it was the first amplifier with its 'Power Guard' circuit, which prevents audible clipping. Thanks to output autoformers it delivers the full 200 W into loads from 1 to 8 Ω, or 400 W bridged to mono. It has the black glass front with illuminated watt/dB meters and weighs 85 lb.",
+  sources: [
+    { t: "McIntosh Labs – MC2205 (legacy products)", u: "https://www.mcintoshlabs.com/legacy-products/amplifiers/MC2205", lang: "en" },
+    { t: "Audio magazine review, Sept 1977 (archived)", u: "https://www.gammaelectronics.xyz/audio_09-1977_mcintosh.html", lang: "en" },
+    { t: "Roger Russell (former McIntosh engineer) – McIntosh amplifiers, part 2", u: "http://www.roger-russell.com/amplif2.htm", lang: "en" }
+  ],
+  photos: "https://www.mcintoshlabs.com/legacy-products/amplifiers/MC2205"
+},
+{
+  brand: "Crown", model: "DC-300A", cat: "amplifier", type: "Power amplifier", year: 1970, built: "1970–1980s", country: "USA",
+  specs: "150 W/ch @ 8 Ω (300 W @ 4 Ω) · direct-coupled DC–100 kHz · eight 150 W output devices per channel · $795",
+  desc: "Successor to Crown's DC300 of 1967, often called the first reliable high-power solid-state amplifier. The name stands for Direct Coupled and 300 W total. The DC-300A doubled the output transistors: eight 150 W devices per channel. It is rated at 150 W per channel into 8 Ω and 300 W into 4 Ω, with response from DC to 100 kHz. It cost $795 in 1970 and became a standard in studios, PA systems and high-end homes.",
+  sources: [
+    { t: "ProSoundWeb – History files: the Crown DC300 leads the solid-state revolution", u: "https://www.prosoundweb.com/history-files-the-crown-dc300-amplifier-leads-the-solid-state-revolution/", lang: "en" },
+    { t: "Audio magazine review, Mar 1973 (archived)", u: "https://www.gammaelectronics.xyz/audio_03-1973_crown.html", lang: "en" },
+    { t: "audio-database.com – Amcron/Crown DC-300A IOC", u: "https://audio-database.com/AMCRON/amp/dc-300aioc.html", lang: "ja" }
+  ],
+  photos: "https://www.prosoundweb.com/history-files-the-crown-dc300-amplifier-leads-the-solid-state-revolution/"
+},
+{
+  brand: "Bryston", model: "4B", cat: "amplifier", type: "Power amplifier", year: 1978, built: "from 1978 (still made in its 6th generation)", country: "Canada",
+  specs: "Dual-mono with two transformers · high-bias Class AB · balanced circuitry",
+  desc: "The amplifier that put Canada's Bryston on the consumer hi-fi map in 1978. It is built in Peterborough, Ontario. The basic concept has never changed: dual-mono construction with two transformers, a high Class A bias and balanced circuitry. The 4B has been made continuously since 1978 and is now in its sixth generation (4B³), one of the longest-running amplifier names in hi-fi.",
+  sources: [
+    { t: "Moon Audio – The definitive guide to Bryston", u: "https://www.moon-audio.com/blogs/expert-advice/bryston-amplifiers-speakers-digital-players", lang: "en" },
+    { t: "Bryston – 4B Cubed", u: "https://bryston.com/amplifiers/4b3/", lang: "en" },
+    { t: "Part-Time Audiophile – Bryston 4B³ review (history)", u: "https://pt.audio/2021/03/12/bryston-audio-4b%C2%B3-power-amplifier-review/", lang: "en" }
+  ],
+  photos: "https://bryston.com/amplifiers/4b3/"
+},
+{
+  brand: "Threshold", model: "400A", cat: "amplifier", type: "Power amplifier", year: 1975, built: "1975–late 1970s", country: "USA",
+  specs: "100 W/ch @ 8 Ω · mainly Class A with dynamic bias",
+  desc: "Second amplifier of Threshold, founded in Sacramento in December 1974 by Nelson Pass and graphic designer René Besne. It followed the 200 W 800A of early 1975. Its dynamic bias circuit kept it in Class A much further up the power range than ordinary designs. At a time when most makers chased raw power, the 400A and 800A popularised Class A amplification and began Nelson Pass's career as one of the best-known amplifier designers.",
+  sources: [
+    { t: "Wikipedia – Threshold Audio", u: "https://en.wikipedia.org/wiki/Threshold_Audio", lang: "en" },
+    { t: "Wikipedia – Nelson Pass", u: "https://en.wikipedia.org/wiki/Nelson_Pass", lang: "en" },
+    { t: "Audiogon forum – Review: Threshold 400A", u: "https://forum.audiogon.com/discussions/review-threshold-400a-amplifier", lang: "en" }
+  ],
+  photos: "https://tmraudio.com/components/power-amplifiers/threshold-400a-vintage-stereo-power-amplifier/"
+},
+{
+  brand: "Phase Linear", model: "400", cat: "amplifier", type: "Power amplifier", year: 1972, built: "1972/73–late 1970s", country: "USA",
+  specs: "About 200 W/ch · Delco automotive power transistors",
+  desc: "The 'little brother' of the Phase Linear 700, Bob Carver's first amplifier. Carver founded Phase Linear with Steve Johnston in Edmonds, Washington, in 1970. The 400 offered huge power for its time at a lower price, and became even more popular than the 700. Carver used GM/Delco DTS-410 and DTS-411 transistors, originally designed for car ignition systems. He sold his share in 1979 and founded Carver Corporation.",
+  sources: [
+    { t: "Wikipedia – Phase Linear", u: "https://en.wikipedia.org/wiki/Phase_Linear", lang: "en" },
+    { t: "Hi-Fi Hall of Fame – Bob Carver", u: "https://hifihalloffame.com/people/bob-carver/", lang: "en" },
+    { t: "Phase Linear Stereo Equipment Reference Site", u: "https://www.phaselinearhistory.stereomanuals.com/", lang: "en" }
+  ],
+  photos: "https://www.phaselinearhistory.stereomanuals.com/"
+},
+{
+  brand: "Electrocompaniet", model: "The 2 Channel Audio Power Amplifier", cat: "amplifier", type: "Power amplifier", year: 1975, built: "mid 1970s (later Ampliwire / AW models)", country: "Norway",
+  aka: "'The Otala Amplifier' (early name)",
+  specs: "25 W/ch · low-TIM design after Lohstroh and Otala (AES 1973)",
+  desc: "First product of Electrocompaniet, founded in Norway in 1973 by Per Abrahamsen and Svein Erik Børja. Børja attended the 1973 Audio Engineering Society convention in Rotterdam, where Jan Lohstroh and Matti Otala of Philips Research presented 'An audio amplifier for ultimate quality requirements'. Electrocompaniet built that low-TIM (transient intermodulation) design and at first called it 'The Otala Amplifier'. When Otala objected, it was renamed. In 1976 The Audio Critic wrote: 'This is the world's best-sounding amplifier.'",
+  sources: [
+    { t: "Wikipedia – Electrocompaniet", u: "https://en.wikipedia.org/wiki/Electrocompaniet", lang: "en" },
+    { t: "Hi-Fi News (UK) – Electrocompaniet 'Electro' (vintage review)", u: "https://www.hifinews.com/content/electrocompaniet-electro-vintage", lang: "en" },
+    { t: "Lyd & Bilde (Norway) – Electrocompaniet 2 Channel audio power amplifier", u: "https://www.lbtechreviews.com/news/hi-fi/electrocompaniet-2-channel-audio-power-amplifier", lang: "en" }
+  ],
+  photos: "https://auralhifi.com/products/electrocompaniet-the-2-channel-power-amp-vintage-solid-state-amplifier"
+},
+{
+  brand: "Quad", model: "34", cat: "amplifier", type: "Preamplifier", year: 1982, built: "1982–1995 (41,000 made)", country: "UK",
+  specs: "Preamplifier with Peter Walker's 'tilt' control (±1 dB steps about 700 Hz) · slope and filter controls",
+  desc: "Successor to the Quad 33, made 1982–1995 (about 41,000 built). It introduced founder Peter Walker's 'tilt' control. Walker felt normal tone controls were clumsy, so the tilt control turns the whole frequency range around a 700 Hz pivot in 1 dB steps. This makes the sound warmer or cooler without changing loudness or adding colour. It was usually paired with the Quad 405 power amplifier.",
+  sources: [
+    { t: "Ken Rockwell – Quad 34 preamp review", u: "https://kenrockwell.com/audio/quad/34-preamplifier.htm", lang: "en" },
+    { t: "Stereophile – Quad 34 preamplifier (Sam Tellig)", u: "https://www.stereophile.com/content/quad-34-preamplifier-sam-tellig", lang: "en" },
+    { t: "Quad press release – 'Quad tilts the balance' (PDF)", u: "http://www.hashstar.co.uk/cms/pdf/press/6846.pdf", lang: "en" }
+  ],
+  photos: "https://kenrockwell.com/audio/quad/34-preamplifier.htm"
+},
+{
+  brand: "Hafler", model: "DH-101", cat: "amplifier", type: "Preamplifier", year: 1977, built: "1977–early 1980s", country: "USA",
+  specs: "Preamplifier, mostly sold as a kit · < 0.001 % THD · two MM phono inputs · 12 V/µs",
+  desc: "First product of the David Hafler Company, founded in 1977 in Pennsauken, New Jersey. Hafler had co-founded Dynaco in 1954 and made good audio kits affordable for American hobbyists. The DH-101 was sold mainly as a kit and specified at under 0.001 % distortion. It has four line inputs and two MM phono inputs. A few months later came the matching DH-200 power amplifier.",
+  sources: [
+    { t: "Wikipedia – David Hafler", u: "https://en.wikipedia.org/wiki/David_Hafler", lang: "en" },
+    { t: "Radiomuseum.org – Hafler DH-101", u: "https://www.radiomuseum.org/r/haflercoda_stereo_preamplifier_dh_101.html", lang: "multi" },
+    { t: "HiFi Engine – Hafler DH-101 manual", u: "https://www.hifiengine.com/manual_library/hafler/dh-101.shtml", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/haflercoda_stereo_preamplifier_dh_101.html"
+},
+{
+  brand: "Sony", model: "TA-N86", cat: "amplifier", type: "Power amplifier", year: 1978, built: "1978–1984", country: "Japan",
+  specs: "100 W/ch Class AB or 30 W/ch Class A (switchable) · switching (PWM) power supply · slim case",
+  desc: "Power-amp half of Sony's TA-E86 / TA-N86 pair, launched in March 1978. It gives 100 W per channel in Class AB or can be switched to pure Class A at 30 W. Such power from a slim case was possible only through a switching power supply, very rare in consumer audio in 1978. The pair stayed on sale until 1984, and around 10,000 sets were sold.",
+  sources: [
+    { t: "Z Stereo (UK) – Sony TA-E86 / TA-N86", u: "https://zstereo.co.uk/2020/12/08/sony-ta-e86-ta-n86/", lang: "en" },
+    { t: "audio-database.com – Sony TA-N86", u: "https://audio-database.com/SONY-ESPRIT/amp/ta-n86.html", lang: "ja" },
+    { t: "The Vintage Knob – Sony TA-N86B", u: "https://www.thevintageknob.org/sony-TA-N86B.html", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/sony-TA-N86B.html"
+},
+// ---------- Turntables ----------
+{
+  brand: "Technics", model: "SL-1300", cat: "turntable", year: 1975, built: "1975–1977 (Mk2 1977–1978)", country: "Japan",
+  specs: "Direct drive · fully automatic · part of the SL-1300/1400/1500 series",
+  desc: "The fully automatic model of Technics' 1975 direct-drive series: the SL-1500 was manual, the SL-1400 semi-automatic and the SL-1300 fully automatic. In 1977 they became Mk2 versions with sleeker plinths, touch controls and quartz-locked motors. In 1978 the SL-1600/1700/1800 Mk2 replaced them. Hi-Fi News revisited the SL-1300G as a classic.",
+  sources: [
+    { t: "Hi-Fi News (UK) – Technics SL-1300G: the original 1300", u: "https://www.hifinews.com/content/technics-sl-1300g-turntablearm-original-%E2%80%991300", lang: "en" },
+    { t: "hifi-wiki – Technics SL-1300", u: "https://hifi-wiki.com/index.php/Technics_SL-1300", lang: "en" }
+  ],
+  photos: "https://hifi-wiki.com/index.php/Technics_SL-1300"
+},
+{
+  brand: "Technics", model: "SL-1700", cat: "turntable", year: 1976, built: "1976–1978", country: "Japan",
+  aka: "SL-1710 (black version)",
+  specs: "Direct drive · semi-automatic · AN630 one-chip motor control IC",
+  desc: "A semi-automatic direct-drive turntable from Technics, sold in silver (SL-1700) and black (SL-1710). It is notable for putting motor drive, speed control and operating logic into one chip, the AN630 IC: 321 components on a 3 × 2.7 mm die, rare in the mid-1970s. This tight integration gave stable speed and less drift with age.",
+  sources: [
+    { t: "hifi-wiki – Technics SL-1700", u: "https://hifi-wiki.com/index.php/Technics_SL-1700", lang: "en" },
+    { t: "Wikipedia – Technics (brand)", u: "https://en.wikipedia.org/wiki/Technics_(brand)", lang: "en" }
+  ],
+  photos: "https://hifi-wiki.com/index.php/Technics_SL-1700"
+},
+{
+  brand: "Kenwood", model: "KD-500", cat: "turntable", year: 1976, built: "1976–1978", country: "Japan",
+  aka: "KD-550 (same deck with Kenwood arm)",
+  specs: "Direct drive · resin-concrete plinth (stone powder, glass fibre, polyester resin) · supplied without arm · 14.9 kg",
+  desc: "Kenwood's answer to the high-end direct-drive decks from Technics, Denon and Sony. Its plinth is made of stone powder, glass fibres and polyester resin pressed under high pressure, shaped underneath so no resonating cavity remains. It was one of the first plinths of this kind. The KD-500 came without a tonearm so buyers could fit their own; the KD-550 was the same deck with a Kenwood arm. It weighs 14.9 kg.",
+  sources: [
+    { t: "Liquid Audio (Australia) – Kenwood KD-500 / KD-550 review", u: "https://liquidaudio.com.au/kenwood-kd-500-kd-550-turntable-review/", lang: "en" },
+    { t: "The Vintage Knob – Kenwood KD-500", u: "https://www.thevintageknob.org/kenwood-KD-500.html", lang: "en" },
+    { t: "Radiomuseum.org – Kenwood KD-500", u: "https://www.radiomuseum.org/r/trio_kenwo_direct_drive_stereo_turntable_kd_500.html", lang: "multi" }
+  ],
+  photos: "https://www.thevintageknob.org/kenwood-KD-500.html"
+},
+{
+  brand: "Denon", model: "DP-60L", cat: "turntable", year: 1980, built: "1980–early 1980s", country: "Japan",
+  specs: "Quartz-PLL direct drive · wow & flutter < 0.015 % · straight + S-shaped arm wands · auto-lift · 13 kg",
+  desc: "Denon's quartz-locked direct-drive turntable of 1980. Its AC servo motor is speed-sensed by frequency detection, giving speed deviation under 0.002 % and wow and flutter under 0.015 %. It came with both a straight and an S-shaped tonearm wand, and has an automatic arm lift at the end of the record. Many collectors see it as one of Denon's best-value turntables.",
+  sources: [
+    { t: "audio-database.com – Denon DP-60L", u: "https://audio-database.com/DENON-COLUMBIA/player/dp-60l-e.html", lang: "en" },
+    { t: "Stereonomono – Denon DP-60L (1980)", u: "https://stereonomono.blogspot.com/2010/12/denon-dp-60l-1980.html", lang: "en" },
+    { t: "Vinyl Engine – Denon DP-60L manual", u: "https://www.vinylengine.com/library/denon/dp-60l.shtml", lang: "en" }
+  ],
+  photos: "https://audio-database.com/DENON-COLUMBIA/player/dp-60l-e.html"
+},
+{
+  brand: "JVC", model: "QL-Y5F", cat: "turntable", year: 1980, built: "1980–early 1980s", country: "Japan",
+  specs: "Quartz-locked direct drive · fully automatic · Electro-Dynamic Servo tonearm (two linear motors) · 310 mm platter",
+  desc: "JVC's flagship turntable of 1980, with its 'Electro-Dynamic Servo' tonearm. Two coreless linear motors in the arm base, one horizontal and one vertical, actively damp the arm. They hold the stylus steady against warped records and outside disturbances. A quartz-locked, coreless DC direct-drive motor turns a 310 mm platter. It is often named among the best fully automatic turntables.",
+  sources: [
+    { t: "Vinyl Engine – JVC QL-Y5F manual", u: "https://www.vinylengine.com/library/jvc/ql-y5f.shtml", lang: "en" },
+    { t: "Vinyl Engine – JVC QL-Y5F owner reviews", u: "https://www.vinylengine.com/turntable_reviews.php?make=JVC&model=QL-Y5F", lang: "en" },
+    { t: "Hi-Fi News (UK) – JVC QL-Y66F (sister model)", u: "https://www.hifinews.com/content/jvc-ql-y66f-turntable", lang: "en" }
+  ],
+  photos: "https://www.vinylengine.com/library/jvc/ql-y5f.shtml"
+},
+{
+  brand: "Thorens", model: "TD 145", cat: "turntable", year: 1975, built: "1975–1976 (Mk II 1976–1978)", country: "Switzerland / Germany",
+  specs: "Belt drive · suspended sub-chassis (TD 160 base) · electronic auto arm-lift and shut-off",
+  desc: "In effect a Thorens TD 160 with added electronics. As the stylus reaches the lead-out groove, a sensor triggers a viscous-damped lift that raises the arm and switches off the motor. Starting play stays manual, so it is semi-automatic. Thorens models with auto shut-off are especially sought after today.",
+  sources: [
+    { t: "Stereonomono – Thorens TD 145 (1975–76) and Mk II (1976–78)", u: "https://stereonomono.blogspot.com/2011/10/thorens-td-145-1975-1976-mk-ii-1976.html", lang: "en" },
+    { t: "Vinyl Nirvana (USA) – Thorens TD-145 with auto shut-off", u: "https://vinylnirvana.com/vintage-turntables-for-sale/starter-package-thorens-td-wauto-shut-off", lang: "en" },
+    { t: "Vinyl Engine – Thorens TD145 owner reviews", u: "https://www.vinylengine.com/turntable_reviews.php?make=Thorens&model=TD145", lang: "en" }
+  ],
+  photos: "https://stereonomono.blogspot.com/2011/10/thorens-td-145-1975-1976-mk-ii-1976.html"
+},
+{
+  brand: "Bang & Olufsen", model: "Beogram 4002", cat: "turntable", year: 1974, built: "1974–1980", country: "Denmark",
+  specs: "Automatic tangential (straight-line) tracking arm · design: Jacob Jensen",
+  desc: "Successor to the Beogram 4000 of 1972, designed by Jacob Jensen. Its tangential arm moves in a straight line from edge to centre, so there is no skating force and almost no tracking-angle error. It won the 'Gold Sim 74' and 'Top Form 74' prizes and was shown at New York's Museum of Modern Art. Made in Denmark until 1980.",
+  sources: [
+    { t: "Beocentral – Tangential tracking turntables", u: "https://beocentral.com/tangential-turntables", lang: "en" },
+    { t: "Beoworld – Beogram 4002", u: "https://beoworld.org/beogram-4002/", lang: "en" },
+    { t: "The Vinyl Factory – Inside B&O's lab: reimagining the Beogram 4000", u: "https://www.thevinylfactory.com/features/inside-bang-and-olufsen-laboratory-reimagining-beogram-4000-turntable", lang: "en" }
+  ],
+  photos: "https://beoworld.org/beogram-4002/"
+},
+{
+  brand: "ADC", model: "Accutrac 4000", cat: "turntable", year: 1976, built: "1976–1978", country: "USA (built by Micro Seiki, Japan)",
+  specs: "Microprocessor-controlled · optical track sensing · up to 24 programmed commands · remote control",
+  desc: "Advertised with the slogan 'Its father was a turntable. Its mother was a computer.' An infrared LED in the arm detected the gaps between tracks by measuring the reflectivity of the record. Owners could play tracks in any order, with up to 24 programmed commands and repeats. ADC (Audio Dynamics Corporation) was then owned by BSR, and the deck was built by Micro Seiki in Japan. HiFi/Stereo Review tested it in September 1976.",
+  sources: [
+    { t: "HiFi/Stereo Review, Sept 1976 – ADC Accutrac 4000 test (World Radio History)", u: "https://www.worldradiohistory.com/hd2/IDX-Audio/Archive-Stereo-Review-IDX/IDX/70s/HiFi-Stereo-Review-1976-09-OCR-Page-0042.pdf", lang: "en" },
+    { t: "Radiomuseum.org – ADC Accutrac 4000", u: "https://www.radiomuseum.org/r/audio_dyn_accutrac_4000.html", lang: "multi" },
+    { t: "The Vintage Knob – ADC Accutrac 4000", u: "https://www.thevintageknob.org/adc-Accutrac_4000.html", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/adc-Accutrac_4000.html"
+},
+{
+  brand: "SOTA", model: "Sapphire", cat: "turntable", year: 1981, built: "from 1981 (still made as MkIV)", country: "USA",
+  specs: "Belt drive (Pabst motor) · suspended · solid-wood plinth · Star Sapphire version with vacuum record clamping",
+  desc: "First turntable of SOTA, founded in 1980 by David Fletcher and Robert Becker. When it appeared in 1981 it was the only high-end turntable made in the USA. A heavy, inert solid-wood plinth, belt drive from a Pabst motor and a suspended sub-chassis. The Star Sapphire added a vacuum pump that sucks the record flat against the platter mat. The Sapphire is still made today in its fourth version.",
+  sources: [
+    { t: "PS Audio Copper – A conversation with SOTA Sound Inventions", u: "https://www.psaudio.com/blogs/copper/a-conversation-with-sota-sound-inventions", lang: "en" },
+    { t: "Stereophile – SOTA Star Sapphire turntable", u: "https://www.stereophile.com/turntables/284sotastar/index.html", lang: "en" },
+    { t: "OldStore (Italy) – SOTA Star Sapphire", u: "https://www.oldstore.it/en/complete-turntables/851-sota-star-belt-driven-turntable.html", lang: "en" }
+  ],
+  photos: "https://auralhifi.com/products/vintage-sota-sapphire-mki-belt-drive-turntable-original-box-manual-15792"
+},
+{
+  brand: "Pink Triangle", model: "PT turntable (first model)", cat: "turntable", year: 1980, built: "early 1980s (PT Too, Anniversary later)", country: "UK",
+  specs: "Lightly sprung sub-chassis · first machined acrylic platter · later DC motors",
+  desc: "Pink Triangle was founded in London in 1979 by Neal Jackson and Arthur Khoubessarian. The name refers to the symbol the Nazis used to mark gay prisoners; both founders were gay. They launched their turntable at an Audio T show in London in the early 1980s with, as Khoubessarian recalled, £5 left between them, and it was a hit. Pink Triangle introduced the machined acrylic platter and a suspension whose centre is far from the platter bearing. Later came DC motors and energy-dissipating plinths, now common across the industry. Khoubessarian later founded The Funk Firm.",
+  sources: [
+    { t: "Wikipedia – Pink Triangle (audio manufacturer)", u: "https://en.wikipedia.org/wiki/Pink_Triangle_(audio_manufacturer)", lang: "en" },
+    { t: "Stereophile – Listening #49 (Art Dudley)", u: "https://www.stereophile.com/content/listening-49", lang: "en" },
+    { t: "True-Point Audio – Nostalgia for Pink Triangle turntables", u: "https://www.true-point.audio/tpa-pink-triangle-history.htm", lang: "en" }
+  ],
+  photos: "https://en.wikipedia.org/wiki/Pink_Triangle_(audio_manufacturer)"
+},
+{
+  brand: "Systemdek", model: "IIX", cat: "turntable", year: 1983, built: "early 1980s–1990s", country: "UK (Scotland)",
+  specs: "Three-point sprung sub-chassis · glass platter · AC synchronous motor · about £115 (1984)",
+  desc: "A Scottish turntable from Troon, Ayrshire, made by Peter Dunlop's family company. It was first shown as 'Aristodek' at a 1979 hi-fi show and renamed Systemdek by 1980. The IIX of the early 1980s combined a Rega-style glass platter and manual speed change with a Linn-style sprung suspension, at a low price (about £115 in 1984). What Hi-Fi? made it Product of the Year in 1990, 1991 and 1992. It was part of a wave of Scottish hi-fi makers backed by government support for local industry.",
+  sources: [
+    { t: "Audiograde (UK) – Classic HiFi: Systemdek IIX", u: "https://audiograde.uk/review/classic-hifi-systemdek-iix-turntable-with-goldring-g1042-cartridge-and-g202-tonearm/", lang: "en" },
+    { t: "What Hi-Fi? – Best British record players of all time", u: "https://www.whathifi.com/features/10-of-the-best-british-turntables-of-all-time", lang: "en" },
+    { t: "Pinkfish Media forum – Systemdek revisited", u: "https://pinkfishmedia.net/forum/threads/systemdek-revisited.224278/", lang: "en" }
+  ],
+  photos: "https://audiogold.co.uk/products/systemdek-iix"
+},
+{
+  brand: "Dual", model: "CS 721", cat: "turntable", year: 1976, built: "1976–1979", country: "Germany",
+  specs: "Electronic direct drive (EDS 1000-2) · fully automatic, single play · 1.5 kg platter · wow & flutter < 0.03 %",
+  desc: "Dual's flagship turntable of the late 1970s and, for many, the best Dual ever made. It has an electronically controlled direct-drive motor, a rigid tonearm and many fine adjustments, and was often supplied with a Shure cartridge. Its rumble and wow-and-flutter figures were the best of any Dual. Made in St. Georgen in the Black Forest.",
+  sources: [
+    { t: "Explorations in Audio (Germany) – Dual CS 721", u: "https://eiaudio.de/gear-and-review/turntables/dual-cs-721/", lang: "en" },
+    { t: "StereoLife (Poland) – Over a century of spinning: a history of Dual", u: "https://www.stereolifemagazine.com/articles/item/1546-over-a-century-of-spinning-a-history-of-dual", lang: "en" },
+    { t: "Radiomuseum.org – Dual CS 721", u: "https://www.radiomuseum.org/r/dual_cs721_cs_721.html", lang: "multi" }
+  ],
+  photos: "https://eiaudio.de/gear-and-review/turntables/dual-cs-721/"
+},
+{
+  brand: "Braun", model: "PS 500", cat: "turntable", year: 1970, built: "1970–early 1970s (designed 1968)", country: "Germany",
+  specs: "Design: Dieter Rams · sheet steel, plastic and acrylic lid",
+  desc: "Dieter Rams' turntable for Braun, designed in 1968 and sold from about 1970. It shows his minimalist, functional design in sheet steel and plastic, with a hinged acrylic lid. Rams' Braun designs later influenced Apple's design team. Today the PS 500 is collected as much for its design as for playing records. One is held by German museums (Deutsche Digitale Bibliothek).",
+  sources: [
+    { t: "Deutsche Digitale Bibliothek – Braun record player PS 500", u: "https://www.deutsche-digitale-bibliothek.de/item/2N4INMT3RDURVLS2ZMRKYJVVNJ6SJOGR", lang: "de" },
+    { t: "AudioKarma forum – Braun PS-500, designed by Dieter Rams", u: "https://audiokarma.org/forums/threads/braun-ps-500-turntable-designed-by-dieter-rams.883058/", lang: "en" },
+    { t: "Steve Hoffman forums – Braun PS-500", u: "https://forums.stevehoffman.tv/threads/braun-ps-500-turntable-designed-by-dieter-rams.876775/", lang: "en" }
+  ],
+  photos: "https://www.deutsche-digitale-bibliothek.de/item/2N4INMT3RDURVLS2ZMRKYJVVNJ6SJOGR"
 }
 );
