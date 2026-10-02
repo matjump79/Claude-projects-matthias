@@ -890,7 +890,7 @@ HIFI.push(
 {
   brand: "Sony", model: "PS-X7", cat: "turntable", year: 1977, built: "1977–1978", country: "Japan",
   specs: "Quartz-locked direct drive · fully automatic · carbon-fibre arm · magnetic speed sensing · 10.9 kg",
-  desc: "Sony's fully automatic direct-drive turntable of 1977. Speed is read by an 8-pole magnetic head from a magnetised rim on the platter and locked to a quartz reference. It has electronic touch switches with LED display, optical end-of-record sensing, a carbon-fibre arm wand, a direct-reading stylus-force gauge and damped cueing. It played the role later filled by the PS-X75 and PS-X800.",
+  desc: "Sony's fully automatic direct-drive turntable of 1977. Speed is read by an 8-pole magnetic head from a magnetised rim on the platter and locked to a quartz reference. It has electronic touch switches with LED display, optical end-of-record sensing, a carbon-fibre arm wand, a direct-reading stylus-force gauge and damped cueing.",
   sources: [
     { t: "The Vintage Knob – Sony PS-X7", u: "https://www.thevintageknob.org/sony-PS-X7.html", lang: "en" },
     { t: "Vinyl Engine – Sony PS-X7 manual", u: "https://www.vinylengine.com/library/sony/ps-x7.shtml", lang: "en" },
@@ -952,5 +952,162 @@ HIFI.push(
     { t: "hifi-wiki – Optonica RP-7100", u: "https://hifi-wiki.com/index.php/Optonica_RP-7100", lang: "en" }
   ],
   photos: "https://zstereo.co.uk/2013/10/28/sharp-optonica-rp-7100/"
+},
+// ---------- High-end amplifiers from around the world ----------
+{
+  brand: "Perreaux", model: "PMF 2150B", cat: "amplifier", type: "Power amplifier", year: 1982, built: "1980s", country: "New Zealand (Napier)",
+  specs: "200 W/ch @ 8 Ω, 400 W @ 4 Ω · 0.009 % THD · six power MOSFETs per channel · about $1,400",
+  desc: "New Zealand's best-known amplifier. Peter Perreaux founded his company in Napier in 1974, starting with the GS 2002 Class A integrated amplifier. The PMF 2150B uses six power MOSFETs per channel. Unlike bipolar transistors, MOSFETs do not suffer thermal runaway, so they need fewer protection circuits. It gives 200 W into 8 Ω and 400 W into 4 Ω at 0.009 % distortion, and was seen as excellent value at about $1,400. Exact launch year differs between sources (early 1980s).",
+  sources: [
+    { t: "Mixdown (Australia) – Perreaux: from small-town beginnings to global hi-fi success", u: "https://mixdownmag.com.au/features/perreaux-from-small-town-beginnings-to-global-hi-fi-success/", lang: "en" },
+    { t: "Audiogon forum – Anyone know Perreaux 2150B?", u: "https://forum.audiogon.com/discussions/anyone-know-perreaux-2150b", lang: "en" },
+    { t: "SoundStage Australia – Perreaux Audio 200iX (company history)", u: "https://www.soundstageaustralia.com/index.php/reviews/662-perreaux-audio-200ix-integrated-amplifier", lang: "en" }
+  ],
+  photos: "https://forum.audiogon.com/discussions/anyone-know-perreaux-2150b"
+},
+{
+  brand: "Carver", model: "M-400", cat: "amplifier", type: "Power amplifier", year: 1980, built: "1980–1981 (M-400a from mid-1981)", country: "USA",
+  aka: "'The Cube'",
+  specs: "201 W/ch @ 8 Ω (500 W mono) · Magnetic Field Amplifier · 7-inch gold cube",
+  desc: "Bob Carver's first 'Magnetic Field Amplifier', after he left Phase Linear and founded Carver Corporation in 1979. It packs 200 W per channel into a gold-anodised cube only about seven inches on each side. Its efficiency comes from electronic control of the supply instead of large amounts of copper, iron and aluminium. It was a game-changer that put Carver on the map. The M-400a with revised circuitry followed in mid-1981. Audio magazine reviewed it in November 1980.",
+  sources: [
+    { t: "Audio magazine review, Nov 1980 (archived)", u: "https://www.gammaelectronics.xyz/audio_11-1980_carver.html", lang: "en" },
+    { t: "Hackaday – Carver M-400 amplifier repair keeps the 1980s alive", u: "https://hackaday.com/2022/07/10/carver-m-400-amplifier-repair-keeps-the-1980s-alive/", lang: "en" },
+    { t: "HiFi Engine – Carver M-400 manual", u: "https://www.hifiengine.com/manual_library/carver/m-400.shtml", lang: "en" }
+  ],
+  photos: "https://hackaday.com/2022/07/10/carver-m-400-amplifier-repair-keeps-the-1980s-alive/"
+},
+{
+  brand: "Adcom", model: "GFA-555", cat: "amplifier", type: "Power amplifier", year: 1985, built: "March 1985–later 1980s (GFA-555 II later)", country: "USA",
+  specs: "200 W/ch · bipolar output stage · 13.6 kg · about $680 · designed by Nelson Pass",
+  desc: "Introduced in March 1985 and designed by Nelson Pass (of Threshold, later Pass Labs), the amplifier that made Adcom known worldwide. It offered 200 W per channel, tank-like reliability and strong reviews for about $680. It weighs 30 lb. It is still sought after, and Adcom later revived the design.",
+  sources: [
+    { t: "Ken Rockwell – Adcom GFA-555 II review (history)", u: "https://www.kenrockwell.com/audio/adcom/gfa-555-ii.htm", lang: "en" },
+    { t: "Adcom – About us", u: "https://adcom.com/aboutus/", lang: "en" },
+    { t: "Audioholics – Adcom stages comeback with updated classic amps", u: "https://www.audioholics.com/amplifier-reviews/adcom-amps", lang: "en" }
+  ],
+  photos: "https://www.kenrockwell.com/audio/adcom/gfa-555-ii.htm"
+},
+{
+  brand: "Bang & Olufsen", model: "Beomaster 8000", cat: "receiver", year: 1980, built: "1980–December 1985", country: "Denmark",
+  specs: "150 W/ch RMS · digital frequency-synthesiser tuner · infrared remote · 60-step electronic volume · dual mono",
+  desc: "The most powerful receiver B&O ever made, designed by Jacob Jensen. It has a digital frequency-synthesiser tuner with automatic fine tuning and an infrared remote control; B&O's earlier remotes had used ultrasound. Volume is a 60-step electronic attenuator, and each channel has its own amplifier and power supply (dual mono). It cost 1,585,000 lire in Italy in 1980. It was made in versions for continental Europe, the US and the UK until 1985.",
+  sources: [
+    { t: "Beoworld – BeoMaster 8000", u: "https://beoworld.org/beomaster-8000/", lang: "en" },
+    { t: "Radiomuseum.org – Beomaster 8000", u: "https://www.radiomuseum.org/r/bang_beomaster_8000.html", lang: "multi" },
+    { t: "1001hifi – Bang & Olufsen Beomaster 8000, designed by Jakob Jensen", u: "https://www.1001hifi.info/2019/06/bang-beomaster-8000-designed-by-jakob.html", lang: "en" }
+  ],
+  photos: "https://classicreceivers.com/bang-olufsen-beomaster-8000"
+},
+{
+  brand: "Accuphase", model: "E-202", cat: "amplifier", type: "Integrated", year: 1974, built: "May 1974–later 1970s", country: "Japan",
+  specs: "100 W/ch @ 8 Ω (140 W @ 4 Ω) · 0.1 % THD · damping factor 50",
+  desc: "Accuphase's first integrated amplifier, released in May 1974. It draws on the P-300 power amplifier and C-200 preamplifier of 1973. It set the design philosophy and the look of champagne-gold front and solid build that Accuphase integrated amplifiers have kept for decades. It is often called the grandfather of all Accuphase integrated amplifiers.",
+  sources: [
+    { t: "Accuphase – Product museum (company history)", u: "https://www.accuphase.com/history.html", lang: "en" },
+    { t: "audio-database.com – Accuphase/Kensonic E-202", u: "https://audio-database.com/Accuphase-kensonic/amp/E-202-e.html", lang: "en" },
+    { t: "1001hifi – Accuphase E-202 (1974)", u: "https://www.1001hifi.info/2026/03/accuphase-e-202-1974-kensonic-laboratory.html", lang: "en" }
+  ],
+  photos: "https://audio-database.com/Accuphase-kensonic/amp/E-202-e.html"
+},
+{
+  brand: "Kenwood", model: "L-01A", cat: "amplifier", type: "Integrated", year: 1979, built: "1979/80–1982", country: "Japan",
+  specs: "110 W/ch @ 8 Ω · 0.006 % THD · 1 Hz–400 kHz · non-magnetic chassis · separate power supply with four transformers · ¥270,000",
+  desc: "Kenwood's 'non-magnetic' integrated amplifier, priced at ¥270,000. To remove magnetic distortion, the whole amplifier is built from non-magnetic materials. The transformers, the main source of magnetic flux, sit in a separate L-01A-PS power-supply case. It has a full DC design with FET differential inputs and four pairs of output transistors. It is specified at 0.006 % distortion and a damping factor of 1,000.",
+  sources: [
+    { t: "audio-database.com – Kenwood/Trio L-01A", u: "https://audio-database.com/TRIO-KENWOOD/amp/l-01a.html", lang: "ja" },
+    { t: "The Vintage Knob – Kenwood L-01A", u: "https://www.thevintageknob.org/kenwood-L-01A.html", lang: "en" },
+    { t: "HiFi Engine – Kenwood L-01A manual", u: "https://www.hifiengine.com/manual_library/kenwood/l-01a.shtml", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/kenwood-L-01A.html"
+},
+{
+  brand: "Krell", model: "KSA-50", cat: "amplifier", type: "Power amplifier", year: 1982, built: "1982–later 1980s", country: "USA",
+  specs: "50 W/ch pure Class A · very large power supply",
+  desc: "The smaller sibling of Krell's first amplifier, the KSA-100, which caused a sensation at the 1981 Las Vegas show. Dan D'Agostino, previously involved with Dayton Wright electrostatic speakers, founded Krell in 1980 to build Class A amplifiers of uncompromising quality. The KSA-50 of 1982 offered the same build at a lower price. It gives 50 W per channel of pure Class A from an enormous power supply. Hi-Fi Critic revisited it in 2014 as a classic reference amplifier.",
+  sources: [
+    { t: "Stereophile – Krell KSA-50 power amplifier", u: "https://www.stereophile.com/content/krell-ksa-50-power-amplifier", lang: "en" },
+    { t: "Tone Publications – Old School: Krell KSA-50", u: "https://www.tonepublications.com/old-school/krell-ksa-50-amplifier/", lang: "en" },
+    { t: "Hi-Fi Critic (via Enjoy the Music) – Krell KSA50 revisited", u: "https://www.enjoythemusic.com/hificritic/vol8_no2/krell_ksa50_revisited.htm", lang: "en" }
+  ],
+  photos: "https://www.tonepublications.com/old-school/krell-ksa-50-amplifier/"
+},
+{
+  brand: "Conrad-Johnson", model: "PV-1", cat: "amplifier", type: "Preamplifier", year: 1977, built: "1977–about 1980", country: "USA",
+  specs: "Valve (tube) preamplifier · metal-film resistors, polyester and silvered-mica capacitors · $500",
+  desc: "First product of Conrad-Johnson, founded by economists Dr William Conrad and Dr Lewis Johnson. When it appeared in 1977 almost nobody was making tube equipment, so a $500 tube preamplifier was a bold move. It helped revive valve electronics in high-end audio. Its literature stressed parts quality (metal-film resistors, polyester and silvered-mica capacitors), and critics praised its natural reproduction of harmonics. Many are still in use.",
+  sources: [
+    { t: "Conrad-Johnson – PV1 vacuum tube pre-amplifier", u: "https://conradjohnson.com/project/pv1-vacuum-tube-pre-amplifier/", lang: "en" },
+    { t: "Soundbox (Japan) – The conrad-johnson story", u: "https://soundbox.co.jp/conradjohnson/history.htm", lang: "ja" },
+    { t: "Audio Resurgence – Conrad Johnson", u: "https://www.audioresurgence.com/2014/05/conrad-johnson.html", lang: "en" }
+  ],
+  photos: "https://conradjohnson.com/project/pv1-vacuum-tube-pre-amplifier/"
+},
+{
+  brand: "Apt", model: "Holman Preamplifier", cat: "amplifier", type: "Preamplifier", year: 1977, built: "1977–1983", country: "USA (Cambridge, Massachusetts)",
+  specs: "Gain-varying volume control · patented variable stereo-expansion circuit",
+  desc: "Designed by Tomlinson Holman, who founded Apt Corporation in Cambridge, Massachusetts, in September 1977. Its volume control varies the amplifier's gain for lowest noise and distortion, rather than simply attenuating a fixed high gain. A patented stereo-expansion circuit foreshadowed Holman's later multichannel work. In 1980 he joined Lucasfilm, where he created the THX sound system. He is also called the inventor of 5.1 surround.",
+  sources: [
+    { t: "Ken Rockwell – Apt Holman preamplifier review", u: "https://kenrockwell.com/audio/apt/holman-preamplifier.htm", lang: "en" },
+    { t: "Audio Science Review – Apt Holman preamplifier review (measurements)", u: "https://www.audiosciencereview.com/forum/index.php?threads/apt-holman-preamplifier-review-vintage-audio.28310/", lang: "en" },
+    { t: "Downers Grove Historical Society – Tomlinson Holman", u: "https://dghistory.org/tomlinson-holman/", lang: "en" }
+  ],
+  photos: "https://kenrockwell.com/audio/apt/holman-preamplifier.htm"
+},
+{
+  brand: "Dynaco", model: "Stereo 400", cat: "amplifier", type: "Power amplifier", year: 1972, built: "1972–1975 (meter version 400M)", country: "USA",
+  specs: "200 W/ch @ 8 Ω (300 W @ 4 Ω, 600 W mono) · < 0.25 % THD · Dynaguard speaker protection · also sold as a kit",
+  desc: "Dynaco's high-power amplifier of the 1970s, sold assembled or as a kit like many Dynaco products. It gives 200 W per channel into 8 Ω, 300 W into 4 Ω or 600 W bridged. It has 46 transistors, 4 ICs and 'Dynaguard' circuitry that protects speakers from overload, plus automatic output muting and a huge heatsink. A version with output meters was also made. Stereo Review (1974) and Audio (1975) tested it.",
+  sources: [
+    { t: "HiFi/Stereo Review, July 1974 – Dynaco Stereo 400 test (World Radio History)", u: "https://www.worldradiohistory.com/hd2/IDX-Audio/Archive-Stereo-Review-IDX/IDX/70s/HiFi-Stereo-Review-1974-07-OCR-Page-0034.pdf", lang: "en" },
+    { t: "Audio magazine review, May 1975 (archived)", u: "https://www.gammaelectronics.xyz/audio_05-1975_dynaco.html", lang: "en" },
+    { t: "Greg Dunn – Dynaco Stereo 400 component info", u: "http://home.indy.net/~gregdunn/dynaco/components/ST400/index.html", lang: "en" }
+  ],
+  photos: "http://home.indy.net/~gregdunn/dynaco/components/ST400/index.html"
+},
+{
+  brand: "NAD", model: "2200", cat: "amplifier", type: "Power amplifier", year: 1985, built: "1985/87–1989 (sources differ)", country: "UK (made in Japan)",
+  aka: "2200 PE (Power Envelope)",
+  specs: "100 W/ch rated · +6 dB dynamic headroom (400 W @ 8 Ω, 800 W @ 2 Ω bursts) · PowerTracker · soft clipping",
+  desc: "NAD's 'Power Envelope' amplifier, developed by Phill Marshall. It is conservatively rated at 100 W per channel but has +6 dB dynamic headroom: in 20 ms bursts it can deliver 400 W into 8 Ω and 800 W into 2 Ω. Its PowerTracker circuit adjusts maximum output to the dynamics of the music. It runs in Class A at low levels and Class AB higher up, and keeps NAD's soft clipping.",
+  sources: [
+    { t: "Hi-Fi Classic – NAD 2200 review, price and specs", u: "https://www.hifi-classic.net/review/nad-2200-546.html", lang: "en" },
+    { t: "Audiogon forum – NAD 2200 Power Envelope", u: "https://forum.audiogon.com/discussions/nad-2200-power-envelope", lang: "en" },
+    { t: "HiFi Engine – NAD 2200 manual", u: "https://www.hifiengine.com/manual_library/nad/2200.shtml", lang: "en" }
+  ],
+  photos: "https://www.hifi-classic.net/review/nad-2200-546.html"
+},
+{
+  brand: "Luxman", model: "CL-32", cat: "amplifier", type: "Preamplifier", year: 1976, built: "October 1976–about 1980 (some sources: 1978–82)", country: "Japan",
+  specs: "Valve (tube) preamplifier · five 12AX7 + two 12AU7 · no tone controls",
+  desc: "One of the most admired Japanese tube preamplifiers of the 1970s, released in October 1976. It is a simplified version of the CL-35, with five 12AX7 and two 12AU7 valves and no tone controls. It is known for its high-quality RIAA phono stage, refined sound and solid build. Specialist restorers in Europe still overhaul them today.",
+  sources: [
+    { t: "audio-database.com – Luxman CL32", u: "https://audio-database.com/LUXMAN/amp/cl32.html", lang: "ja" },
+    { t: "SB-Lab (Italy) – Luxman CL32: in-depth overhaul of a historic preamplifier", u: "https://www.sb-lab.eu/en/luxman-cl32-in-depth-overhaul-of-a-historic-preamplifier/", lang: "en" },
+    { t: "HiFi Engine – Luxman CL-32 manual", u: "https://www.hifiengine.com/manual_library/luxman/cl-32.shtml", lang: "en" }
+  ],
+  photos: "https://www.sb-lab.eu/en/luxman-cl32-in-depth-overhaul-of-a-historic-preamplifier/"
+},
+{
+  brand: "Marantz", model: "510M", cat: "amplifier", type: "Power amplifier", year: 1976, built: "1976–1978", country: "USA / Japan",
+  specs: "256 W/ch @ 8 Ω (350 W @ 4 Ω) · 0.05 % THD · 16 power transistors · rack-mount · 21 kg",
+  desc: "Marantz's big professional-style power amplifier with a rack-mount front, from 1976. It gives 256 W per channel into 8 Ω and 350 W into 4 Ω. Its 16 output transistors (8 per channel, in two stages and two rows) sit on a finned 'finger' heatsink. Japan's Stereo Sound magazine gave it its first State of the Art Award in 1978.",
+  sources: [
+    { t: "Classic Audio – Legendary audio classics: Marantz 510M", u: "https://www.classic-audio.com/marantz/0510m.html", lang: "en" },
+    { t: "Radiomuseum.org – Marantz 510M", u: "https://www.radiomuseum.org/r/marantz_510m.html", lang: "multi" },
+    { t: "HiFi Engine – Marantz 510M manual", u: "https://www.hifiengine.com/manual_library/marantz/510m.shtml", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/marantz_510m.html"
+},
+{
+  brand: "Technics", model: "SE-A1", cat: "amplifier", type: "Power amplifier", year: 1977, built: "1977–about 1980 (built to order)", country: "Japan",
+  specs: "350 W/ch · Class A+ · eight separate power supplies (four per channel) · capacitor-free DC feedback",
+  desc: "Technics' statement power amplifier of 1977, partner of the SU-A2 preamplifier. Its 'Class A+' circuit aimed to combine Class B efficiency with Class A's low distortion. Each channel has four power supplies, eight in total, and the fully DC design has no capacitors in the feedback loop. It gives 350 W per channel. It was built to order, reportedly one unit per day. Technics still names it in its official history and uses the Class A+ idea today.",
+  sources: [
+    { t: "Technics – The 60-year history of Technics", u: "https://www.technics.com/global/home/60th-anniversary/technics-brand-story/the-60-year-history-of-technics-love-of-music.html", lang: "en" },
+    { t: "audio-database.com – Technics SE-A1", u: "https://audio-database.com/TechnicsPanasonic/amp/se-a1-e.html", lang: "en" },
+    { t: "Vintage Technics (UK) – Technics pre and power amps", u: "https://vintagetechnics.audio/controlpower.php", lang: "en" }
+  ],
+  photos: "https://audio-database.com/TechnicsPanasonic/amp/se-a1-e.html"
 }
 );

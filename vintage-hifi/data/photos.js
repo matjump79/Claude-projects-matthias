@@ -569,5 +569,135 @@ window.HIFI_PHOTOS = {
   "src": "photos/arcam-a60.jpg",
   "site": "2ndhandhifi.co.uk",
   "page": "https://2ndhandhifi.co.uk/products/a-r-cambridge-a60-integrated-amplifier-teak"
+ },
+ "ariston-rd11": {
+  "src": "photos/ariston-rd11.jpg",
+  "site": "en.wikipedia.org",
+  "page": "https://en.wikipedia.org/wiki/Linn_Sondek_LP12"
+ },
+ "audiolab-8000a": {
+  "src": "photos/audiolab-8000a.jpg",
+  "site": "zstereo.co.uk",
+  "page": "https://zstereo.co.uk/2013/08/20/audiolab-8000a/"
+ },
+ "conrad-johnson-pv-1": {
+  "src": "photos/conrad-johnson-pv-1.jpg",
+  "site": "soundbox.co.jp",
+  "page": "https://soundbox.co.jp/conradjohnson/history.htm"
+ },
+ "dual-cs-721": {
+  "src": "photos/dual-cs-721.jpg",
+  "site": "eiaudio.de",
+  "page": "https://eiaudio.de/gear-and-review/turntables/dual-cs-721/"
+ },
+ "dynaco-stereo-400": {
+  "src": "photos/dynaco-stereo-400.jpg",
+  "site": "gammaelectronics.xyz",
+  "page": "https://www.gammaelectronics.xyz/audio_05-1975_dynaco.html"
+ },
+ "elac-miracord-50h-ii": {
+  "src": "photos/elac-miracord-50h-ii.jpg",
+  "site": "stereonomono.blogspot.com",
+  "page": "https://stereonomono.blogspot.com/2024/08/elac-miracord-50h-mkii-turntable.html"
+ },
+ "electrocompaniet-the-2-channel-audio-power-amplifier": {
+  "src": "photos/electrocompaniet-the-2-channel-audio-power-amplifier.jpg",
+  "site": "auralhifi.com",
+  "page": "https://auralhifi.com/products/electrocompaniet-the-2-channel-power-amp-vintage-solid-state-amplifier"
+ },
+ "galactron-mk-16": {
+  "src": "photos/galactron-mk-16.jpg",
+  "site": "radiomuseum.org",
+  "page": "https://www.radiomuseum.org/r/galactron_mk16.html"
+ },
+ "gas-ampzilla": {
+  "src": "photos/gas-ampzilla.jpg",
+  "site": "davidsaudio.com",
+  "page": "https://www.davidsaudio.com/html/gas_line.html"
+ },
+ "grundig-rtv-1040": {
+  "src": "photos/grundig-rtv-1040.jpg",
+  "site": "welt-der-alten-radios.de",
+  "page": "https://www.welt-der-alten-radios.de/ausstellung-transistorradios-detail-540.html"
+ },
+ "hafler-dh-101": {
+  "src": "photos/hafler-dh-101.jpg",
+  "site": "radiomuseum.org",
+  "page": "https://www.radiomuseum.org/r/haflercoda_stereo_preamplifier_dh_101.html"
+ },
+ "heybrook-tt2": {
+  "src": "photos/heybrook-tt2.jpg",
+  "site": "zstereo.co.uk",
+  "page": "https://zstereo.co.uk/2017/09/11/heybrook-tt2/"
+ },
+ "krell-ksa-50": {
+  "src": "photos/krell-ksa-50.jpg",
+  "site": "tonepublications.com",
+  "page": "https://www.tonepublications.com/old-school/krell-ksa-50-amplifier/"
+ },
+ "logic-dm101": {
+  "src": "photos/logic-dm101.jpg",
+  "site": "zstereo.co.uk",
+  "page": "https://zstereo.co.uk/2014/05/12/logic-dm101/"
+ },
+ "mission-cyrus-two": {
+  "src": "photos/mission-cyrus-two.jpg",
+  "site": "zstereo.co.uk",
+  "page": "https://zstereo.co.uk/2013/03/14/mission-cyrus-2/"
+ },
+ "musical-fidelity-a100": {
+  "src": "photos/musical-fidelity-a100.jpg",
+  "site": "zstereo.co.uk",
+  "page": "https://zstereo.co.uk/2020/10/14/musical-fidelity-a100/"
+ },
+ "naim-nait-2": {
+  "src": "photos/naim-nait-2.jpg",
+  "site": "di-marco.net",
+  "page": "https://di-marco.net/blog/hi-fi/2020-10-04-naim_audio_nait_2/"
+ },
+ "realistic-sta-2000": {
+  "src": "photos/realistic-sta-2000.jpg",
+  "site": "radiomuseum.org",
+  "page": "https://www.radiomuseum.org/r/radioshack_sta_2000_cat_no_31_2075.html"
+ },
+ "rft-hmk-v100": {
+  "src": "photos/rft-hmk-v100.jpg",
+  "site": "ddr-hifi-technik.de",
+  "page": "https://ddr-hifi-technik.de/produkt/rft-verstaerker-hmk-v100silber/"
+ },
+ "sansui-au-d607": {
+  "src": "photos/sansui-au-d607.jpg",
+  "site": "audio-database.com",
+  "page": "https://audio-database.com/SANSUI/amp/au-d607-e.html"
+ },
+ "sansui-g-6000": {
+  "src": "photos/sansui-g-6000.jpg",
+  "site": "era-hifi.com",
+  "page": "https://www.era-hifi.com/item/sansui-g-6000"
+ },
+ "sherwood-s-7900a": {
+  "src": "photos/sherwood-s-7900a.jpg",
+  "site": "stereonomono.blogspot.com",
+  "page": "https://stereonomono.blogspot.com/2014/02/sherwood-s-7900a.html"
+ },
+ "sota-sapphire": {
+  "src": "photos/sota-sapphire.jpg",
+  "site": "auralhifi.com",
+  "page": "https://auralhifi.com/products/vintage-sota-sapphire-mki-belt-drive-turntable-original-box-manual-15792"
+ },
+ "systemdek-iix": {
+  "src": "photos/systemdek-iix.jpg",
+  "site": "audiogold.co.uk",
+  "page": "https://audiogold.co.uk/products/systemdek-iix"
+ },
+ "thorens-td-145": {
+  "src": "photos/thorens-td-145.jpg",
+  "site": "stereonomono.blogspot.com",
+  "page": "https://stereonomono.blogspot.com/2011/10/thorens-td-145-1975-1976-mk-ii-1976.html"
+ },
+ "threshold-400a": {
+  "src": "photos/threshold-400a.jpg",
+  "site": "tmraudio.com",
+  "page": "https://tmraudio.com/components/power-amplifiers/threshold-400a-vintage-stereo-power-amplifier/"
  }
 };

@@ -224,6 +224,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
       <select id="depth" aria-label="Entry depth">
         <option value="">All entries</option>
         <option value="deep">In-depth entries only</option>
+        <option value="spec">Spec-only entries (HiFi-Wiki data)</option>
       </select>
       <select id="view" aria-label="View">
         <option value="year">Group by year</option>
@@ -448,7 +449,8 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     if (ignore !== "cat" && state.cat && p.cat !== state.cat) return false;
     if (ignore !== "year" && !yearOk(p, state.year)) return false;
     if (state.brand && p.brand !== state.brand) return false;
-    if (state.depth && !p.deep) return false;
+    if (state.depth === "deep" && !p.deep) return false;
+    if (state.depth === "spec" && p.deep) return false;
     if (state.lang && !p.sources.some(s => s.lang === state.lang)) return false;
     if (state.q) {
       const h = hay(p);
