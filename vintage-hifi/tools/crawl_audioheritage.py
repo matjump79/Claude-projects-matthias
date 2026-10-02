@@ -62,7 +62,7 @@ def parse(s, url):
             for x in lines[i + 1:]:
                 if x.startswith("機種の定格") or x in ("型式", "定格"): break
                 body.append(x)
-            d["commentary_ja"] = "".join(body)[:900]
+            d["commentary_ja"] = "".join(body)[:2400]
             break
     return d
 
@@ -101,7 +101,7 @@ def main():
     pages = index(); print(len(pages), "Japanese model pages", flush=True)
     js = (T.parent / "data" / "hifiwiki.js").read_text(encoding="utf-8")
     W = json.loads(js[js.index("["): js.rindex("]") + 1])
-    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=T.parent))
+    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=T.parent))
     ours = [{"id": w["id"], "b": w["b"], "m": w["m"]} for w in W] + \
            [{"id": re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", (p["brand"] + "-" + p["model"]).lower())), "b": p["brand"].split(" /")[0], "m": p["model"]} for p in deep]
     have = json.loads((T / "hw" / "audiodb.json").read_text())
@@ -132,7 +132,7 @@ def main():
         ja = d.pop("commentary_ja", "")
         if ja:
             parts = re.split(r"(?<=。)", ja)
-            d["commentary_en"] = ja_post(" ".join(tr.translate(ja_pre(p), "ja", "en") for p in parts[:4] if p.strip()))
+            d["commentary_en"] = ja_post(" ".join(tr.translate(ja_pre(p), "ja", "en") for p in parts[:10] if p.strip()))
         return pid, d
     with ThreadPoolExecutor(4) as ex:
         for n, (pid, d) in enumerate(ex.map(trans, got), 1):

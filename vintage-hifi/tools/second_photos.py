@@ -41,7 +41,7 @@ def fetch(u, referer=None):
 def main():
     js = (ROOT / "data" / "hifiwiki.js").read_text(encoding="utf-8")
     W = json.loads(js[js.index("["): js.rindex("]") + 1])
-    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
+    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
     pages = {}
     for l in open(T / "hw" / "parsed.jsonl", encoding="utf-8"):
         d = json.loads(l); pages[d["url"]] = d.get("images", [])

@@ -539,5 +539,25 @@ window.HIFI_PHOTOS = {
   "src": "photos/quad-405.jpg",
   "site": "hifi-wiki.com",
   "page": "https://hifi-wiki.com/index.php/Quad_405"
+ },
+ "audio-research-sp-3": {
+  "src": "photos/audio-research-sp-3.jpg",
+  "site": "hifihalloffame.com",
+  "page": "https://hifihalloffame.com/equipment/audio-research-sp-3/"
+ },
+ "creek-cas-4040": {
+  "src": "photos/creek-cas-4040.jpg",
+  "site": "functioninform.co.nz",
+  "page": "https://functioninform.co.nz/shop/creek-audio-4040-series-1-amplifier/"
+ },
+ "thorens-td-125-mkii": {
+  "src": "photos/thorens-td-125-mkii.jpg",
+  "site": "artisanfidelity.com",
+  "page": "https://www.artisanfidelity.com/legacy/thorens-td-125"
+ },
+ "dual-1229": {
+  "src": "photos/dual-1229.jpg",
+  "site": "hifi-wiki.de",
+  "page": "https://www.hifi-wiki.de/index.php/Dual_1229"
  }
 };

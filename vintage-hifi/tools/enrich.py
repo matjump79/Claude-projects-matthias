@@ -52,7 +52,7 @@ def nice_released(s):
 def main():
     js = (ROOT / "data" / "hifiwiki.js").read_text(encoding="utf-8")
     W = json.loads(js[js.index("["): js.rindex("]") + 1])
-    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
+    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
     slug = lambda s: re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", s.lower()))
     deep_ids = {slug(p["brand"] + "-" + p["model"]): p for p in deep}
     kinds = load("photo_kind.json")
@@ -67,7 +67,7 @@ def main():
         if a:
             bits = []
             if a.get("released"): bits.append(f"Released {nice_released(a['released'])}" + (f" at {a['price']}" if a.get("price") else "") + ".")
-            com = sentences(english(a.get("commentary", "")), 3)
+            com = sentences(english(a.get("commentary", "")), 9, 1500)
             if com: bits.append(com)
             if bits: more.append({"t": tidy(" ".join(bits)), "s": "audio-database.com"})
             src.append({"t": f"audio-database.com – {brand} {model} (catalogue commentary)", "u": a["url"], "lang": "en"})
@@ -75,12 +75,12 @@ def main():
         if h:
             bits = []
             if h.get("released"): bits.append(f"Released {h['released']}" + (f" at {h['price']}" if h.get("price") else "") + ".")
-            com = sentences(h.get("commentary_en", ""), 3)
+            com = sentences(h.get("commentary_en", ""), 9, 1500)
             if com: bits.append(com)
             if bits: more.append({"t": tidy(" ".join(bits)), "s": "audio-heritage.jp, translated from Japanese"})
             src.append({"t": f"audio-heritage.jp – {brand} {model} (catalogue commentary)", "u": h["url"], "lang": "ja"})
         if c:
-            txt = sentences(" ".join(c.get("text", [])), 3, 600)
+            txt = sentences(" ".join(c.get("text", [])), 9, 1500)
             if txt: more.append({"t": txt, "s": "classicreceivers.com"})
             src.append({"t": f"classicreceivers.com – {brand} {model}", "u": c["url"], "lang": "en"})
         if r:

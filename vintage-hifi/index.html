@@ -257,6 +257,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
 <script src="data/turntables.js"></script>
 <script src="data/early.js"></script>
 <script src="data/late.js"></script>
+<script src="data/world.js"></script>
 <script src="data/photos.js"></script>
 <script src="data/hifiwiki.js"></script>
 <script src="data/enrich.js"></script>
@@ -295,6 +296,29 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     ["Craigslist (all US)", "https://www.searchtempest.com/search?search_string=", "Searches every Craigslist area at once"],
     ["Vintage HiFi dealers", "https://www.google.com/search?tbm=shop&q=vintage+", "Google Shopping: restored units from dealers and shops"],
     ["WorthPoint price archive", "https://www.worthpoint.com/inventory/search?query=", "Archive of past sale prices (subscription)"]
+  ];
+  // Spare parts and service, for every product: [label, url builder(q, p), note]
+  const G = (site, q, extra = "") => `https://www.google.com/search?q=${site ? "site%3A" + site + "+" : ""}${q}${extra}`;
+  const PARTS_LINKS = [
+    ["eBay – parts for this model", (q, p) => `https://www.ebay.com/sch/i.html?_sacat=0&_nkw=${q}+${p.cat === "turntable" ? "%28parts%2Cbelt%2Cstylus%2Cplatter%2Cdust+cover%2Ctonearm%2Cmotor%29" : "%28parts%2Cknob%2Crelay%2Cboard%2Clamp%2Cmeter%2Cfoot%2Cpower+supply%29"}`, "Knobs, boards, relays, lamps, belts, styli from parts units"],
+    ["eBay – for-parts units", (q) => `https://www.ebay.com/sch/i.html?_sacat=0&LH_ItemCondition=7000&_nkw=${q}`, "Defective units sold as donors"],
+    ["Service manual – HiFi Engine", (q) => G("hifiengine.com", q), "Free manuals and schematics (free login)"],
+    ["Service manual – ElektroTanya", (q) => G("elektrotanya.com", q), "Free service manuals"],
+    ["Manuals – Vinyl Engine", (q, p) => p.cat === "turntable" ? G("vinylengine.com", q) : "", "Turntable manuals and specs"],
+    ["Belt / stylus finder", (q, p) => p.cat === "turntable" ? G("", q, "+replacement+belt+OR+stylus") : "", "Replacement belts and styli"],
+    ["Repair kits / recap kits", (q, p) => p.cat === "turntable" ? "" : G("", q, "+recap+kit+OR+rebuild+kit"), "Capacitor and lamp kits made for this model"],
+    ["Parts units – HiFi Shark", (q) => `https://www.hifishark.com/search?q=${q}`, "Listings worldwide, incl. defective units"],
+    ["New components – Mouser", () => "https://www.mouser.com/", "Capacitors, transistors, relays, lamps (US)"],
+    ["All spare-parts results", (q) => G("", q, "+spare+parts"), "Google search"]
+  ];
+  const FORUM_LINKS = [
+    ["AudioKarma", q => G("audiokarma.org", q), "Largest vintage audio forum (US)"],
+    ["DIYAudio", q => G("diyaudio.com", q), "Technical repair threads"],
+    ["Audio Asylum", q => G("audioasylum.com", q), "Vintage Asylum (US)"],
+    ["Reddit r/vintageaudio", q => `https://www.reddit.com/r/vintageaudio/search/?q=${q}`, "Owner questions and advice"],
+    ["Old-Fidelity-Forum (DE)", q => G("old-fidelity-forum.de", q), "German repair community"],
+    ["hifi-forum.de (DE)", q => G("hifi-forum.de", q), "Large German forum"],
+    ["Pinkfish Media (UK)", q => G("pinkfishmedia.net", q), "UK vintage forum"]
   ];
   const LANGS = { en: "English", de: "German", ja: "Japanese", fr: "French", it: "Italian", es: "Spanish", pl: "Polish", ru: "Russian", multi: "Multilingual" };
   const AMP = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="20" width="58" height="24" rx="3"/><circle cx="46" cy="32" r="7"/><circle cx="14" cy="32" r="3"/><circle cx="24" cy="32" r="3"/><path d="M33 26v12"/></svg>';
@@ -335,6 +359,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     const twin = byKey[norm(w.b) + norm(w.m)] || byKey[norm(w.b) + norm(w.m.split(" ")[0])];
     if (twin && twin.deep) {
       twin.de = { feat: w.f, rem: w.r, oem: w.o, variant: w.vn };
+      if (w.pc != null && twin.pc == null) { twin.pc = w.pc; twin.img = w.i; twin.catPage = !!w.k; twin.hwPage = w.u; twin.hwId = w.id; }   // HiFi-Wiki photo when no hand-checked one
       if (!twin.sources.some(s => s.u === w.u)) twin.sources.push(hwSource);
       return;
     }
@@ -349,7 +374,8 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
   // Second sources (audio-database.com, Radiomuseum.org, classicreceivers.com): extra text, links, facts, photos
   const EN = window.HIFI_ENRICH || {};
   data.forEach(p => {
-    const e = EN[p.id]; if (!e) return;
+    const e = EN[p.id] || EN[p.hwId]; if (!e) return;
+    p.ekey = EN[p.id] ? p.id : p.hwId;
     (e.src || []).forEach(x => { if (!p.sources.some(y => y.u === x.u)) p.sources.push(x); });
     p.more = e.more || []; p.facts2 = e.facts || {};
     if (!p.country && p.facts2.country) p.country = p.facts2.country;
@@ -509,17 +535,17 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     if (own) return Promise.resolve({ ...own, local: true });
     if (p.xphoto) {
       const x = p.xphoto;
-      if (window.HIFI_PHOTO_CHUNKS) return loadChunk("x" + String(x.xc).padStart(2, "0")).then(c => c[p.id] ? { src: c[p.id], page: x.page, site: x.site, local: true } : null);
+      if (window.HIFI_PHOTO_CHUNKS) return loadChunk("x" + String(x.xc).padStart(2, "0")).then(c => c[p.ekey] ? { src: c[p.ekey], page: x.page, site: x.site, local: true } : null);
       if (LIVE) return Promise.resolve({ src: x.u, page: x.page, site: x.site, local: true });
     }
-    if (p.pc != null && window.HIFI_PHOTO_CHUNKS) return loadChunk(p.pc).then(c => c[p.id] ? { src: c[p.id], page: p.photos, site: "hifi-wiki.de", local: true } : null);
-    if (p.img && LIVE) return Promise.resolve({ src: p.img, page: p.photos, site: "hifi-wiki.de", local: true });
+    if (p.pc != null && window.HIFI_PHOTO_CHUNKS) return loadChunk(p.pc).then(c => c[p.hwId || p.id] ? { src: c[p.hwId || p.id], page: p.hwPage || p.photos, site: "hifi-wiki.de", local: true } : null);
+    if (p.img && LIVE) return Promise.resolve({ src: p.img, page: p.hwPage || p.photos, site: "hifi-wiki.de", local: true });
     return Promise.resolve(null);
   }
   const P2 = window.HIFI_PHOTOS2 || {};
   function getPhoto2(p) {
-    const y = P2[p.id]; if (!y) return Promise.resolve(null);
-    if (window.HIFI_PHOTO_CHUNKS) return loadChunk("y" + String(y.yc).padStart(2, "0")).then(c => c[p.id] ? { src: c[p.id], page: y.page, site: y.site, cat: !!y.k } : null);
+    const key = P2[p.id] ? p.id : p.hwId, y = P2[key]; if (!y) return Promise.resolve(null);
+    if (window.HIFI_PHOTO_CHUNKS) return loadChunk("y" + String(y.yc).padStart(2, "0")).then(c => c[key] ? { src: c[key], page: y.page, site: y.site, cat: !!y.k } : null);
     return Promise.resolve(LIVE && y.u ? { src: y.u, page: y.page, site: y.site, cat: !!y.k } : null);
   }
   function fillPhoto(el, p, big) {
@@ -583,7 +609,10 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
             <ul class="de-notes">${de.rem ? bullets(de.rem) : ""}${(de.feat || []).map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
           <h3 class="sec">Current prices – US market</h3>
           ${linkRow(PRICE_LINKS.map(([n, u, note]) => [n, u + q, note]))}
-          ${sv ? `<h3 class="sec">Spare parts</h3>${linkRow(sv.parts)}<h3 class="sec">Service forums and threads</h3>${linkRow(sv.forums)}` : ""}
+          <h3 class="sec">Spare parts and service manuals</h3>
+          ${linkRow(sv ? sv.parts : PARTS_LINKS.map(([n, f, note]) => [n, f(q, p), note]).filter(x => x[1]))}
+          <h3 class="sec">Service forums and threads</h3>
+          ${linkRow(sv ? sv.forums : FORUM_LINKS.map(([n, f, note]) => [n, f(q), note]))}
           <h3 class="sec">Sources (${p.sources.length})</h3>
           <ul class="sources">${p.sources.map(s =>
             `<li><span class="lang" title="${LANGS[s.lang] || s.lang}">${s.lang.toUpperCase()}</span>
