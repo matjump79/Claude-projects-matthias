@@ -447,7 +447,7 @@ HIFI.push(
 {
   brand: "Denon", model: "DP-60L", cat: "turntable", year: 1980, built: "1980–early 1980s", country: "Japan",
   specs: "Quartz-PLL direct drive · wow & flutter < 0.015 % · straight + S-shaped arm wands · auto-lift · 13 kg",
-  desc: "Denon's quartz-locked direct-drive turntable of 1980. Its AC servo motor is speed-sensed by frequency detection, giving speed deviation under 0.002 % and wow and flutter under 0.015 %. It came with both a straight and an S-shaped tonearm wand, and has an automatic arm lift at the end of the record. Many collectors see it as one of Denon's best-value turntables.",
+  desc: "Denon's quartz-locked direct-drive turntable of 1980. Its AC servo motor is speed-sensed by frequency detection, giving speed deviation under 0.002 % and wow and flutter under 0.015 %. It came with both a straight and an S-shaped tonearm wand, and has an automatic arm lift at the end of the record.",
   sources: [
     { t: "audio-database.com – Denon DP-60L", u: "https://audio-database.com/DENON-COLUMBIA/player/dp-60l-e.html", lang: "en" },
     { t: "Stereonomono – Denon DP-60L (1980)", u: "https://stereonomono.blogspot.com/2010/12/denon-dp-60l-1980.html", lang: "en" },
@@ -553,5 +553,140 @@ HIFI.push(
     { t: "Steve Hoffman forums – Braun PS-500", u: "https://forums.stevehoffman.tv/threads/braun-ps-500-turntable-designed-by-dieter-rams.876775/", lang: "en" }
   ],
   photos: "https://www.deutsche-digitale-bibliothek.de/item/2N4INMT3RDURVLS2ZMRKYJVVNJ6SJOGR"
+},
+// ---------- 1980s and Eastern Europe ----------
+{
+  brand: "Audiolab", model: "8000A", cat: "amplifier", type: "Integrated", year: 1983, built: "1983–about 1997", country: "UK",
+  specs: "50 W/ch @ 8 Ω (some sources: 60 W) · Class A line stage · separate power supply per channel · gunmetal-grey steel case",
+  desc: "First product of Audiolab, founded in autumn 1982 by Cambridge physics graduate Philip Swift (formerly of Lentek Audio) and mechanical engineer Derek Scotland. Launched in October 1983, it was meant to be affordable and to work well with any system. It was voiced with the best speakers of the day, including the Spendor BC1 and Quad ESL-63. Its grey steel case, Class A line stage and separate per-channel power supplies made it a reference in the 1980s British hi-fi press. It stayed in production for about 14 years.",
+  sources: [
+    { t: "Z Stereo (UK) – Audiolab 8000A", u: "https://zstereo.co.uk/2013/08/20/audiolab-8000a/", lang: "en" },
+    { t: "HiFi Gear (UK) – Another British classic: Audiolab", u: "https://www.hifigear.co.uk/blog/take-a-look-at-another-british-classic-audiolab", lang: "en" },
+    { t: "StereoIndex – Audiolab: history of the English company", u: "https://www.stereoindex.com/audio/audiolab/", lang: "en" }
+  ],
+  photos: "https://zstereo.co.uk/2013/08/20/audiolab-8000a/"
+},
+{
+  brand: "Revox", model: "B251", cat: "amplifier", type: "Integrated", year: 1983, built: "1983–later 1980s", country: "Switzerland / Germany (built by Studer in Löffingen)",
+  specs: "100 W/ch · 0.02 % THD · microprocessor-controlled · die-cast aluminium panels",
+  desc: "Integrated amplifier of Revox's B200 series of the mid-1980s, in which every component had a microprocessor. Revox was Studer's consumer brand: Studer of Regensdorf, Switzerland, made professional studio equipment, and the B251 was built at Studer's German plant in Löffingen. It gives 100 W per channel at 0.02 % distortion, in heavy die-cast aluminium panels in silver and grey. The B251 replaced the earlier B700 series.",
+  sources: [
+    { t: "Radiomuseum.org – Revox B251", u: "https://www.radiomuseum.org/r/studer_b251.html", lang: "multi" },
+    { t: "Revox – Revox history", u: "https://revox.com/us/revox-history", lang: "en" },
+    { t: "Internet Archive – Studer/Revox B251/B252 service manual", u: "https://archive.org/details/studer_Revox_B251_B252_Serv", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/studer_b251.html"
+},
+{
+  brand: "Unitra Fonica", model: "WS-503", cat: "amplifier", type: "Integrated", year: 1978, built: "1978–1980s", country: "Poland",
+  aka: "SA 45 (Polish market name)",
+  specs: "45 W/ch @ 8 Ω · 200 W transformer · Tesla KD-503 output transistors · steel frame, aluminium front",
+  desc: "Poland's best-known hi-fi amplifier of the communist era. Unitra Fonica in Łódź began series production in the second half of 1978, replacing the PA 2801. It is heavily built, with a steel frame, aluminium front and a 200 W transformer feeding Czechoslovak Tesla KD-503 output transistors. Large numbers were exported to France and West Germany. At home it was sold as the WS-503 or SA 45 and was a dream amplifier for Polish enthusiasts. Unitra was the umbrella group of Polish consumer-electronics makers from 1961 to 1989.",
+  sources: [
+    { t: "unitra-audio.pl (Poland) – Fonica WS-503/403/303 amplifiers", u: "https://unitra-audio.pl/prezentacje/wzmacniacze-fonica-ws-503-403-303", lang: "pl" },
+    { t: "Unitraklub.pl (Poland) – Fonica WS-503", u: "https://unitraklub.pl/opis/206", lang: "pl" },
+    { t: "Wikipedia – Unitra", u: "https://en.wikipedia.org/wiki/Unitra", lang: "en" }
+  ],
+  photos: "https://unitraklub.pl/opis/206"
+},
+{
+  brand: "Radiotehnika", model: "U-101", cat: "amplifier", type: "Integrated", year: 1983, built: "1983–later 1980s", country: "USSR (Riga, Latvian SSR)",
+  aka: "Радиотехника У-101",
+  specs: "20 W/ch · part of the '101' series (T-101 tuner, EP-101 turntable, M-201 cassette)",
+  desc: "Amplifier of the '101' component series from Radiotehnika RRR in Riga, considered one of the best audio factories in the Soviet Union. The series included a tuner (T-101), record player (EP-101) and cassette deck (M-201). Radiotehnika had earlier made the Viktoria 001 and the well-known Melodija hi-fi systems. The 101 series typeface and design are documented on Fonts In Use.",
+  sources: [
+    { t: "Fonts In Use – Radiotehnika audio equipment 101 series", u: "https://fontsinuse.com/uses/62408/radiotehnika-audio-equipment-101-series", lang: "en" },
+    { t: "Radiomuseum.org – Radiotehnika RRR (maker page)", u: "https://www.radiomuseum.org/m/radiotehni_lv_en_1.html", lang: "multi" },
+    { t: "Numbers-stations.com – History of Latvian Soviet radios: VEF and Radiotehnika", u: "https://www.numbers-stations.com/articles/history-of-the-latvian-soviet-radios-vef-and-radiotehnika/", lang: "en" }
+  ],
+  photos: "https://fontsinuse.com/uses/62408/radiotehnika-audio-equipment-101-series"
+},
+{
+  brand: "RFT", model: "HMK-V100", cat: "amplifier", type: "Integrated", year: 1985, built: "1985–1990", country: "East Germany (GDR)",
+  specs: "30 W/ch sine · LED power displays (0.03–40 W) · electronic volume and tone control · speaker relay",
+  desc: "East Germany's prestige hi-fi amplifier of the late 1980s, first shown at the Leipzig Autumn Trade Fair in 1985 as part of the HMK 100 system. Volume and tone are controlled electronically by integrated circuits, and five-step LED chains show the output of each channel. It has a speaker relay, two tape inputs, phono and tuner. It was sold in silver and black; black units are much rarer.",
+  sources: [
+    { t: "Uni Magdeburg (Germany) – RFT HMK-V100 (HiFi archive)", u: "https://ifatwww.et.uni-magdeburg.de/~madaus/anlagentext/hmkv100t.html", lang: "de" },
+    { t: "DDR-HiFi-Technik (Germany) – RFT HMK-V100", u: "https://ddr-hifi-technik.de/produkt/rft-verstaerker-hmk-v100silber/", lang: "de" }
+  ],
+  photos: "https://ddr-hifi-technik.de/produkt/rft-verstaerker-hmk-v100silber/"
+},
+{
+  brand: "Tesla", model: "AZS 218", cat: "amplifier", type: "Integrated", year: 1982, built: "early–mid 1980s", country: "Czechoslovakia",
+  specs: "2 × 15 W @ 4 Ω · part of the NC 450 / AZS 218 / ARS 820 system",
+  desc: "A typical Czechoslovak hi-fi amplifier of the 1980s from Tesla, the state-owned monopoly electronics group (1946–1991). It continued the AZS line (AZS 215 of 1975/76, AZS 217 of 1980–82) and was sold as part of a matched system with the NC 450 and ARS 820. Modest power (2 × 15 W into 4 Ω) but solid build. Today a collectible piece of Eastern Bloc hi-fi history. Note: few detailed sources exist for this model.",
+  sources: [
+    { t: "Phono.cz (Czech Republic) – Tesla NC 450, AZS 218, ARS 820 system", u: "https://www.phono.cz/en/hi-fi-systems/tesla-nc-450-azs-218-ars-820", lang: "en" },
+    { t: "Radiomuseum.org – Tesla AZS 217 (predecessor)", u: "https://www.radiomuseum.org/r/tesla_azs217azs_21.html", lang: "multi" },
+    { t: "Wikipedia – Tesla a.s.", u: "https://en.wikipedia.org/wiki/Tesla_a.s.", lang: "en" }
+  ],
+  photos: "https://www.phono.cz/en/hi-fi-systems/tesla-nc-450-azs-218-ars-820"
+},
+{
+  brand: "Mission", model: "Cyrus Two", cat: "amplifier", type: "Integrated", year: 1984, built: "late 1984–1990s", country: "UK",
+  aka: "Cyrus 2",
+  specs: "50 W/ch (70 W with PSX power supply) · half-width case · MM/MC phono",
+  desc: "Mission Cyrus, the electronics offshoot of Mission Loudspeakers (later Cyrus Audio), launched two half-width integrated amplifiers in late 1984, the One and the Two. They shared casework and main board, but the Two had a bigger power supply (50 W per channel) and a better moving-coil phono stage. Its key feature was a socket for the optional PSX outboard power supply, which raised output to 70 W and left the internal supply feeding only the preamp. It gained an alloy case in late 1987.",
+  sources: [
+    { t: "Z Stereo (UK) – Mission Cyrus 2", u: "https://zstereo.co.uk/2013/03/14/mission-cyrus-2/", lang: "en" },
+    { t: "Audiovintage forum (France) – Mission Cyrus Two", u: "https://www.audiovintage.fr/leforum/viewtopic.php?t=53054", lang: "fr" },
+    { t: "Audio Costruzioni (Italy) – Cyrus Two + PSX", u: "https://audiocostruzioni.com/en/prodotto/cyrus-two-psx-mission-ampli-integrato/", lang: "en" }
+  ],
+  photos: "https://zstereo.co.uk/2013/03/14/mission-cyrus-2/"
+},
+{
+  brand: "Musical Fidelity", model: "A100", cat: "amplifier", type: "Integrated", year: 1985, built: "1985–later 1980s (sources: 1984 or 1985)", country: "UK",
+  specs: "50 W/ch @ 8 Ω · strongly biased into Class A · £399",
+  desc: "Musical Fidelity was founded in 1982 by clarinettist Antony Michaelson. After the success of the small A1, the A100 offered a bigger, strongly Class A-biased integrated amplifier for £399. The maker says most music is played in Class A, avoiding the heat and power use of a full Class A design. It gives 50 W per channel into 8 Ω.",
+  sources: [
+    { t: "Z Stereo (UK) – Musical Fidelity A100", u: "https://zstereo.co.uk/2020/10/14/musical-fidelity-a100/", lang: "en" },
+    { t: "Audio 2G (Italy) – The history of Musical Fidelity", u: "https://audio-2g.com/en/the-history-of-musical-fidelity/", lang: "en" },
+    { t: "Wikipedia – Musical Fidelity", u: "https://en.wikipedia.org/wiki/Musical_Fidelity", lang: "en" }
+  ],
+  photos: "https://zstereo.co.uk/2020/10/14/musical-fidelity-a100/"
+},
+{
+  brand: "Sansui", model: "AU-X1", cat: "amplifier", type: "Integrated", year: 1979, built: "1979–1980", country: "Japan",
+  specs: "160 W/ch @ 8 Ω (220 W @ 4 Ω) · 0.007 % THD · damping factor 100 · MC + MM · 27.7 kg",
+  desc: "Sansui's 'Super Integrated Amplifier' flagship of 1979–80. It gives 160 W per channel into 8 Ω and 220 W into 4 Ω at only 0.007 % distortion, with a moving-coil head amp and three-stage phono section. At 27.7 kg it is one of the heaviest integrated amplifiers ever sold.",
+  sources: [
+    { t: "HiFi Engine – Sansui AU-X1 manual", u: "https://www.hifiengine.com/manual_library/sansui/au-x1.shtml", lang: "en" },
+    { t: "HiFiVision (India) – Review of Sansui AU-X1", u: "https://www.hifivision.com/threads/review-of-sansui-au-x1.61815/", lang: "en" },
+    { t: "hifi-wiki – Sansui AU-X1", u: "https://hifi-wiki.com/index.php/Sansui_AU-X_1", lang: "en" }
+  ],
+  photos: "https://hifi-wiki.com/index.php/Sansui_AU-X_1"
+},
+{
+  brand: "Pioneer", model: "A-9", cat: "amplifier", type: "Integrated", year: 1981, built: "1981–1983", country: "Japan",
+  specs: "110 W/ch @ 8 Ω · 0.003 % THD · 5 Hz–200 kHz · Non-Switching (Vari-Bias) · MC + MM · 16 kg",
+  desc: "Pioneer's top integrated amplifier of the early 1980s, in a champagne-gold case. Its 'Non-Switching' circuit (Vari-Bias) continually watches the signal and adjusts bias to the output transistors, so they never switch off and cause switching distortion. It gives 110 W per channel at 0.003 % distortion from 5 Hz to 200 kHz. Audio magazine reviewed it in December 1981.",
+  sources: [
+    { t: "Audio magazine review, Dec 1981 (archived)", u: "https://www.gammaelectronics.xyz/audio_12-1981_pioneer.html", lang: "en" },
+    { t: "Radiomuseum.org – Pioneer A-9", u: "https://www.radiomuseum.org/r/pioneer_a_9.html", lang: "multi" },
+    { t: "hifi-wiki – Pioneer A-9", u: "https://hifi-wiki.com/index.php/Pioneer_A-9", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/pioneer_a_9.html"
+},
+{
+  brand: "Arcam", model: "Alpha", cat: "amplifier", type: "Integrated", year: 1984, built: "end of 1984–1986 (Alpha Plus from 1986)", country: "UK",
+  specs: "30 W/ch @ 8 Ω · complementary bipolar output · aluminium case · £120",
+  desc: "Arcam's budget integrated amplifier, launched at the end of 1984. It was designed to sell at 60–65 % of the price of the best-selling A60: £120 instead of £180. It was Arcam's first product with serious industrial design, by Peter Harries of Cambridge Industrial Design, with an all-aluminium case and moulded front. Owners loved or hated the grey front panel. In 1986 the Alpha Plus added a toroidal transformer and black front for £10 more, and sold 50 % faster.",
+  sources: [
+    { t: "Radiomuseum.org – Arcam Alpha", u: "https://www.radiomuseum.org/r/arcam_integrated_stereo_amplifier_alpha.html", lang: "multi" },
+    { t: "Pinkfish Media forum – A&R Cambridge Alpha vs Arcam Alpha II", u: "https://pinkfishmedia.net/forum/threads/a-r-cambridge-alpha-vs-arcam-alpha-ii.292150/", lang: "en" },
+    { t: "Wikipedia – A&R Cambridge Ltd", u: "https://en.wikipedia.org/wiki/A%26R_Cambridge_Ltd", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/arcam_integrated_stereo_amplifier_alpha.html"
+},
+{
+  brand: "Marantz", model: "PM-80", cat: "amplifier", type: "Integrated", year: 1989, built: "1989–1992", country: "Japan / Netherlands (Philips-owned Marantz)",
+  specs: "100 W/ch · switchable Class A up to 25 W · Source Direct · MM/MC phono",
+  desc: "Introduced in October 1989, the first of a long and successful Marantz amplifier line. A front-panel button switches the output stage to Class A, which holds up to 25 W per channel before moving to Class AB. The switch raises the bias through an opto-coupler. It has Source Direct, tape monitor and a mono switch. It is a typical design of the Philips-era Marantz.",
+  sources: [
+    { t: "The Vintage Knob – Marantz PM-80", u: "https://www.thevintageknob.org/marantz-PM-80.html", lang: "en" },
+    { t: "Radiomuseum.org – Marantz PM-80", u: "https://www.radiomuseum.org/r/marantz_integrated_amplifier_pm_80.html", lang: "multi" },
+    { t: "HiFiVision (India) – Marantz PM 80", u: "https://www.hifivision.com/threads/marantz-pm-80.10099/", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/marantz-PM-80.html"
 }
 );
