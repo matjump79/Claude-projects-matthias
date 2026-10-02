@@ -123,8 +123,6 @@ select {
   box-shadow: var(--shadow); display: flex; flex-direction: column; cursor: pointer; text-align: left;
   font: inherit; color: inherit; padding: 0;
 }
-.parts-btn { margin-top: 10px; align-self: flex-start; font: inherit; padding: 6px 10px; border-radius: 3px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer; }
-.parts-btn:hover { background: var(--accent); color: var(--chip-on-text); }
 .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .photo { position: relative; aspect-ratio: 4 / 3; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
 .photo img { width: 100%; height: 100%; object-fit: contain; }
@@ -3928,7 +3926,6 @@ window.HIFI_SERVICE = {
         <div class="specs">${esc(p.specs)}</div>
         <div class="langs">${langs.map(l => `<span class="lang" title="${LANGS[l] || l} source">${l.toUpperCase()}</span>`).join("")}
           <span class="lang" title="Number of sources">${p.sources.length} src</span></div>
-        <button class="parts-btn" type="button" data-parts="${p.id}">Spare parts &amp; service</button>
       </div></div>`;
   }
   function placeholder(p) {
@@ -3976,7 +3973,7 @@ window.HIFI_SERVICE = {
       }).join("");
     }
     out.querySelectorAll(".card").forEach(el => {
-      el.addEventListener("click", e => open(el.dataset.id, e.target.closest("[data-parts]") ? "secParts" : null));
+      el.addEventListener("click", e => open(el.dataset.id));
       el.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === el) { e.preventDefault(); open(el.dataset.id); } });
     });
     out.querySelectorAll("[data-more]").forEach(el => el.addEventListener("click", () => {
