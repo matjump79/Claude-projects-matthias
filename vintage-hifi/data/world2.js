@@ -688,5 +688,136 @@ HIFI.push(
     { t: "HiFiVision (India) – Marantz PM 80", u: "https://www.hifivision.com/threads/marantz-pm-80.10099/", lang: "en" }
   ],
   photos: "https://www.thevintageknob.org/marantz-PM-80.html"
+},
+// ---------- More receivers ----------
+{
+  brand: "Sony", model: "STR-6800SD", cat: "receiver", year: 1976, built: "1976–1978", country: "Japan",
+  specs: "80 W/ch @ 8 Ω · 0.15 % THD · two phono inputs · 16.5 kg · about $600",
+  desc: "One step below Sony's top STR-7800SD. It gives 80 W per channel and has a first-class FM tuner, two turntable inputs and two tape loops. It cost about $600. An Audio Asylum owner review praises its tuner as 'as good as it got in 1976'.",
+  sources: [
+    { t: "classicreceivers.com – Sony STR-6800SD", u: "https://classicreceivers.com/sony-str-6800-sd", lang: "en" },
+    { t: "Audio Asylum – Owner review: Sony STR-6800SD", u: "https://www.audioasylum.com/reviews/Receiver/Sony/STR-6800SD/general/314280.html", lang: "en" },
+    { t: "Radiomuseum.org – Sony STR-6800SD", u: "https://www.radiomuseum.org/r/sony_fm_stereo_fm_am_receiver_str_6800sd.html", lang: "multi" }
+  ],
+  photos: "https://classicreceivers.com/sony-str-6800-sd"
+},
+{
+  brand: "Onkyo", model: "TX-8500", cat: "receiver", year: 1977, built: "1977–1978 (MkII later)", country: "Japan",
+  specs: "110 W/ch @ 8 Ω (150 W @ 4 Ω) · quartz-locked tuning · dual power supply · 25 kg",
+  desc: "Onkyo's quartz-locked flagship receiver of 1977. Its 'Accutouch' tuning locks the FM station to a quartz reference once found. It gives 110 W per channel (150 W into 4 Ω) from a dual power supply. Unusually, it has three tape inputs but no aux input. It weighs about 55 lb and is known as 'high power with a great tuner'.",
+  sources: [
+    { t: "classicreceivers.com – Onkyo TX-8500 MKII", u: "https://classicreceivers.com/onkyo-tx-8500", lang: "en" },
+    { t: "HiFi Engine – Onkyo TX-8500 manual", u: "https://www.hifiengine.com/manual_library/onkyo/tx-8500.shtml", lang: "en" },
+    { t: "Perich Brothers blog – Receiver hopscotch: Onkyo TX-8500", u: "http://perichbrothers.blogspot.com/2011/05/receiver-hopskotch-onkyo-tx-8500.html", lang: "en" }
+  ],
+  photos: "https://classicreceivers.com/onkyo-tx-8500"
+},
+{
+  brand: "Fisher", model: "RS-1080", cat: "receiver", year: 1977, built: "1977–1979", country: "USA brand / made in Japan (Sanyo)",
+  specs: "170 W/ch @ 8 Ω · 0.1 % THD · 29.5 kg",
+  desc: "One of Fisher's late-1970s 'monster receivers', made when the American brand was owned by Japan's Sanyo. It gives 170 W per channel and weighs 65 lb. Fisher's top model of 1978 was the even bigger RS-2010 'Studio Standard'. Audio Asylum collectors debate why Sanyo-era Fisher receivers attract less excitement than Pioneer or Marantz, though they are well built.",
+  sources: [
+    { t: "Radiomuseum.org – Fisher RS-1080", u: "https://www.radiomuseum.org/r/fisher_rs1080.html", lang: "multi" },
+    { t: "AudioKarma forum – Fisher RS-1080 receiver", u: "https://audiokarma.org/forums/index.php?threads/fisher-rs-1080-receiver.610051/", lang: "en" },
+    { t: "Audio Asylum – Why is there no excitement over Sanyo-built Fisher?", u: "https://www.audioasylum.com/cgi/t.mpl?f=vintage&m=46699", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/fisher_rs1080.html"
+},
+{
+  brand: "Bang & Olufsen", model: "Beomaster 4400", cat: "receiver", year: 1977, built: "1977–about 1980 (sources: from 1977 or 1978)", country: "Denmark",
+  specs: "75 W/ch RMS · 4 output transistors per channel · design: Jacob Jensen",
+  desc: "B&O's flagship receiver of the late 1970s, designed by Jacob Jensen. It followed the Beomaster 3000 (1970) and 4000. It gives 75 W per channel from a stronger output stage with four power transistors per channel. It was known for its good power amplifier; only the later Beomaster 8000 surpassed it.",
+  sources: [
+    { t: "Beoworld – BeoMaster 4400", u: "https://www.beoworld.org/prod_details.asp?pid=350", lang: "en" },
+    { t: "classicreceivers.com – B&O Beomaster 4400", u: "https://classicreceivers.com/bo-beomaster-4400", lang: "en" },
+    { t: "Beo.zone (Denmark) – BeoMaster 4400", u: "https://beo.zone/en/beomaster-4400/", lang: "en" }
+  ],
+  photos: "https://classicreceivers.com/bo-beomaster-4400"
+},
+{
+  brand: "Luxman", model: "R-1050", cat: "receiver", year: 1977, built: "1977–1980", country: "Japan",
+  specs: "55 W/ch @ 8 Ω · 0.05 % THD · 4-gang tuner with dual-gate MOSFETs · PLL MPX · DC-coupled amp · 13.5 kg",
+  desc: "Luxman's mid-range receiver of 1977–1980, often in a rosewood cabinet. The FM section uses a 4-gang tuner with dual-gate MOSFETs, a PLL multiplex decoder and linear-phase ceramic filters. The amplifier is DC-coupled with a dual-rail supply, NF-type tone controls and output muting. It gives 55 W per channel at 0.05 % distortion.",
+  sources: [
+    { t: "Radiomuseum.org – Luxman R-1050", u: "https://www.radiomuseum.org/r/luxman_r1050r_105.html", lang: "multi" },
+    { t: "HiFi Engine – Luxman R-1050 manual", u: "https://www.hifiengine.com/manual_library/luxman/r-1050.shtml", lang: "en" },
+    { t: "hifi-wiki – Luxman R-1050", u: "https://hifi-wiki.com/index.php/Luxman_R-1050", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/luxman_r1050r_105.html"
+},
+{
+  brand: "JVC", model: "JR-S600", cat: "receiver", year: 1976, built: "1976–1978", country: "Japan",
+  specs: "110 W/ch @ 8 Ω · built-in 5-band SEA graphic equaliser (±12 dB) · 18.5 kg",
+  desc: "JVC's big receiver of 1976 with a built-in SEA (Sound Effect Amplifier) graphic equaliser. Five bands at 40 Hz, 250 Hz, 1 kHz, 5 kHz and 15 kHz each adjust by ±12 dB in 2 dB steps. JVC also sold SEA equalisers as separate units. It gives 110 W per channel and weighs 18.5 kg.",
+  sources: [
+    { t: "Peter Vis (UK) – JVC JR-S600 (JVC hi-fi catalogue)", u: "https://www.petervis.com/hi-fi-info/jvc-high-fidelity-cat-2/jr-s600.html", lang: "en" },
+    { t: "Peter Vis (UK) – JVC SEA graphic equalisers", u: "https://www.petervis.com/hi-fi-info/jvc-sea-graphic-equalizers/jvc-sea.html", lang: "en" },
+    { t: "Radiomuseum.org – JVC JR-S600", u: "https://www.radiomuseum.org/r/jvc_jr_s600.html", lang: "multi" }
+  ],
+  photos: "https://www.petervis.com/hi-fi-info/jvc-high-fidelity-cat-2/jr-s600.html"
+},
+{
+  brand: "Sherwood", model: "S-7900A", cat: "receiver", year: 1974, built: "1974–1975", country: "USA (Chicago)",
+  specs: "60 W/ch @ 8 Ω · 0.3 % THD · built-in Dynaquad 4-channel matrix · optional W-10 wood case",
+  desc: "Made in the USA by Chicago's Sherwood, which used US manufacture as a selling point while most rivals came from Japan. It gives 60 W per channel and has a built-in 'Dynaquad' matrix, a simple way to get four-channel sound from stereo records and FM. It was the 'A' update of the S-7900.",
+  sources: [
+    { t: "Radiomuseum.org – Sherwood S-7900A Stereo/Dynaquad receiver", u: "https://www.radiomuseum.org/r/sherwood_stereodynaquad_receiver_s_7900a.html", lang: "multi" },
+    { t: "Stereonomono – Sherwood S-7900A", u: "https://stereonomono.blogspot.com/2014/02/sherwood-s-7900a.html", lang: "en" },
+    { t: "HiFi Engine – Sherwood S-7900A manual", u: "https://www.hifiengine.com/manual_library/sherwood/s-7900a.shtml", lang: "en" }
+  ],
+  photos: "https://stereonomono.blogspot.com/2014/02/sherwood-s-7900a.html"
+},
+{
+  brand: "Marantz", model: "2220B", cat: "receiver", year: 1974, built: "1974–1977 (about 70,000 made)", country: "USA / Japan",
+  specs: "20 W/ch @ 8 Ω · gyro-touch tuning · $299.95",
+  desc: "One of the best-selling Marantz receivers, with about 70,000 made from 1974 to 1977. It cost $299.95 (list price, October 1974). Its 20 W per channel are modest, but it has the full Marantz look and feel: brushed silver front, blue dial and flywheel gyro-touch tuning. Today it is one of the most popular entry-level vintage receivers.",
+  sources: [
+    { t: "Classic Audio – Legendary audio classics: Marantz 2220B", u: "https://classic-audio.com/marantz/2220b.html", lang: "en" },
+    { t: "classicreceivers.com – Marantz 2220B", u: "https://classicreceivers.com/marantz-2220b", lang: "en" }
+  ],
+  photos: "https://classicreceivers.com/marantz-2220b"
+},
+{
+  brand: "Grundig", model: "RTV 1040", cat: "receiver", year: 1974, built: "1974–1977", country: "Germany",
+  specs: "Quadraphonic: 4 × 25 W sine (160 W music power) or 2 × 30 W stereo · LW/MW/SW/FM · 185 transistors · about 1,650 DM",
+  desc: "Grundig's four-channel receiver of the quadraphonic era, sold 1974–1977 for about 1,650 DM. It drives four speakers at 25 W each, or two at about 30 W in stereo. Typical of German receivers of the time, it has long, medium and short wave as well as FM, with 7 FM presets, 16 push buttons and 10 slide controls. With 185 transistors it was one of the most powerful German receivers of its day.",
+  sources: [
+    { t: "Welt der alten Radios (Germany) – Grundig RTV 1040 hifi, 1974", u: "https://www.welt-der-alten-radios.de/ausstellung-transistorradios-detail-540.html", lang: "de" },
+    { t: "HiFi-Wiki (Germany) – Grundig RTV 1040", u: "https://www.hifi-wiki.de/index.php/Grundig_RTV_1040", lang: "de" },
+    { t: "Peter Vis (UK) – Grundig 1975/76 advertisement: RTV 1040", u: "https://www.petervis.com/gallery/Vintage%20Advertisements/grundig-1975-1976/grundig-rtv-1040.html", lang: "en" }
+  ],
+  photos: "https://www.welt-der-alten-radios.de/ausstellung-transistorradios-detail-540.html"
+},
+{
+  brand: "Kenwood", model: "KR-6600", cat: "receiver", year: 1976, built: "1976–1978", country: "Japan",
+  specs: "56 W/ch RMS · 0.3 % THD · mic input · 16.3 kg",
+  desc: "Upper-mid Kenwood receiver of 1976–1978, below the KR-7600 and KR-9600. It gives 56 W per channel and has a microphone input, two tape loops and a DIN connection. It was often sold in an oak or walnut cabinet. A popular and still affordable vintage receiver.",
+  sources: [
+    { t: "Radiomuseum.org – Kenwood KR-6600", u: "https://www.radiomuseum.org/r/trio_kenwo_kr_6600kr660.html", lang: "multi" },
+    { t: "hifi-wiki – Kenwood KR-6600", u: "https://hifi-wiki.com/index.php/Kenwood_KR-6600", lang: "en" },
+    { t: "Vintage Electronics (Betamax Collectors) – Kenwood KR-6600", u: "http://vintageelectronics.betamaxcollectors.com/kenwoodstereoreceivermodelkr-6600.html", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/trio_kenwo_kr_6600kr660.html"
+},
+{
+  brand: "Sansui", model: "5050", cat: "receiver", year: 1975, built: "mid 1970s (some sources: 1976)", country: "Japan",
+  specs: "30 W/ch @ 8 Ω · 0.3 % THD · 11 kg",
+  desc: "A mid-range Sansui receiver of the mid-1970s with a black-glass dial and silver front. It gives 30 W per channel and has a sensitive, selective AM/FM tuner. It is part of the same family as the 7070 and 9090 and still affordable in Europe today.",
+  sources: [
+    { t: "Radiomuseum.org – Sansui 5050", u: "https://www.radiomuseum.org/r/sansui_stereo_receiver_5050.html", lang: "multi" },
+    { t: "HiFi Shark – Sansui 5050 price history", u: "https://www.hifishark.com/model/sansui-5050", lang: "multi" }
+  ],
+  photos: "https://www.radiomuseum.org/r/sansui_stereo_receiver_5050.html"
+},
+{
+  brand: "Pioneer", model: "QX-949", cat: "receiver", year: 1973, built: "1973–1976 (QX-949A later)", country: "Japan",
+  specs: "Four-channel receiver · CD-4 demodulator (PLL) + full-logic SQ + RM matrix decoders · power boost in stereo",
+  desc: "Pioneer's top four-channel receiver of the quadraphonic era, sold with the QX-747 and QX-646. It decodes all the main quadraphonic systems of the time: CD-4 discrete records (with a PLL demodulator), SQ matrix records (with 'full logic') and regular matrix. In two-channel mode a power-boost circuit combines the output of the four amplifiers. Quadraphonic sound failed commercially, which makes these receivers rare today.",
+  sources: [
+    { t: "classicreceivers.com – Pioneer QX-949", u: "https://classicreceivers.com/pioneer-qx-949", lang: "en" },
+    { t: "The Vintage Knob – Pioneer QX-949", u: "http://www.thevintageknob.org/pioneer-QX-949.html", lang: "en" },
+    { t: "HiFi Engine – Pioneer QX-949 manual", u: "https://www.hifiengine.com/manual_library/pioneer/qx-949.shtml", lang: "en" }
+  ],
+  photos: "https://classicreceivers.com/pioneer-qx-949"
 }
 );
