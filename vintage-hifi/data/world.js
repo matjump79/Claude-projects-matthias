@@ -231,5 +231,71 @@ HIFI.push(
     { t: "HiFi Engine – Sony TA-1150 manual", u: "https://www.hifiengine.com/manual_library/sony/ta-1150.shtml", lang: "en" }
   ],
   photos: "https://www.radiomuseum.org/r/sony_integrated_amplifier_ta_1_6.html"
+},
+{
+  brand: "Revox", model: "A78", cat: "amplifier", type: "Integrated", year: 1971, built: "1971–1974 (A78 MkII: 1974–1978)", country: "Switzerland / Germany (built by Studer in Löffingen)",
+  specs: "40 W/ch @ 8 Ω (MkII) · 0.1 % THD · 36 transistors · mic, MM phono, ceramic and line inputs · multi-voltage",
+  desc: "Integrated amplifier made to go with Studer's famous Revox A77 tape recorder (more than 460,000 built) and the A76 FM tuner. Built by Studer GmbH in Löffingen, Germany, from 1971; the MkII version followed in 1974 and was made until 1978. It has an unusual range of inputs: microphone, magnetic and ceramic phono, and line. Switchable mains voltage (110–250 V) made it usable worldwide, a typical Studer professional touch.",
+  sources: [
+    { t: "Radiomuseum.org – Revox A78", u: "https://www.radiomuseum.org/r/studer_revox_a78.html", lang: "multi" },
+    { t: "Radiomuseum.org – Revox A78 MkII", u: "https://www.radiomuseum.org/r/studer_revox_a78_mk_ii_2.html", lang: "multi" },
+    { t: "Wikipedia – Revox", u: "https://en.wikipedia.org/wiki/Revox", lang: "en" }
+  ],
+  photos: "https://www.radiomuseum.org/r/studer_revox_a78.html"
+},
+{
+  brand: "Rega", model: "Planar 2", cat: "turntable", year: 1975, built: "from 1975", country: "UK",
+  specs: "Belt drive · budget turntable · Rega's first model",
+  desc: "Roy Gandy's first turntable. Gandy was a music lover working for Ford who later became a hi-fi dealer, frustrated at repairing new turntables before he could sell them. With Tony Relph he founded Rega Research, named after the first letters of RElph and GAndy. The Planar 2 of 1975 quickly became the reference budget turntable, followed by the Planar 3 in 1977. With Linn, Rega led the British 'source first' movement of the 1970s.",
+  sources: [
+    { t: "SoundStage! Xperience – Rega Research: a history", u: "https://www.soundstagexperience.com/index.php/features-menu/pulse-menu/1136-rega-research-limited-a-history", lang: "en" },
+    { t: "Wikipedia – Rega Research", u: "https://en.wikipedia.org/wiki/Rega_Research", lang: "en" },
+    { t: "Hi-Fi Hall of Fame – Rega Planar turntable", u: "https://hifihalloffame.com/equipment/rega-planar-turntable/", lang: "en" }
+  ],
+  photos: "https://hifihalloffame.com/equipment/rega-planar-turntable/"
+},
+{
+  brand: "McIntosh", model: "MA 6100", cat: "amplifier", type: "Integrated", year: 1972, built: "1972–1979", country: "USA",
+  specs: "70 W/ch @ 4 or 8 Ω (40 W @ 16 Ω) · 0.2 % THD · output autoformers · 15 kg",
+  desc: "McIntosh's integrated amplifier of the 1970s, made 1972–1979 in Binghamton, New York. Thanks to McIntosh's output autoformers it delivers the same 70 W per channel into 4 or 8 Ω. It has the classic McIntosh black glass front, phono and tape-head inputs and a full set of tone controls. It weighs 34 lb (15 kg). McIntosh still lists it among its legacy products.",
+  sources: [
+    { t: "McIntosh Labs – MA6100 (legacy products)", u: "https://www.mcintoshlabs.com/legacy-products/integrated-amplifiers/MA6100", lang: "en" },
+    { t: "HiFi Engine – McIntosh MA6100 manual", u: "https://www.hifiengine.com/manual_library/mcintosh/ma6100.shtml", lang: "en" }
+  ],
+  photos: "https://www.mcintoshlabs.com/legacy-products/integrated-amplifiers/MA6100"
+},
+{
+  brand: "Pioneer", model: "PL-12D", cat: "turntable", year: 1972, built: "1972–1976 (PL-12D-II later)", country: "Japan",
+  specs: "Belt drive · 2 speeds · polyurethane belt",
+  desc: "Pioneer's affordable belt-drive turntable of 1972, one of the best-selling turntables of the 1970s. The polyurethane belt isolates motor vibration and ages very well, which is why so many still work. It competed with the Thorens TD 150 and Dual 1219 and became a benchmark for simple, durable, good-value hi-fi. One is in the collection of Britain's Science Museum Group.",
+  sources: [
+    { t: "Science Museum Group (UK) – PL-12D belt-drive turntable", u: "https://collection.sciencemuseumgroup.org.uk/objects/co8413394/pl-12d-belt-drive-turntable", lang: "en" },
+    { t: "Hi-Fi News (UK) – Pioneer PL-12D turntable", u: "https://www.hifinews.com/content/pioneer-pl-12d-turntable", lang: "en" },
+    { t: "Vinyl Engine – Pioneer PL-12D manual", u: "https://www.vinylengine.com/library/pioneer/pl-12d.shtml", lang: "en" }
+  ],
+  photos: "https://collection.sciencemuseumgroup.org.uk/objects/co8413394/pl-12d-belt-drive-turntable"
+},
+{
+  brand: "Meridian", model: "101", cat: "amplifier", type: "Preamplifier", year: 1977, built: "1977–early 1980s", country: "UK",
+  aka: "Boothroyd Stuart Meridian 101 'control unit'",
+  specs: "Modular preamplifier of the 100 Series · matching 103 / 105 power amplifiers · DIN connections",
+  desc: "First product range of Meridian, founded in 1977 in Cambridgeshire by industrial designer Allen Boothroyd and engineer Bob Stuart. The pair had earlier designed Lecson audio products, which are in New York's Museum of Modern Art and won a British Design Council award in 1974. The 100 Series was modular: the 101 control unit, the 103 and 105 power amplifiers, a 103.5 power supply and the 104 tuner. The power amplifiers had under 0.01 % distortion, very good for the time.",
+  sources: [
+    { t: "TNT-Audio (Italy) – Meridian 101 and 103 review", u: "https://www.tnt-audio.com/ampli/meridian_101_103_e.html", lang: "en" },
+    { t: "Hi-Fi News, Sept 2005 – Meridian 100 Series review (PDF)", u: "https://www.meridian-audio.info/public/100_series_review_(hi-fi_news_-_sept_2005)[460].pdf", lang: "en" },
+    { t: "Hifi Pig (UK) – All roads lead to the M2", u: "https://www.hifipig.com/all-roads-lead-to-the-m2/", lang: "en" }
+  ],
+  photos: "https://www.tnt-audio.com/ampli/meridian_101_103_e.html"
+},
+{
+  brand: "Kenwood", model: "KA-907", cat: "amplifier", type: "Integrated", year: 1979, built: "from 1979 (some listings: 1980)", country: "Japan",
+  specs: "150 W/ch @ 8 Ω, 275 W/ch @ 4 Ω · 0.01 % THD · damping factor 100 · MC head amp · 25.8 kg",
+  desc: "Kenwood's 'High Speed DC' flagship integrated amplifier around 1979–80. It gives 150 W per channel into 8 Ω and 275 W into 4 Ω, with dual power supplies and very low distortion (0.01 %). It has a low-noise head amplifier for moving-coil cartridges, MM input and two tape decks with a tape-through circuit. At 25.8 kg it is one of the heaviest integrated amplifiers of its time.",
+  sources: [
+    { t: "The Vintage Knob – Kenwood KA-907", u: "https://www.thevintageknob.org/kenwood-KA-907.html", lang: "en" },
+    { t: "Radiomuseum.org – Kenwood KA-907 High Speed DC integrated amplifier", u: "https://www.radiomuseum.org/r/trio_kenwo_ka_907.html", lang: "multi" },
+    { t: "hifi-wiki – Kenwood KA-907", u: "https://hifi-wiki.com/index.php/Kenwood_KA-907", lang: "en" }
+  ],
+  photos: "https://www.thevintageknob.org/kenwood-KA-907.html"
 }
 );

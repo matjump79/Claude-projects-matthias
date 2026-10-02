@@ -559,5 +559,15 @@ window.HIFI_PHOTOS = {
   "src": "photos/dual-1229.jpg",
   "site": "hifi-wiki.de",
   "page": "https://www.hifi-wiki.de/index.php/Dual_1229"
+ },
+ "rega-planar-2": {
+  "src": "photos/rega-planar-2.jpg",
+  "site": "hifihalloffame.com (Planar 2 production, 1970s)",
+  "page": "https://hifihalloffame.com/equipment/rega-planar-turntable/"
+ },
+ "arcam-a60": {
+  "src": "photos/arcam-a60.jpg",
+  "site": "2ndhandhifi.co.uk",
+  "page": "https://2ndhandhifi.co.uk/products/a-r-cambridge-a60-integrated-amplifier-teak"
  }
 };
