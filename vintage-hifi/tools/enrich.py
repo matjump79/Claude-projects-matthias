@@ -33,7 +33,9 @@ def sentences(text, limit=3, maxlen=520):
 
 TIDY = [(r"\bpre-?main amplifiers?\b", "integrated amplifier"), (r"\bcontrol amplifier\b", "preamplifier"), (r"¥\s+(?=\d)", "¥"),
         (r"\bIntegrated A\W?ifier\b", "integrated amplifier"), (r"\bA\s?。?ifier\b", "amplifier"), (r"\ban integrated\b", "an integrated"),
-        (r"\ba integrated\b", "an integrated"), (r"\s+([,.;:])", r"\1")]
+        (r"\ba integrated\b", "an integrated"), (r"\bdiaper\s+", ""), (r"\bcomprimentary\b", "complementary"), (r"\bstrain\b", "distortion"),
+        (r"\bstrains\b", "distortion"), (r"(\d+%)\1", r"\1"), (r"\bNF\b", "negative feedback (NF)"), (r"\bD\.D\.", "direct-drive"),
+        (r"\s+([,.;:])", r"\1")]
 def tidy(t):
     for a, b in TIDY: t = re.sub(a, b, t, flags=re.I)
     t = re.sub(r"\s+", " ", t).strip()

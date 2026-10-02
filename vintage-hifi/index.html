@@ -381,6 +381,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     if (!p.country && p.facts2.country) p.country = p.facts2.country;
     if (e.photo && !(window.HIFI_PHOTOS || {})[p.id]) { p.xphoto = e.photo; p.catPage = false; }
   });
+  data.forEach(p => { if ((window.HIFI_PHOTOS || {})[p.id]) p.catPage = false; });   // hand-checked photos are real photos
   const index = Object.fromEntries(data.map(p => [p.id, p]));
 
   // ---- safe localStorage ----
