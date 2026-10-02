@@ -74,7 +74,24 @@ def keep(h, brand, model):
     if len(others - {norm(b) for b in brand.split()}) >= 2: return None     # lists several models: a part or accessory
     return [re.sub(r"\s+", " ", t).strip()[:110], h.get("display_price") or "", link(h), 1 if FOR_PARTS.search(t) else 0, price]
 
+def check_one(brand, model):
+    """US listings for one product, grouped by site: [[site, [[title, price, url, parts], ...], count], ...]."""
+    s = session()
+    hits = search(s, f"{brand.split(' /')[0]} {model}")
+    if hits is None: raise SystemExit("search failed (HiFi Shark did not answer)")
+    by = {}
+    for h in hits:
+        k = keep(h, brand, model)
+        if k: by.setdefault(h.get("site_name") or "Other", []).append(k)
+    allp = sorted(l[4] for ls in by.values() for l in ls if l[4])
+    if len(allp) >= 3:
+        med = allp[len(allp) // 2]
+        by = {k: v for k, v in ((k, [l for l in ls if not l[4] or l[4] >= 0.2 * med]) for k, ls in by.items()) if v}
+    return sorted([[site, [l[:4] for l in sorted(ls, key=lambda l: (l[3], l[4] or 9e9))[:5]], len(ls)] for site, ls in by.items()], key=lambda x: -x[2])
+
 def main():
+    if "--one" in sys.argv:            # python3 crawl_market.py --one "Brand" "Model"  -> JSON on stdout
+        i = sys.argv.index("--one"); print(json.dumps(check_one(sys.argv[i + 1], sys.argv[i + 2]), ensure_ascii=False)); return
     js = (ROOT / "data" / "hifiwiki.js").read_text(encoding="utf-8")
     W = json.loads(js[js.index("["): js.rindex("]") + 1])
     deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world','world2'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
