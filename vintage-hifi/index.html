@@ -171,6 +171,17 @@ dialog {
   border-radius: 16px; background: var(--surface); color: var(--text); box-shadow: 0 20px 60px rgba(0,0,0,.35);
 }
 dialog::backdrop { background: rgba(0,0,0,.45); }
+.buy-btn { margin-top: 10px; align-self: flex-start; font: inherit; font-weight: 700; padding: 6px 12px; border-radius: 3px; border: 1px solid var(--accent); background: var(--accent); color: var(--chip-on-text); cursor: pointer; }
+.buy-btn:hover { filter: brightness(1.1); }
+#buy { width: min(640px, calc(100vw - 24px)); }
+#buy .content { padding: 20px 22px 22px; max-height: calc(100vh - 40px); overflow: auto; }
+.shop { border-top: 1px solid var(--line); padding: 10px 0; }
+.shop h4 { margin: 0 0 4px; font-size: var(--fs); }
+.shop ul { margin: 4px 0 0; padding-left: 20px; }
+.shop li { margin: 3px 0; }
+.shop .price { font-weight: 700; }
+.shop .tag { color: var(--poweramp); }
+.note { color: var(--muted); }
 .dlg { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
 .dlg .photo { aspect-ratio: auto; min-height: 260px; height: 100%; }
 .dlg .content { padding: 20px 22px 22px; overflow: auto; max-height: calc(100vh - 26px); }
@@ -252,6 +263,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
 </footer>
 
 <dialog id="dlg" aria-label="Product details"></dialog>
+<dialog id="buy" aria-label="Buy in the USA"></dialog>
 
 <script>window.HIFI = [];</script>
 <script src="data/receivers.js"></script>
@@ -266,6 +278,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
 <script src="data/enrich.js"></script>
 <script src="data/photos2.js"></script>
 <script src="data/extras.js"></script>
+<script src="data/market.js"></script>
 <script>
 (() => {
   const YEARS = Array.from({ length: 20 }, (_, i) => 1970 + i);
@@ -283,22 +296,6 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     ["HiFi Engine", "hifiengine.com", "Manuals and brochures"],
     ["HiFi Shark listings", "https://www.hifishark.com/search?q=", "Photos from current used-market listings"],
     ["1001hifi", "1001hifi.info", "Illustrated model histories"]
-  ];
-  // Current prices, US market: [label, URL prefix (query appended), note]
-  const PRICE_LINKS = [
-    ["eBay – for sale", "https://www.ebay.com/sch/i.html?_sacat=0&LH_PrefLoc=1&_nkw=", "Current US listings"],
-    ["eBay – sold prices", "https://www.ebay.com/sch/i.html?_sacat=0&LH_PrefLoc=1&LH_Sold=1&LH_Complete=1&_nkw=", "What it actually sold for (last ~90 days)"],
-    ["Reverb", "https://reverb.com/marketplace?query=", "Music and audio gear marketplace"],
-    ["Audiogon", "https://www.google.com/search?q=site%3Aaudiogon.com+", "High-end audio marketplace"],
-    ["US Audio Mart", "https://www.google.com/search?q=site%3Ausaudiomart.com+", "Audio classifieds"],
-    ["HiFi Shark", "https://www.hifishark.com/search?q=", "Used-market aggregator, incl. price history"],
-    ["ShopGoodwill", "https://shopgoodwill.com/categories/listing?st=", "Goodwill online auctions"],
-    ["Etsy", "https://www.etsy.com/search?q=", "Vintage sellers"],
-    ["Mercari", "https://www.mercari.com/search/?keyword=", "Second-hand marketplace"],
-    ["Facebook Marketplace", "https://www.facebook.com/marketplace/search/?query=", "Local pick-up (login needed)"],
-    ["Craigslist (all US)", "https://www.searchtempest.com/search?search_string=", "Searches every Craigslist area at once"],
-    ["Vintage HiFi dealers", "https://www.google.com/search?tbm=shop&q=vintage+", "Google Shopping: restored units from dealers and shops"],
-    ["WorthPoint price archive", "https://www.worthpoint.com/inventory/search?query=", "Archive of past sale prices (subscription)"]
   ];
   // Spare parts and service, for every product: [label, url builder(q, p), note]
   const G = (site, q, extra = "") => `https://www.google.com/search?q=${site ? "site%3A" + site + "+" : ""}${q}${extra}`;
@@ -473,6 +470,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
         <div class="specs">${esc(p.specs)}</div>
         <div class="langs">${langs.map(l => `<span class="lang" title="${LANGS[l] || l} source">${l.toUpperCase()}</span>`).join("")}
           <span class="lang" title="Number of sources">${p.sources.length} src</span></div>
+        <button class="buy-btn" type="button" data-buy="${p.id}">Buy</button>
       </div></div>`;
   }
   function placeholder(p) {
@@ -520,7 +518,7 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
       }).join("");
     }
     out.querySelectorAll(".card").forEach(el => {
-      el.addEventListener("click", e => open(el.dataset.id));
+      el.addEventListener("click", e => { const b = e.target.closest("[data-buy]"); if (b) { e.stopPropagation(); openBuy(b.dataset.buy); } else open(el.dataset.id); });
       el.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target === el) { e.preventDefault(); open(el.dataset.id); } });
     });
     out.querySelectorAll("[data-more]").forEach(el => el.addEventListener("click", () => {
@@ -645,6 +643,31 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
     return { pro: uniq(pro), con: uniq(con), derived: true };
   }
 
+  // ---- buy window: US listings found via HiFi Shark (snapshot with date) ----
+  const MK = window.HIFI_MARKET || { date: "", units: {} };
+  const mkFor = p => MK.units[p.id] || (p.hwId && MK.units[p.hwId]) || null;
+  const buyCount = p => (mkFor(p) || []).reduce((n, s) => n + s[2], 0);
+  const buyDlg = $("#buy");
+  function openBuy(id) {
+    const p = index[id]; if (!p) return;
+    const q = encodeURIComponent(`${p.brand.replace(/\s*\/.*$/, "")} ${p.model}`);
+    const shops = mkFor(p) || [];
+    buyDlg.innerHTML = `<button class="close" type="button" aria-label="Close">×</button><div class="content">
+      <div class="brand">${esc(p.brand)}</div><h2 class="model" style="margin:2px 0 6px">${esc(p.model)} – for sale in the USA</h2>
+      ${shops.length ? `<p class="note">Listings found on ${shops.length} site${shops.length > 1 ? "s" : ""} on ${esc(MK.date)} (checked via HiFi Shark, US sellers only, parts and accessories left out). Listings sell quickly: a link may already be gone.</p>
+        ${shops.map(([site, ls, n]) => `<div class="shop"><h4>${esc(site)} · ${n} listing${n > 1 ? "s" : ""}</h4><ul>${ls.map(([t, pr, u, parts]) =>
+          `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a> <span class="price">${esc(pr)}</span>${parts ? ` <span class="tag">(for parts / repair)</span>` : ""}</li>`).join("")}</ul>
+          ${n > ls.length ? `<p class="note">${n - ls.length} more on ${esc(site)} – see HiFi Shark below.</p>` : ""}</div>`).join("")}`
+      : `<p>No US listing found${MK.date ? " on " + esc(MK.date) : " yet"}.</p>`}
+      <div class="shop"><h4>Check again now</h4><div class="actions">
+        <a href="https://www.hifishark.com/search?q=${q}" target="_blank" rel="noopener">HiFi Shark (all sites, live)</a>
+        <a href="https://www.ebay.com/sch/i.html?_sacat=0&LH_PrefLoc=1&_nkw=${q}" target="_blank" rel="noopener">eBay USA (live)</a></div></div>
+    </div>`;
+    buyDlg.querySelector(".close").addEventListener("click", () => buyDlg.close());
+    buyDlg.showModal();
+  }
+  buyDlg.addEventListener("click", e => { if (e.target === buyDlg) buyDlg.close(); });
+
   // ---- detail dialog ----
   const dlg = $("#dlg");
   function open(id, section) {
@@ -680,8 +703,6 @@ footer { color: var(--muted); font-size: var(--fs); padding: 40px 0 60px; }
             <div class="con"><b>− Cons</b><ul>${pc.con.map(x => `<li>${esc(x[0])} <span class="basis">(${esc(x[1])})</span></li>`).join("")}</ul></div></div>` : ""}
           ${de.rem || (de.feat && de.feat.length) ? `<h3 class="sec">Notes from HiFi-Wiki (translated from German)</h3>
             <ul class="de-notes">${de.rem ? bullets(de.rem) : ""}${(de.feat || []).map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
-          <h3 class="sec">Current prices – US market</h3>
-          ${linkRow(PRICE_LINKS.map(([n, u, note]) => [n, u + q, note]))}
           <h3 class="sec" id="secParts">Spare parts and service manuals</h3>
           ${linkRow(sv ? sv.parts : PARTS_LINKS.map(([n, f, note]) => [n, f(q, p), note]).filter(x => x[1]))}
           <h3 class="sec">Service forums and threads</h3>
