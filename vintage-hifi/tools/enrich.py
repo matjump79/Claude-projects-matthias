@@ -54,7 +54,7 @@ def nice_released(s):
 def main():
     js = (ROOT / "data" / "hifiwiki.js").read_text(encoding="utf-8")
     W = json.loads(js[js.index("["): js.rindex("]") + 1])
-    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
+    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world','world2'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=ROOT))
     slug = lambda s: re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", s.lower()))
     deep_ids = {slug(p["brand"] + "-" + p["model"]): p for p in deep}
     kinds = load("photo_kind.json")

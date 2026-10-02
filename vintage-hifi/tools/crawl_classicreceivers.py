@@ -35,7 +35,7 @@ def fetch(o):
 def main():
     js = (T.parent / "data" / "hifiwiki.js").read_text(encoding="utf-8")
     W = json.loads(js[js.index("["): js.rindex("]") + 1])
-    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=T.parent))
+    deep = json.loads(subprocess.check_output(["node", "-e", "global.HIFI=[];for(const f of ['receivers','amplifiers','turntables','early','late','world','world2'])require('./data/'+f+'.js');console.log(JSON.stringify(HIFI))"], cwd=T.parent))
     ours = [{"id": w["id"], "b": w["b"], "m": w["m"]} for w in W if w["c"] == "receiver"] + \
            [{"id": re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", (p["brand"] + "-" + p["model"]).lower())), "b": p["brand"].split(" /")[0], "m": p["model"]} for p in deep if p["cat"] == "receiver"]
     f = T / "hw" / "classicreceivers.json"; res = json.loads(f.read_text()) if f.exists() else {}
